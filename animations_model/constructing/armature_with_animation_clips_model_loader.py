@@ -1,6 +1,7 @@
 import json
 
 from animations_model.constructing.armature_with_animation_clips_model_constructor import ArmatureWithAnimationClipsModelConstructor
+from animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 
 
 class ArmatureWithAnimationClipsModelLoader:

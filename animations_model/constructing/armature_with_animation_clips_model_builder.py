@@ -1,6 +1,5 @@
 from animations_model.constructing.animation_frame_model_builder import AnimationFrameModelBuilder
 from animations_model.model.animation_clip_model import AnimationClipModel
-from animations_model.model.animation_frame_model import AnimationFrameModel
 from animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 
 
@@ -21,7 +20,6 @@ class ArmatureWithAnimationClipsModelBuilder:
         animation_frame_model = animation_frame_model_builder.build()
         self.armature_with_animation_clips_model.animation_clips[animation_clip_name]. \
             frames[animation_frame_number] = animation_frame_model
-
 
     def _traverse_bones_tree_and_build_animation_frame_model(self, root_nodes, animation_frame_model_builder,
                                                              root_node_name=None):
@@ -45,3 +43,6 @@ class ArmatureWithAnimationClipsModelBuilder:
                 animation_frame_model_builder=animation_frame_model_builder,
                 root_node_name=skeleton_subpart_node["boneName"]
             )
+
+    def build(self):
+        return self.armature_with_animation_clips_model

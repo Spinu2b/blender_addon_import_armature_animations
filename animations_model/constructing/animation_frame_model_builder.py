@@ -55,3 +55,6 @@ class AnimationFrameModelBuilder:
         )
 
         self._traverse_animation_frame_tree_and_add_node(animation_frame_model_node, parent_node_name, root_node=None)
+
+    def build(self):
+        return self.animation_frame_model

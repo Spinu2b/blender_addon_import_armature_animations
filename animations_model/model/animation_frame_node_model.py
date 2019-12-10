@@ -20,3 +20,4 @@ class AnimationFrameNodeModel:
         self.scale_x = scale_x
         self.scale_y = scale_y
         self.scale_z = scale_z
+        self.nodes = []
