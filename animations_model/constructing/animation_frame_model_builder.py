@@ -1,5 +1,5 @@
-from animations_model.model.animation_frame_model import AnimationFrameModel
-from animations_model.model.animation_frame_node_model import AnimationFrameNodeModel
+from animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
 
 
 class AnimationFrameModelBuilder:

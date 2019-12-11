@@ -1,5 +1,5 @@
 from animations_model.constructing.animation_frame_model_builder import AnimationFrameModelBuilder
-from animations_model.model.animation_clip_model import AnimationClipModel
+from animations_model.model.animations.animation_clip_model import AnimationClipModel
 from animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 
 
