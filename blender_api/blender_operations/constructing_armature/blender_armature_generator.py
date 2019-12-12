@@ -1,10 +1,11 @@
 from blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
     BlenderArmatureBoneCreationManipulator
+from blender_api.blender_operations.constructing_armature.blender_armature_manipulator import BlenderArmatureManipulator
 
 
 class BlenderArmatureGenerator:
     def create_armature(self):
-        blender_armature_manipulator = BlenderArmatureBoneCreationManipulator()
+        blender_armature_manipulator = BlenderArmatureManipulator()
         blender_armature_manipulator.create_armature()
 
     def place_bone(self, blender_armature, armature_bone_model):

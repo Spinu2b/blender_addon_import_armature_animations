@@ -10,9 +10,6 @@ class BlenderArmatureBoneHelper:
 
 
 class BlenderArmatureBoneCreationManipulator:
-    def create_armature(self):
-        bpy.ops.object.armature_add()
-
     def enter_edit_mode(self):
         bpy.ops.object.mode_set(mode='EDIT')
 

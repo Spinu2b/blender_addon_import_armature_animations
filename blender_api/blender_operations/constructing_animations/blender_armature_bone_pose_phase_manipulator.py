@@ -1,0 +1,3 @@
+
+class BlenderArmatureBonePosePhaseManipulator:
+    pass
