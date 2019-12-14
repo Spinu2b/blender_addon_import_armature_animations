@@ -1,6 +1,6 @@
 from animations_model.constructing.deriving_unified_armature.nodes_hierarchies_consolidator import \
     NodesHierarchiesConsolidator
-from animations_model.model.armature.nodes_hierarchy import NodesHierarchy
+from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 
 
 class ArmatureNodesHierarchyHelper:

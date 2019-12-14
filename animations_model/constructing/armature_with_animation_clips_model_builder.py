@@ -30,12 +30,21 @@ class ArmatureWithAnimationClipsModelBuilder:
                 position_x=skeleton_subpart_node["positionX"],
                 position_y=skeleton_subpart_node["positionY"],
                 position_z=skeleton_subpart_node["positionZ"],
+                local_position_x=skeleton_subpart_node["localPositionX"],
+                local_position_y=skeleton_subpart_node["localPositionY"],
+                local_position_z=skeleton_subpart_node["localPositionZ"],
                 rotation_x=skeleton_subpart_node["rotationX"],
                 rotation_y=skeleton_subpart_node["rotationY"],
                 rotation_z=skeleton_subpart_node["rotationZ"],
+                local_rotation_x=skeleton_subpart_node["localRotationX"],
+                local_rotation_y=skeleton_subpart_node["localRotationY"],
+                local_rotation_z=skeleton_subpart_node["localRotationZ"],
                 scale_x=skeleton_subpart_node["scaleX"],
                 scale_y=skeleton_subpart_node["scaleY"],
-                scale_z=skeleton_subpart_node["scaleZ"]
+                scale_z=skeleton_subpart_node["scaleZ"],
+                local_scale_x=skeleton_subpart_node["localScaleX"],
+                local_scale_y=skeleton_subpart_node["localScaleY"],
+                local_scale_z=skeleton_subpart_node["localScaleZ"]
             )
 
             self._traverse_bones_tree_and_build_animation_frame_model(
