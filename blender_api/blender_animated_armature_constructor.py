@@ -1,3 +1,4 @@
+from animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 from blender_api.blender_armature_constructor import BlenderArmatureConstructor
 from blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
@@ -7,7 +8,7 @@ from blender_api.blender_operations.constructing_animations.deriving_pose.\
 
 
 class BlenderAnimatedArmatureConstructor:
-    def apply_armature_with_animation_clips_model(self, armature_animation_clips_model):
+    def apply_armature_with_animation_clips_model(self, armature_animation_clips_model: ArmatureWithAnimationClipsModel):
         unified_armature_model = armature_animation_clips_model.get_unified_armature_model()
         blender_edit_mode_armature_model = unified_armature_model.get_blender_edit_mode_armature_model()
         blender_armature_constructor = BlenderArmatureConstructor()

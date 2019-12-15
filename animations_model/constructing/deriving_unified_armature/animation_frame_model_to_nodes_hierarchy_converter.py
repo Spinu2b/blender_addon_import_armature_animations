@@ -1,12 +1,92 @@
+import copy
+
 from animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
+from animations_model.model.armature.nodes_hierarchy.node import Node
 from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 
 
 class AnimationFrameModelToNodesHierarchyConverter:
     def convert(self, animation_frame_model: AnimationFrameModel) -> NodesHierarchy:
         result = NodesHierarchy()
+        result.add_node(parent_name=None, node=Node(name="ROOT_NODE"))
         for animation_frame_node_iter in animation_frame_model.iterate_nodes():
             result.add_node(
                 animation_frame_node_iter.parent.node_name if animation_frame_node_iter.parent is not None else None,
-                animation_frame_node_iter.animation_frame_node_model)
+                self._construct_node(animation_frame_node_iter.animation_frame_node_model))
+        result = self._recalculate_nodes_offsets_as_root_being_geometrical_center(result)
         return result
+
+    def _construct_node(self, animation_frame_node_model: AnimationFrameNodeModel) -> Node:
+        return Node(
+            name=animation_frame_node_model.node_name,
+            position_x=animation_frame_node_model.position_x,
+            position_y=animation_frame_node_model.position_y,
+            position_z=animation_frame_node_model.position_z,
+            local_position_x=animation_frame_node_model.local_position_x,
+            local_position_y=animation_frame_node_model.local_position_y,
+            local_position_z=animation_frame_node_model.local_position_z,
+            rotation_x=animation_frame_node_model.rotation_x,
+            rotation_y=animation_frame_node_model.rotation_y,
+            rotation_z=animation_frame_node_model.rotation_z,
+            local_rotation_x=animation_frame_node_model.local_rotation_x,
+            local_rotation_y=animation_frame_node_model.local_rotation_y,
+            local_rotation_z=animation_frame_node_model.local_rotation_z,
+            scale_x=animation_frame_node_model.rotation_x,
+            scale_y=animation_frame_node_model.rotation_y,
+            scale_z=animation_frame_node_model.rotation_z,
+            local_scale_x=animation_frame_node_model.local_scale_x,
+            local_scale_y=animation_frame_node_model.local_scale_y,
+            local_scale_z=animation_frame_node_model.local_scale_z
+        )
+
+    def _recalculate_nodes_offsets_as_root_being_geometrical_center(
+            self, nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
+        nodes_hierarchy = copy.deepcopy(nodes_hierarchy)
+        root = nodes_hierarchy.root
+        average_position_x = 0.0
+        average_position_y = 0.0
+        average_position_z = 0.0
+        nodes_count = 0
+        for node_iter in nodes_hierarchy.iterate_nodes():
+            if node_iter.node.name != root.name:
+                average_position_x += node_iter.node.position_x
+                average_position_y += node_iter.node.position_y
+                average_position_z += node_iter.node.position_z
+                nodes_count += 1
+        average_position_x /= nodes_count
+        average_position_y /= nodes_count
+        average_position_z /= nodes_count
+        nodes_hierarchy.root.position_x = average_position_x
+        nodes_hierarchy.root.position_y = average_position_y
+        nodes_hierarchy.root.position_z = average_position_z
+        nodes_hierarchy = self._recalculate_root_children_nodes_local_offsets(nodes_hierarchy)
+        return nodes_hierarchy
+
+    def _recalculate_root_children_nodes_local_offsets(self, nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
+        nodes_hierarchy = copy.deepcopy(nodes_hierarchy)
+        root = nodes_hierarchy.root
+
+        root_first_child = nodes_hierarchy.root.children[0]
+        old_root_rotation_x = root_first_child.rotation_x - root_first_child.local_rotation_x
+        old_root_rotation_y = root_first_child.rotation_y - root_first_child.local_rotation_y
+        old_root_rotation_z = root_first_child.rotation_z - root_first_child.local_rotation_z
+
+        old_root_scale_x = root_first_child.scale_x / root_first_child.local_scale_x
+        old_root_scale_y = root_first_child.scale_y / root_first_child.local_scale_y
+        old_root_scale_z = root_first_child.scale_z / root_first_child.local_scale_z
+
+        for root_child in nodes_hierarchy.root.children:
+            root_child.local_position_x = root_child.position_x - root.position_x
+            root_child.local_position_y = root_child.position_y - root.position_y
+            root_child.local_position_z = root_child.position_z - root.position_z
+
+            root_child.local_rotation_x += old_root_rotation_x
+            root_child.local_rotation_y += old_root_rotation_y
+            root_child.local_rotation_z += old_root_rotation_z
+
+            root_child.local_scale_x /= old_root_scale_x
+            root_child.local_scale_y /= old_root_scale_y
+            root_child.local_scale_z /= old_root_scale_z
+
+        return nodes_hierarchy
