@@ -4,7 +4,9 @@ from animations_model.model.armature.blender.blender_edit_mode_armature_node_mod
 from animations_model.model.armature.nodes_hierarchy.node import Node
 from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
-from utils.bones_math_helper import BonesMathHelper
+from utils.bones_math_helper import BonesMathHelper, AxisInfo, Axis, AxisDirection
+
+from utils.model_spaces_integration.model_vector3d import ModelVector3d
 
 
 class UnifiedArmatureModelToBlenderEditModeArmatureModelConverter:
@@ -18,10 +20,33 @@ class UnifiedArmatureModelToBlenderEditModeArmatureModelConverter:
         return result
 
     def _get_blender_edit_mode_armature_node(self, node: Node) -> BlenderEditModeArmatureNodeModel:
-        head_position, tail_position = BonesMathHelper.calculate_head_and_tail_position(
-            position=(node.position_x, node.position_y, node.position_z),
-            rotation=(node.rotation_x, node.rotation_y, node.rotation_z),
-            scale=(node.scale_x, node.scale_y, node.scale_z)
+        model_axis_info = \
+            AxisInfo(
+                forward_axis=Axis.Z,
+                up_axis=Axis.Y,
+                side_axis=Axis.X,
+                right_direction_values=AxisDirection.INCREASING_VALUES,
+                forward_direction_values=AxisDirection.INCREASING_VALUES,
+                up_direction_values=AxisDirection.INCREASING_VALUES
+            )
+
+        position = ModelVector3d(
+            x=node.position_x, y=node.position_y, z=node.position_z,
+            axis_info=model_axis_info
+        )
+        rotation = ModelVector3d(
+            x=node.rotation_x, y=node.rotation_y, z=node.rotation_z,
+            axis_info=model_axis_info
+        )
+        scale = ModelVector3d(
+            x=node.scale_x, y=node.scale_y, z=node.scale_z,
+            axis_info=model_axis_info
+        )
+
+        head_position, tail_position = BonesMathHelper().calculate_head_and_tail_position(
+            position=position,
+            rotation=rotation,
+            scale=scale
         )
         return BlenderEditModeArmatureNodeModel(
             head_position_x=head_position[0],
