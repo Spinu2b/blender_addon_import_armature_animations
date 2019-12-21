@@ -25,9 +25,6 @@ class BlenderEditModeBonesConstructionHelper:
         )
         # Let's assume first that position given is in the middle of bone's length, in the half-way from tail to bone
         # and vice versa
-        head_position = (0.0, 0.0, 0.0)
-        tail_position = (0.0, 0.0, 0.0)
-
         bone_center_absolute_position = \
             position.translate_to_model_axis(target_axis_info=blender_axis_info)  # type: ModelVector3d
         bone_absolute_euler_rotation = \
@@ -52,7 +49,7 @@ class BlenderEditModeBonesConstructionHelper:
         )
         working_bone.position_using_bone_center(bone_center_absolute_position.to_vector3d())
         working_bone.scale_as_if_inside_bounding_box(bone_absolute_scale.to_vector3d())
-        working_bone.rotate_using_euler_angles(bone_absolute_euler_rotation.to_vector3d())
+        working_bone.rotate_using_euler_angles(bone_absolute_euler_rotation.to_euler_rotation_model_vector3d())
 
         head_position = working_bone.head_position.x, working_bone.head_position.y, working_bone.head_position.z
         tail_position = working_bone.tail_position.x, working_bone.tail_position.y, working_bone.tail_position.z
