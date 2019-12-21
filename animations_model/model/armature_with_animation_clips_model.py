@@ -15,3 +15,6 @@ class ArmatureWithAnimationClipsModel:
         unified_armature_model = unified_armature_model_constructor.\
             derive_unified_armature_model_from_animation_clips(self.animation_clips)
         return unified_armature_model
+
+    def get_animation_clips(self) -> Dict[str, AnimationClipModel]:
+        return self.animation_clips

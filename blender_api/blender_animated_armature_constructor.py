@@ -13,8 +13,9 @@ class BlenderAnimatedArmatureConstructor:
         blender_edit_mode_armature_model = unified_armature_model.get_blender_edit_mode_armature_model()
         blender_armature_constructor = BlenderArmatureConstructor()
         blender_armature_constructor.build_armature(blender_edit_mode_armature_model)
-        for animation_clip in armature_animation_clips_model.get_animation_clips():
-            for animation_frame in animation_clip.get_animation_frames():
+        animation_clips = armature_animation_clips_model.get_animation_clips()
+        for animation_clip_name in animation_clips:
+            for animation_frame in animation_clips[animation_clip_name].get_animation_frames():
                 self.add_animation_frame_to_animation_clip_of_armature(
                     blender_edit_mode_armature_model,
                     unified_armature_model,

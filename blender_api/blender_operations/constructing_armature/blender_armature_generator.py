@@ -1,3 +1,5 @@
+from animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
+    BlenderEditModeArmatureNodeModel
 from blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
     BlenderArmatureBoneCreationManipulator
 from blender_api.blender_operations.constructing_armature.blender_armature_manipulator import BlenderArmatureManipulator
@@ -8,7 +10,7 @@ class BlenderArmatureGenerator:
         blender_armature_manipulator = BlenderArmatureManipulator()
         blender_armature_manipulator.create_armature()
 
-    def place_bone(self, blender_armature, armature_bone_model):
+    def place_bone(self, armature_bone_model: BlenderEditModeArmatureNodeModel):
         blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
         blender_armature_bone_creation_manipulator.enter_edit_mode()
         blender_armature_bone_creation_manipulator.set_3d_cursor_location(
