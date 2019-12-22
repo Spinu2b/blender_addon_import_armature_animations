@@ -1,6 +1,6 @@
 from typing import Dict
 
-from animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
 
 
 class AnimationClipModel:

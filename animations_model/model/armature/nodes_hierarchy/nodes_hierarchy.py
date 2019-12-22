@@ -1,8 +1,8 @@
 import copy
 from typing import List
 
-from utils.model.tree_hierarchy import TreeHierarchy
-from utils.model_spaces_integration.axis_info import AxisInfo
+from .....utils.model.tree_hierarchy import TreeHierarchy
+from .....utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class NodesHierarchy(TreeHierarchy):

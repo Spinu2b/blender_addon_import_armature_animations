@@ -1,4 +1,4 @@
-from utils.model_spaces_integration.axis import Axis
+from ...utils.model_spaces_integration.axis import Axis
 
 
 class EulerPlane:

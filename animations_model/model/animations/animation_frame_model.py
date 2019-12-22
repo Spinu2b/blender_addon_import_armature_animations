@@ -1,10 +1,9 @@
 from typing import List, Generator, Optional
 
-from animations_model.constructing.deriving_unified_armature.animation_frame_model_to_nodes_hierarchy_converter import \
-    AnimationFrameModelToNodesHierarchyConverter
-from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from utils.model_spaces_integration.axis_info import AxisInfo
+from ....animations_model.constructing.deriving_unified_armature.animation_frame_model_to_nodes_hierarchy_converter\
+    import AnimationFrameModelToNodesHierarchyConverter
+from ....animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 
 
 class AnimationFrameModelNodeIter:

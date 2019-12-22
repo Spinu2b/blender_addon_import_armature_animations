@@ -1,11 +1,11 @@
 import copy
 
-from animations_model.constructing.building_blender_edit_mode_armature.\
+from ....animations_model.constructing.building_blender_edit_mode_armature.\
     unified_armature_model_to_blender_edit_mode_armature_model_converter import \
     UnifiedArmatureModelToBlenderEditModeArmatureModelConverter
-from animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from utils.model_spaces_integration.axis_info import AxisInfo
+from ....animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from ....utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class UnifiedArmatureModel:

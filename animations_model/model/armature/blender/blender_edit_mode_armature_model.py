@@ -1,8 +1,8 @@
 from typing import Generator
 
-from animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
+from .....animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
     BlenderEditModeArmatureNodeModel
-from utils.model.tree_hierarchy import TreeHierarchy
+from .....utils.model.tree_hierarchy import TreeHierarchy
 
 
 class BlenderChildParentBonePair:

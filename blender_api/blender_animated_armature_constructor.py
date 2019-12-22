@@ -1,14 +1,14 @@
-from animations_model.model.animations.animation_frame_model import AnimationFrameModel
-from animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
-from animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
-from animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
-from blender_api.blender_armature_constructor import BlenderArmatureConstructor
-from blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
+from ..animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from ..animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from ..animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
+from ..animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
+from ..blender_api.blender_armature_constructor import BlenderArmatureConstructor
+from ..blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
-from blender_api.blender_operations.constructing_animations.deriving_pose.\
+from ..blender_api.blender_operations.constructing_animations.deriving_pose.\
     animation_frame_model_to_blender_pose_mode_animation_frame_model_converter import \
     AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter
-from utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
+from ..utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
 
 
 class BlenderAnimatedArmatureConstructor:

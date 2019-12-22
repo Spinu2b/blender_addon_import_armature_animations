@@ -1,11 +1,11 @@
-from animations_model.model.animations.animation_frame_model import AnimationFrameModel
-from animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
-from animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
-from animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
+from .....animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from .....animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from .....animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
+from .....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
     BlenderConsolidatedPoseModeAnimationFrameModel
-from blender_api.blender_operations.constructing_animations.deriving_pose.frame_model_consolidator import \
+from .....blender_api.blender_operations.constructing_animations.deriving_pose.frame_model_consolidator import \
     FrameModelConsolidator
-from utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
+from .....utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
 
 
 class AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter:

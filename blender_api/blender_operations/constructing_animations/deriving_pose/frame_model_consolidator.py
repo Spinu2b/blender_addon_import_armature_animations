@@ -1,7 +1,7 @@
-from animations_model.constructing.blender_poses.blender_consolidated_pose_mode_animation_frame_model_builder import \
-    BlenderConsolidatedPoseModeAnimationFrameModelBuilder
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
+from .....animations_model.constructing.blender_poses.blender_consolidated_pose_mode_animation_frame_model_builder\
+    import BlenderConsolidatedPoseModeAnimationFrameModelBuilder
+from .....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from .....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
     BlenderConsolidatedPoseModeAnimationFrameModel
 
 

@@ -1,8 +1,8 @@
-from blender_api.blender_operations.constructing_animations.blender_animation_clips_editor_manipulator import \
+from ....blender_api.blender_operations.constructing_animations.blender_animation_clips_editor_manipulator import \
     BlenderAnimationClipsEditorManipulator
-from blender_api.blender_operations.constructing_animations.blender_armature_bone_pose_phase_manipulator import \
+from ....blender_api.blender_operations.constructing_animations.blender_armature_bone_pose_phase_manipulator import \
     BlenderArmatureBonePosePhaseManipulator
-from blender_api.blender_operations.constructing_animations.blender_armature_bone_pose_setter_facade import \
+from ....blender_api.blender_operations.constructing_animations.blender_armature_bone_pose_setter_facade import \
     BlenderArmatureBonePoseSetterFacade
 
 

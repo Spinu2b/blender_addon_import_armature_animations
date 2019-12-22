@@ -1,8 +1,8 @@
 from typing import Optional
 
-from animations_model.model.armature.nodes_hierarchy.node import Node
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
+from ....animations_model.model.armature.nodes_hierarchy.node import Node
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from ....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
     BlenderConsolidatedPoseModeAnimationFrameModel
 
 

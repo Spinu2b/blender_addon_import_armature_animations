@@ -1,7 +1,7 @@
 import copy
 
-from utils.model_spaces_integration.axis_info import AxisInfo
-from utils.model_spaces_integration.vector3d import Vector3d
+from ...utils.model_spaces_integration.axis_info import AxisInfo
+from ...utils.model_spaces_integration.vector3d import Vector3d
 
 
 class Vector3dBasingModelVector3dBuilder:

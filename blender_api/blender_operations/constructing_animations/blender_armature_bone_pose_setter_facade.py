@@ -1,4 +1,4 @@
-from blender_api.blender_operations.constructing_animations.blender_armature_bone_pose_phase_manipulator import \
+from ....blender_api.blender_operations.constructing_animations.blender_armature_bone_pose_phase_manipulator import \
     BlenderArmatureBonePosePhaseManipulator
 
 

@@ -1,6 +1,6 @@
 from typing import List
 
-from utils.model_spaces_integration.vector3d import Vector3d
+from ...utils.model_spaces_integration.vector3d import Vector3d
 
 
 class MatrixMultiplicator:

@@ -1,5 +1,5 @@
-from utils.model_spaces_integration.axis import Axis
-from utils.model_spaces_integration.axis_direction import AxisDirection
+from ...utils.model_spaces_integration.axis import Axis
+from ...utils.model_spaces_integration.axis_direction import AxisDirection
 
 
 class AxisInfo:

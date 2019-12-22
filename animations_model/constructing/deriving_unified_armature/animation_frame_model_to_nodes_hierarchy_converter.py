@@ -1,10 +1,10 @@
 import copy
 
-from animations_model.model.animations.animation_frame_model import AnimationFrameModel
-from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
-from animations_model.model.armature.nodes_hierarchy.node import Node
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from utils.model.tree_hierarchy import TreeNodeContainer
+from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from ....animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
+from ....animations_model.model.armature.nodes_hierarchy.node import Node
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from ....utils.model.tree_hierarchy import TreeNodeContainer
 
 
 class AnimationFrameModelToNodesHierarchyConverter:

@@ -1,10 +1,10 @@
 from typing import List
 
-from animations_model.constructing.deriving_unified_armature.nodes_hierarchies_consolidator import \
+from ....animations_model.constructing.deriving_unified_armature.nodes_hierarchies_consolidator import \
     NodesHierarchiesConsolidator
-from animations_model.model.animations.animation_clip_model import AnimationClipModel
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
+from ....animations_model.model.animations.animation_clip_model import AnimationClipModel
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from ....animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
 
 
 class ArmatureNodesHierarchyHelper:

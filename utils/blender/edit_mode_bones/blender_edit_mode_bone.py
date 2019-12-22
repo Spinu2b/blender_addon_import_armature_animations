@@ -1,5 +1,5 @@
-from utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
-from utils.model_spaces_integration.vector3d import Vector3d
+from ....utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
+from ....utils.model_spaces_integration.vector3d import Vector3d
 
 
 class BlenderEditModeBone:

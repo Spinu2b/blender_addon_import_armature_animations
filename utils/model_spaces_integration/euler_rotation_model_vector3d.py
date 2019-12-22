@@ -1,9 +1,9 @@
 import copy
 from typing import Tuple
 
-from utils.model_spaces_integration.euler_plane import EulerPlane
-from utils.model_spaces_integration.in_plane_euler_rotation import InPlaneEulerRotation
-from utils.model_spaces_integration.model_vector3d import ModelVector3d
+from ...utils.model_spaces_integration.euler_plane import EulerPlane
+from ...utils.model_spaces_integration.in_plane_euler_rotation import InPlaneEulerRotation
+from ...utils.model_spaces_integration.model_vector3d import ModelVector3d
 
 
 class EulerRotationModelVector3d:

@@ -1,13 +1,13 @@
 import copy
 from math import cos, sin
 
-from utils.model_spaces_integration.axis import Axis
-from utils.model_spaces_integration.axis_direction import AxisDirection
-from utils.model_spaces_integration.axis_info import AxisInfo
-from utils.model_spaces_integration.euler_plane import EulerPlane
-from utils.model_spaces_integration.matrix3x3 import Matrix3x3
-from utils.model_spaces_integration.quaternion import Quaternion
-from utils.model_spaces_integration.vector3d import Vector3d
+from ...utils.model_spaces_integration.axis import Axis
+from ...utils.model_spaces_integration.axis_direction import AxisDirection
+from ...utils.model_spaces_integration.axis_info import AxisInfo
+from ...utils.model_spaces_integration.euler_plane import EulerPlane
+from ...utils.model_spaces_integration.matrix3x3 import Matrix3x3
+from ...utils.model_spaces_integration.quaternion import Quaternion
+from ...utils.model_spaces_integration.vector3d import Vector3d
 
 
 class InPlaneEulerRotation:

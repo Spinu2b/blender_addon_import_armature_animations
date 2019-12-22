@@ -1,10 +1,11 @@
 from bpy.types import Armature
 
-from animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
+from ....animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
     BlenderEditModeArmatureNodeModel
-from blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
+from ....blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
     BlenderArmatureBoneCreationManipulator
-from blender_api.blender_operations.constructing_armature.blender_armature_manipulator import BlenderArmatureManipulator
+from ....blender_api.blender_operations.constructing_armature.blender_armature_manipulator import\
+    BlenderArmatureManipulator
 
 
 class BlenderArmatureGenerator:

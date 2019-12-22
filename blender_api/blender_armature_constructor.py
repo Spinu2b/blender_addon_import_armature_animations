@@ -1,5 +1,5 @@
-from animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
-from blender_api.blender_operations.constructing_armature.blender_armature_generator import BlenderArmatureGenerator
+from ..animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from ..blender_api.blender_operations.constructing_armature.blender_armature_generator import BlenderArmatureGenerator
 
 
 class BlenderArmatureConstructor:

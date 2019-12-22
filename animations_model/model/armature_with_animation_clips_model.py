@@ -1,9 +1,9 @@
 from typing import Dict
 
-from animations_model.constructing.deriving_unified_armature.\
+from ...animations_model.constructing.deriving_unified_armature.\
     unified_armature_model_constructor import UnifiedArmatureModelConstructor
-from animations_model.model.animations.animation_clip_model import AnimationClipModel
-from animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
+from ...animations_model.model.animations.animation_clip_model import AnimationClipModel
+from ...animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
 
 
 class ArmatureWithAnimationClipsModel:

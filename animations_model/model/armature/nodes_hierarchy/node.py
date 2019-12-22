@@ -1,5 +1,5 @@
-from utils.model_spaces_integration.axis_info import AxisInfo
-from utils.model_spaces_integration.model_vector3d import ModelVector3d
+from .....utils.model_spaces_integration.axis_info import AxisInfo
+from .....utils.model_spaces_integration.model_vector3d import ModelVector3d
 
 
 class Node:

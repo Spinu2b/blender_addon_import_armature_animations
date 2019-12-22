@@ -1,6 +1,6 @@
 import bpy
 
-from main import MainAddonLogic
+from ..main import MainAddonLogic
 
 
 class CreateAnimatedArmatureOperator(bpy.types.Operator):

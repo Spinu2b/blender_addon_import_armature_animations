@@ -1,4 +1,4 @@
-from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 
 
 class BlenderConsolidatedPoseModeAnimationFrameModel:

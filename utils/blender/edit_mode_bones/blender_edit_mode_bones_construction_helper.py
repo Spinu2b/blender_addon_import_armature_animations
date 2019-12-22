@@ -1,11 +1,11 @@
 from typing import Tuple
 
-from utils.blender.edit_mode_bones.blender_edit_mode_bone import BlenderEditModeBone
-from utils.model_spaces_integration.axis import Axis
-from utils.model_spaces_integration.axis_direction import AxisDirection
-from utils.model_spaces_integration.axis_info import AxisInfo
-from utils.model_spaces_integration.model_vector3d import ModelVector3d
-from utils.model_spaces_integration.vector3d_basing_model_vector3d_builder import Vector3dBasingModelVector3dBuilder
+from ....utils.blender.edit_mode_bones.blender_edit_mode_bone import BlenderEditModeBone
+from ....utils.model_spaces_integration.axis import Axis
+from ....utils.model_spaces_integration.axis_direction import AxisDirection
+from ....utils.model_spaces_integration.axis_info import AxisInfo
+from ....utils.model_spaces_integration.model_vector3d import ModelVector3d
+from ....utils.model_spaces_integration.vector3d_basing_model_vector3d_builder import Vector3dBasingModelVector3dBuilder
 
 
 class BlenderEditModeBonesConstructionHelper:
