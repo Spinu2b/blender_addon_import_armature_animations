@@ -1,3 +1,5 @@
+from bpy.types import Armature
+
 from animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
     BlenderEditModeArmatureNodeModel
 from blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
@@ -6,9 +8,9 @@ from blender_api.blender_operations.constructing_armature.blender_armature_manip
 
 
 class BlenderArmatureGenerator:
-    def create_armature(self):
+    def create_armature(self, name: str) -> Armature:
         blender_armature_manipulator = BlenderArmatureManipulator()
-        blender_armature_manipulator.create_armature()
+        return blender_armature_manipulator.create_armature(name=name)
 
     def place_bone(self, armature_bone_model: BlenderEditModeArmatureNodeModel):
         blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
