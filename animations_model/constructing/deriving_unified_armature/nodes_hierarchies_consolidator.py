@@ -1,17 +1,20 @@
 import copy
 from typing import Set
+from typing import TYPE_CHECKING
 
-from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from ....animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
-from ....utils.model.tree_hierarchy import TreeNodeInfo
+
+if TYPE_CHECKING:
+    from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+    from ....utils.model.tree_hierarchy import TreeNodeInfo
 
 
 class NodesHierarchiesConsolidator:
-    def get_unified_armature_model(self, nodes_hierarchy: NodesHierarchy) -> UnifiedArmatureModel:
+    def get_unified_armature_model(self, nodes_hierarchy: 'NodesHierarchy') -> UnifiedArmatureModel:
         return UnifiedArmatureModel(nodes_hierarchy=nodes_hierarchy)
 
-    def consolidate(self, consolidated_nodes_hierarchy: NodesHierarchy,
-                    nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
+    def consolidate(self, consolidated_nodes_hierarchy: 'NodesHierarchy',
+                    nodes_hierarchy: 'NodesHierarchy') -> 'NodesHierarchy':
         consolidated_nodes_hierarchy = copy.deepcopy(consolidated_nodes_hierarchy)
         consolidated_nodes_hierarchy_nodes_set = set(
             [node_iter.node.name for node_iter in consolidated_nodes_hierarchy.iterate_nodes()])  # type: Set[str]

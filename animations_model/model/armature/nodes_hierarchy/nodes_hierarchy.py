@@ -1,12 +1,15 @@
 import copy
 from typing import List
+from typing import TYPE_CHECKING
 
 from .....utils.model.tree_hierarchy import TreeHierarchy
-from .....utils.model_spaces_integration.axis_info import AxisInfo
+
+if TYPE_CHECKING:
+    from .....utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class NodesHierarchy(TreeHierarchy):
-    def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
+    def translate_to_space_model(self, base_space_model: 'AxisInfo', target_space_model: 'AxisInfo'):
         result = copy.deepcopy(self)
         for node_iter in result.iterate_nodes():
             node_iter.node.assign_from(node_iter.node.translate_to_space_model(

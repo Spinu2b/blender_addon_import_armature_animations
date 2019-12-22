@@ -1,14 +1,17 @@
 import copy
+from typing import TYPE_CHECKING
 
-from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
-from ....animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
 from ....animations_model.model.armature.nodes_hierarchy.node import Node
 from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from ....utils.model.tree_hierarchy import TreeNodeContainer
 
+if TYPE_CHECKING:
+    from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
+    from ....animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
+
 
 class AnimationFrameModelToNodesHierarchyConverter:
-    def convert(self, animation_frame_model: AnimationFrameModel) -> NodesHierarchy:
+    def convert(self, animation_frame_model: 'AnimationFrameModel') -> NodesHierarchy:
         result = NodesHierarchy()
         result.add_node(parent_name=None, node=Node(name="ROOT_NODE"))
         for animation_frame_node_iter in animation_frame_model.iterate_nodes():
@@ -18,7 +21,7 @@ class AnimationFrameModelToNodesHierarchyConverter:
         result = self._recalculate_nodes_offsets_as_root_being_geometrical_center(result)
         return result
 
-    def _construct_node(self, animation_frame_node_model: AnimationFrameNodeModel) -> Node:
+    def _construct_node(self, animation_frame_node_model: 'AnimationFrameNodeModel') -> Node:
         return Node(
             name=animation_frame_node_model.node_name,
             position_x=animation_frame_node_model.position_x,
@@ -78,7 +81,8 @@ class AnimationFrameModelToNodesHierarchyConverter:
         old_root_scale_y = root_first_child.scale_y / root_first_child.local_scale_y
         old_root_scale_z = root_first_child.scale_z / root_first_child.local_scale_z
 
-        for root_child in nodes_hierarchy.root.children:
+        for root_child_iter in nodes_hierarchy.root.children:
+            root_child = root_child_iter.node
             root_child.local_position_x = root_child.position_x - root.position_x
             root_child.local_position_y = root_child.position_y - root.position_y
             root_child.local_position_z = root_child.position_z - root.position_z

@@ -1,15 +1,18 @@
+from typing import TYPE_CHECKING
 from .....animations_model.constructing.blender_poses.blender_consolidated_pose_mode_animation_frame_model_builder\
     import BlenderConsolidatedPoseModeAnimationFrameModelBuilder
-from .....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from .....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
-    BlenderConsolidatedPoseModeAnimationFrameModel
+
+if TYPE_CHECKING:
+    from .....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+    from .....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
+        BlenderConsolidatedPoseModeAnimationFrameModel
 
 
 class FrameModelConsolidator:
     def consolidate(self,
-                    unified_armature_model_nodes_hierarchy: NodesHierarchy,
-                    animation_frame_model_nodes_hierarchy: NodesHierarchy) ->\
-            BlenderConsolidatedPoseModeAnimationFrameModel:
+                    unified_armature_model_nodes_hierarchy: 'NodesHierarchy',
+                    animation_frame_model_nodes_hierarchy: 'NodesHierarchy') ->\
+            'BlenderConsolidatedPoseModeAnimationFrameModel':
         result_builder = BlenderConsolidatedPoseModeAnimationFrameModelBuilder()
         for animation_frame_model_node_iter in animation_frame_model_nodes_hierarchy.iterate_nodes():
             if animation_frame_model_node_iter.node.name not in\

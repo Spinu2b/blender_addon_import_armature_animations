@@ -1,6 +1,7 @@
 from typing import Dict
-
-from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
 
 
 class AnimationClipModel:
@@ -8,9 +9,9 @@ class AnimationClipModel:
         self.animation_clip_name = animation_clip_name  # type: str
         self.frames = dict()  # type: Dict[int, AnimationFrameModel]
 
-    def get_first_animation_frame(self) -> AnimationFrameModel:
+    def get_first_animation_frame(self) -> 'AnimationFrameModel':
         minimal_key = min(self.frames)  # type: int
         return self.frames[minimal_key]
 
-    def get_animation_frames(self) -> Dict[int, AnimationFrameModel]:
+    def get_animation_frames(self) -> Dict[int, 'AnimationFrameModel']:
         return self.frames

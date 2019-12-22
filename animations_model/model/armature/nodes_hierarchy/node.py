@@ -1,5 +1,8 @@
-from .....utils.model_spaces_integration.axis_info import AxisInfo
+from typing import TYPE_CHECKING
 from .....utils.model_spaces_integration.model_vector3d import ModelVector3d
+
+if TYPE_CHECKING:
+    from .....utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class Node:
@@ -64,7 +67,7 @@ class Node:
         self.local_scale_y = other_node.local_scale_y  # type: float
         self.local_scale_z = other_node.local_scale_z  # type: float
 
-    def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
+    def translate_to_space_model(self, base_space_model: 'AxisInfo', target_space_model: 'AxisInfo'):
         position_model_vector3d = ModelVector3d(
             axis_info=base_space_model, x=self.position_x, y=self.position_y, z=self.position_z) \
             .translate_to_model_axis(target_axis_info=target_space_model)
