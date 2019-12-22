@@ -1,21 +1,24 @@
 import copy
+from typing import TYPE_CHECKING
 
 from ....animations_model.constructing.building_blender_edit_mode_armature.\
     unified_armature_model_to_blender_edit_mode_armature_model_converter import \
     UnifiedArmatureModelToBlenderEditModeArmatureModelConverter
-from ....animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
-from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from ....utils.model_spaces_integration.axis_info import AxisInfo
+if TYPE_CHECKING:
+    from ....animations_model.model.armature.blender.blender_edit_mode_armature_model import \
+        BlenderEditModeArmatureModel
+    from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+    from ....utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class UnifiedArmatureModel:
-    def __init__(self, nodes_hierarchy: NodesHierarchy):
+    def __init__(self, nodes_hierarchy: 'NodesHierarchy'):
         self.nodes_hierarchy = nodes_hierarchy  # type: NodesHierarchy
 
-    def get_blender_edit_mode_armature_model(self, base_space_model: AxisInfo) -> BlenderEditModeArmatureModel:
+    def get_blender_edit_mode_armature_model(self, base_space_model: 'AxisInfo') -> 'BlenderEditModeArmatureModel':
         return UnifiedArmatureModelToBlenderEditModeArmatureModelConverter().convert(self, base_space_model)
 
-    def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
+    def translate_to_space_model(self, base_space_model: 'AxisInfo', target_space_model: 'AxisInfo'):
         result = copy.deepcopy(self)
         result.nodes_hierarchy = result.nodes_hierarchy.translate_to_space_model(
             base_space_model=base_space_model, target_space_model=target_space_model)

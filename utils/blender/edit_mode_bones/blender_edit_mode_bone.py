@@ -1,16 +1,18 @@
-from ....utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
-from ....utils.model_spaces_integration.vector3d import Vector3d
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ....utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
+    from ....utils.model_spaces_integration.vector3d import Vector3d
 
 
 class BlenderEditModeBone:
-    def __init__(self, head_position: Vector3d, tail_position: Vector3d):
+    def __init__(self, head_position: 'Vector3d', tail_position: 'Vector3d'):
         self.head_position = head_position  # type: Vector3d
         self.tail_position = tail_position  # type: Vector3d
 
-    def get_bone_center(self) -> Vector3d:
+    def get_bone_center(self) -> 'Vector3d':
         return (self.head_position + self.tail_position) / 2.0
 
-    def position_using_bone_center(self, center_position: Vector3d):
+    def position_using_bone_center(self, center_position: 'Vector3d'):
         # position is basis for later work with mesh
         # practically all the bones could just sit in one place in space in edit mode
         # but then for human being it would be pain in the ass to assign vertices groups to bones in such edit mode
@@ -22,7 +24,7 @@ class BlenderEditModeBone:
         self.head_position = center_position + head_position_from_center_vector
         self.tail_position = center_position + tail_position_from_center_vector
 
-    def scale_as_if_inside_bounding_box(self, absolute_scale: Vector3d):
+    def scale_as_if_inside_bounding_box(self, absolute_scale: 'Vector3d'):
         # Treat bone as if it was a diagonal of imaginary bounding box in order
         # to take into account all of three spatial scaling
         # factors - x, y and z
@@ -38,7 +40,7 @@ class BlenderEditModeBone:
         # that saves us some boring time of actually implementing it
         pass
 
-    def rotate_using_euler_angles(self, absolute_euler_rotation: EulerRotationModelVector3d):
+    def rotate_using_euler_angles(self, absolute_euler_rotation: 'EulerRotationModelVector3d'):
         # rotation could not necessarily be needed, yet it gives better picture of how the bones are
         # positioned and stuff
         # it provides more convenient view on the armature, and makes later working in Blender and life in general

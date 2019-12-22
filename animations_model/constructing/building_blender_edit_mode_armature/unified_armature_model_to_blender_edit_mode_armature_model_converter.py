@@ -1,18 +1,20 @@
+from typing import TYPE_CHECKING
 from ....animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
 from ....animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
     BlenderEditModeArmatureNodeModel
-from ....animations_model.model.armature.nodes_hierarchy.node import Node
-from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-from ....animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
 from ....utils.blender.edit_mode_bones.blender_edit_mode_bones_construction_helper import \
     BlenderEditModeBonesConstructionHelper
-from ....utils.model_spaces_integration.axis_info import AxisInfo
-
 from ....utils.model_spaces_integration.model_vector3d import ModelVector3d
+
+if TYPE_CHECKING:
+    from ....animations_model.model.armature.nodes_hierarchy.node import Node
+    from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+    from ....animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
+    from ....utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class UnifiedArmatureModelToBlenderEditModeArmatureModelConverter:
-    def convert(self, unified_armature_model: UnifiedArmatureModel, base_space_model: AxisInfo) ->\
+    def convert(self, unified_armature_model: 'UnifiedArmatureModel', base_space_model: 'AxisInfo') ->\
                 BlenderEditModeArmatureModel:
         nodes_hierarchy = unified_armature_model.nodes_hierarchy  # type: NodesHierarchy
         result = BlenderEditModeArmatureModel()
@@ -23,7 +25,7 @@ class UnifiedArmatureModelToBlenderEditModeArmatureModelConverter:
         return result
 
     def _get_blender_edit_mode_armature_node(
-            self, node: Node, base_space_model: AxisInfo) -> BlenderEditModeArmatureNodeModel:
+            self, node: 'Node', base_space_model: 'AxisInfo') -> BlenderEditModeArmatureNodeModel:
 
         position = ModelVector3d(
             x=node.position_x, y=node.position_y, z=node.position_z,

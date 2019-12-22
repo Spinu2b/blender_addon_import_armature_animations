@@ -1,7 +1,7 @@
 import copy
 from typing import Set
 
-from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy, NodeIter
+from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from ....animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
 from ....utils.model.tree_hierarchy import TreeNodeInfo
 

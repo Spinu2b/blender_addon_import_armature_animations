@@ -3,11 +3,14 @@ from typing import Tuple
 
 from ...utils.model_spaces_integration.euler_plane import EulerPlane
 from ...utils.model_spaces_integration.in_plane_euler_rotation import InPlaneEulerRotation
-from ...utils.model_spaces_integration.model_vector3d import ModelVector3d
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...utils.model_spaces_integration.model_vector3d import ModelVector3d
 
 
 class EulerRotationModelVector3d:
-    def __init__(self, model_vector3d: ModelVector3d):
+    def __init__(self, model_vector3d: 'ModelVector3d'):
         self.model_vector3d = copy.deepcopy(model_vector3d)  # type: ModelVector3d
 
     def get_in_plane_rotations(self) -> Tuple[InPlaneEulerRotation, InPlaneEulerRotation, InPlaneEulerRotation]:

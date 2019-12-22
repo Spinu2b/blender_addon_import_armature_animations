@@ -1,6 +1,6 @@
 import copy
 from abc import ABC
-from typing import Optional, Generator, List
+from typing import Optional, List, Iterator
 
 
 class TreeNodeContainer:
@@ -36,7 +36,7 @@ class TreeHierarchy(ABC):
             "Did not find parent of that name in tree hierarchy to put node in it: {}".format(parent_name))
 
     def _traverse_nodes_hierarchy(self, parent: Optional[TreeNodeContainer],
-                                  current_node: TreeNodeContainer) -> Generator[TreeNodeIter]:
+                                  current_node: TreeNodeContainer) -> Iterator[TreeNodeIter]:
         yield TreeNodeIter(parent=parent.node if parent is not None else None,
                            node=current_node.node, children=current_node.children)
         for child_node in current_node.children:
@@ -52,7 +52,7 @@ class TreeHierarchy(ABC):
                 parent_name=parent_name,
                 node_to_put=node_container)
 
-    def iterate_nodes(self) -> Generator[TreeNodeIter]:
+    def iterate_nodes(self) -> Iterator[TreeNodeIter]:
         yield from self._traverse_nodes_hierarchy(parent=None, current_node=self.root)
 
     def get_node(self, name: str) -> TreeNodeInfo:

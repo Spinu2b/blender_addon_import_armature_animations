@@ -1,19 +1,23 @@
 from typing import Tuple
+from typing import TYPE_CHECKING
 
 from ....utils.blender.edit_mode_bones.blender_edit_mode_bone import BlenderEditModeBone
 from ....utils.model_spaces_integration.axis import Axis
 from ....utils.model_spaces_integration.axis_direction import AxisDirection
 from ....utils.model_spaces_integration.axis_info import AxisInfo
-from ....utils.model_spaces_integration.model_vector3d import ModelVector3d
 from ....utils.model_spaces_integration.vector3d_basing_model_vector3d_builder import Vector3dBasingModelVector3dBuilder
+
+
+if TYPE_CHECKING:
+    from ....utils.model_spaces_integration.model_vector3d import ModelVector3d
 
 
 class BlenderEditModeBonesConstructionHelper:
     def calculate_head_and_tail_position(
             self,
-            position: ModelVector3d,
-            rotation: ModelVector3d,
-            scale: ModelVector3d
+            position: 'ModelVector3d',
+            rotation: 'ModelVector3d',
+            scale: 'ModelVector3d'
     ) -> Tuple[Tuple[float, float, float], Tuple[float, float, float]]:
         blender_axis_info = AxisInfo(
             forward_axis=Axis.Y,
