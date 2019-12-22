@@ -21,14 +21,22 @@ class Vector3d:
             z=self.z - other.z
         )
 
-    def __floordiv__(self, other):
-        raise NotImplementedError
+    def __floordiv__(self, other: float):
+        return Vector3d(
+            x=self.x // other,
+            y=self.y // other,
+            z=self.z // other
+        )
 
-    def __truediv__(self, other):
-        raise NotImplementedError
+    def __truediv__(self, other: float):
+        return Vector3d(
+            x=self.x / other,
+            y=self.y / other,
+            z=self.z / other
+        )
 
     def to_matrix_elements(self) -> List[List[float]]:
-        raise NotImplementedError
+        return [[self.x], [self.y], [self.z]]
 
     @classmethod
     def from_matrix_elements(cls, matrix_elements: List[List[float]]):
