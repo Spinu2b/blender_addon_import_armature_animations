@@ -1,0 +1,11 @@
+import bpy
+
+
+class CreateAnimatedArmatureOperator(bpy.types.Operator):
+    bl_idname = "view3d.import_animated_armature"
+    bl_label = "Simple operator"
+    bl_description = "Import animated armature from Raymap"
+
+    def execute(self, context):
+
+        return {'FINISHED'}
