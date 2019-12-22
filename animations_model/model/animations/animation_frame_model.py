@@ -4,6 +4,7 @@ from animations_model.constructing.deriving_unified_armature.animation_frame_mod
     AnimationFrameModelToNodesHierarchyConverter
 from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
 from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class AnimationFrameModelNodeIter:
@@ -28,3 +29,6 @@ class AnimationFrameModel:
         yield AnimationFrameModelNodeIter(parent=parent, animation_frame_node_model=node)
         for child_node in node.nodes:
             yield from self._traverse_nodes_hierarchy(parent=node, node=child_node)
+
+    def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
+        pass

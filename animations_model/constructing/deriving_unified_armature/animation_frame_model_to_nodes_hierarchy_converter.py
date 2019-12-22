@@ -4,6 +4,7 @@ from animations_model.model.animations.animation_frame_model import AnimationFra
 from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
 from animations_model.model.armature.nodes_hierarchy.node import Node
 from animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
+from utils.model.tree_hierarchy import TreeNodeContainer
 
 
 class AnimationFrameModelToNodesHierarchyConverter:
@@ -43,11 +44,11 @@ class AnimationFrameModelToNodesHierarchyConverter:
     def _recalculate_nodes_offsets_as_root_being_geometrical_center(
             self, nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
         nodes_hierarchy = copy.deepcopy(nodes_hierarchy)
-        root = nodes_hierarchy.root
-        average_position_x = 0.0
-        average_position_y = 0.0
-        average_position_z = 0.0
-        nodes_count = 0
+        root = nodes_hierarchy.get_root().node  # type: Node
+        average_position_x = 0.0  # type: float
+        average_position_y = 0.0  # type: float
+        average_position_z = 0.0  # type: float
+        nodes_count = 0  # type: int
         for node_iter in nodes_hierarchy.iterate_nodes():
             if node_iter.node.name != root.name:
                 average_position_x += node_iter.node.position_x
@@ -65,9 +66,10 @@ class AnimationFrameModelToNodesHierarchyConverter:
 
     def _recalculate_root_children_nodes_local_offsets(self, nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
         nodes_hierarchy = copy.deepcopy(nodes_hierarchy)
-        root = nodes_hierarchy.root
+        root_container = nodes_hierarchy.get_root()  # type: TreeNodeContainer
+        root = root_container.node  # type: Node
 
-        root_first_child = nodes_hierarchy.root.children[0]
+        root_first_child = root_container.children[0].node  # type: Node
         old_root_rotation_x = root_first_child.rotation_x - root_first_child.local_rotation_x
         old_root_rotation_y = root_first_child.rotation_y - root_first_child.local_rotation_y
         old_root_rotation_z = root_first_child.rotation_z - root_first_child.local_rotation_z

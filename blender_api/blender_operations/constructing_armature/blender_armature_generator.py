@@ -13,19 +13,19 @@ class BlenderArmatureGenerator:
     def place_bone(self, armature_bone_model: BlenderEditModeArmatureNodeModel):
         blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
         blender_armature_bone_creation_manipulator.enter_edit_mode()
-        blender_armature_bone_creation_manipulator.set_3d_cursor_location(
-            armature_bone_model.position_x,
-            armature_bone_model.position_y,
-            armature_bone_model.position_z
+        blender_armature_bone_creation_manipulator.add_bone(
+            head_position=(armature_bone_model.head_position_x,
+                           armature_bone_model.head_position_y,
+                           armature_bone_model.head_position_z),
+            tail_position=(armature_bone_model.tail_position_x,
+                           armature_bone_model.tail_position_y,
+                           armature_bone_model.tail_position_z),
+            name=armature_bone_model.name
         )
-        blender_armature_bone_creation_manipulator.add_bone_primitive(armature_bone_model.bone_name)
-        blender_armature_bone_creation_manipulator.set_bone_scale(
-            armature_bone_model.scale_x,
-            armature_bone_model.scale_y,
-            armature_bone_model.scale_z
-        )
-        blender_armature_bone_creation_manipulator.set_bone_rotation(
-            armature_bone_model.rotation_x,
-            armature_bone_model.rotation_y,
-            armature_bone_model.rotation_z
-        )
+
+    def parent_bone_to(self, child: BlenderEditModeArmatureNodeModel, parent: BlenderEditModeArmatureNodeModel):
+        blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
+        if parent is not None:
+            blender_armature_bone_creation_manipulator.parent_bone_to(
+                child_bone_name=child.name,
+                parent_bone_name=parent.name)

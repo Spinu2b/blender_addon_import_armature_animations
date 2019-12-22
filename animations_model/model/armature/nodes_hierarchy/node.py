@@ -1,4 +1,3 @@
-from typing import List
 
 
 class Node:
@@ -22,7 +21,6 @@ class Node:
                  local_scale_y: float=1.0,
                  local_scale_z: float=1.0
                  ):
-        self.children = []  # type: List[Node]
         self.name = name  # type: str
         self.position_x = position_x  # type: float
         self.position_y = position_y  # type: float
