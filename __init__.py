@@ -5,7 +5,7 @@ bl_info = {
     "author": "Spinu2b",
     "description": "This addon is supposed to import animated armature from Raymap tool - "
                    "level viewer/editor for Openspace games",
-    "blender": (2, 79, 0),
+    "blender": (2, 80, 0),
     "location": "View3D",
     "warning": "",
     "category": "Generic"

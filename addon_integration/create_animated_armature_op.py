@@ -1,5 +1,7 @@
 import bpy
 
+from main import MainAddonLogic
+
 
 class CreateAnimatedArmatureOperator(bpy.types.Operator):
     bl_idname = "view3d.import_animated_armature"
@@ -7,5 +9,5 @@ class CreateAnimatedArmatureOperator(bpy.types.Operator):
     bl_description = "Import animated armature from Raymap"
 
     def execute(self, context):
-
+        MainAddonLogic().run()
         return {'FINISHED'}
