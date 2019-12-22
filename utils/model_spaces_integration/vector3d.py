@@ -22,13 +22,13 @@ class Vector3d:
         )
 
     def __floordiv__(self, other):
-        pass
+        raise NotImplementedError
 
     def __truediv__(self, other):
-        pass
+        raise NotImplementedError
 
     def to_matrix_elements(self) -> List[List[float]]:
-        pass
+        raise NotImplementedError
 
     @classmethod
     def from_matrix_elements(cls, matrix_elements: List[List[float]]):

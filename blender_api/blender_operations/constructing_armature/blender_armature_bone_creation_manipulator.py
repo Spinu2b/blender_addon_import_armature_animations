@@ -11,7 +11,7 @@ class BlenderArmatureBoneCreationManipulator:
                  head_position: Tuple[float, float, float],
                  tail_position: Tuple[float, float, float],
                  name: str):
-        pass
+        raise NotImplementedError
 
     def parent_bone_to(self, child_bone_name: str, parent_bone_name: str):
-        pass
+        raise NotImplementedError

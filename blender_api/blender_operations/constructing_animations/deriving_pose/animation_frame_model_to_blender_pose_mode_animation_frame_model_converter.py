@@ -18,12 +18,12 @@ class AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter:
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO,
             target_space_model=ModelSpacesInfo.BLENDER_AXIS_INFO
         )
-
+        unified_armature_model = unified_armature_model.set_local_offsets_to_home_values()
         animation_frame_model_nodes_hierarchy = animation_frame_model.get_nodes_hierarchy().translate_to_space_model(
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO,
             target_space_model=ModelSpacesInfo.BLENDER_AXIS_INFO
         )
-
+        animation_frame_model_nodes_hierarchy = animation_frame_model_nodes_hierarchy.set_local_offsets_to_home_values()
         blender_consolidated_pose_mode_animation_frame_model = FrameModelConsolidator() \
             .consolidate(
                 unified_armature_model_nodes_hierarchy=unified_armature_model.nodes_hierarchy,

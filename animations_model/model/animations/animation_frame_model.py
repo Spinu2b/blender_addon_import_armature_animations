@@ -31,4 +31,4 @@ class AnimationFrameModel:
             yield from self._traverse_nodes_hierarchy(parent=node, node=child_node)
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        pass
+        raise NotImplementedError

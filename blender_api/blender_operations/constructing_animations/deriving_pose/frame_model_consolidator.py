@@ -8,4 +8,4 @@ class FrameModelConsolidator:
                     unified_armature_model_nodes_hierarchy: NodesHierarchy,
                     animation_frame_model_nodes_hierarchy: NodesHierarchy) ->\
             BlenderConsolidatedPoseModeAnimationFrameModel:
-        pass
+        raise NotImplementedError

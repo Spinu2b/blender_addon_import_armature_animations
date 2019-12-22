@@ -20,3 +20,8 @@ class UnifiedArmatureModel:
         result.nodes_hierarchy = result.nodes_hierarchy.translate_to_space_model(
             base_space_model=base_space_model, target_space_model=target_space_model)
         return result
+
+    def set_local_offsets_to_home_values(self):
+        result = copy.deepcopy(self)
+        result.nodes_hierarchy = result.nodes_hierarchy.set_local_offsets_to_home_values()
+        return result
