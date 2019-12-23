@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 
 from ....animations_model.constructing.building_blender_edit_mode_armature.\
     armature_model_to_blender_edit_mode_converter import \
@@ -27,4 +27,13 @@ class UnifiedArmatureModel:
     def set_local_offsets_to_home_values(self):
         result = copy.deepcopy(self)
         result.nodes_hierarchy = result.nodes_hierarchy.set_local_offsets_to_home_values()
+        return result
+
+    def get_offsets_from_center_of_coordinates_system(self) -> Tuple[float, float, float]:
+        return self.nodes_hierarchy.get_root_offsets_from_center()
+
+    def bring_to_center_of_coordinates_system(self):
+        result = copy.deepcopy(self)
+        offset_x, offset_y, offset_z = result.nodes_hierarchy.get_root_offsets_from_center()
+        result.nodes_hierarchy = result.nodes_hierarchy.translate_absolute_offsets_by(-offset_x, -offset_y, -offset_z)
         return result

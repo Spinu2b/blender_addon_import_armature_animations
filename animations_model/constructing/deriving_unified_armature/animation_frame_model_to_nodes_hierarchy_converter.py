@@ -64,9 +64,9 @@ class AnimationFrameModelToNodesHierarchyConverter:
         average_position_x /= nodes_count
         average_position_y /= nodes_count
         average_position_z /= nodes_count
-        nodes_hierarchy.root.position_x = average_position_x
-        nodes_hierarchy.root.position_y = average_position_y
-        nodes_hierarchy.root.position_z = average_position_z
+        nodes_hierarchy.root.node.position_x = average_position_x
+        nodes_hierarchy.root.node.position_y = average_position_y
+        nodes_hierarchy.root.node.position_z = average_position_z
         nodes_hierarchy = self._recalculate_root_children_nodes_local_offsets(nodes_hierarchy)
         return nodes_hierarchy
 

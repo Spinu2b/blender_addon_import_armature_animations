@@ -131,3 +131,26 @@ class Node:
             local_scale_y=1.0,
             local_scale_z=1.0
         )
+
+    def translate_absolute_offsets_by(self, offset_x: float, offset_y: float, offset_z: float):
+        return Node(
+            name=self.name,
+            position_x=self.position_x + offset_x,
+            position_y=self.position_y + offset_y,
+            position_z=self.position_z + offset_z,
+            local_position_x=self.local_position_x,
+            local_position_y=self.local_position_y,
+            local_position_z=self.local_position_z,
+            rotation_x=self.rotation_x,
+            rotation_y=self.rotation_y,
+            rotation_z=self.rotation_z,
+            local_rotation_x=self.local_rotation_x,
+            local_rotation_y=self.local_rotation_y,
+            local_rotation_z=self.local_rotation_z,
+            scale_x=self.scale_x,
+            scale_y=self.scale_y,
+            scale_z=self.scale_z,
+            local_scale_x=self.local_scale_x,
+            local_scale_y=self.local_scale_y,
+            local_scale_z=self.local_scale_z
+        )

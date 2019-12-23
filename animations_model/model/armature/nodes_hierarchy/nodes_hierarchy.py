@@ -1,5 +1,5 @@
 import copy
-from typing import List
+from typing import List, Tuple
 from typing import TYPE_CHECKING
 
 from .....utils.model.tree_hierarchy import TreeHierarchy
@@ -26,3 +26,18 @@ class NodesHierarchy(TreeHierarchy):
 
     def get_nodes_names(self) -> List[str]:
         return list(set([node_iter.node.name for node_iter in self.iterate_nodes()]))
+
+    def get_root_offsets_from_center(self) -> Tuple[float, float, float]:
+        return self.root.node.position_x, self.root.node.position_y, self.root.node.position_z
+
+    def translate_absolute_offsets_by(self, offset_x: float, offset_y: float, offset_z: float):
+        result = copy.deepcopy(self)
+        for node_iter in result.iterate_nodes():
+            node_iter.node.assign_from(
+                node_iter.node.translate_absolute_offsets_by(
+                    offset_x=offset_x,
+                    offset_y=offset_y,
+                    offset_z=offset_z
+                )
+            )
+        return result

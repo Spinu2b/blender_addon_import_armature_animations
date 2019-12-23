@@ -22,6 +22,8 @@ class BlenderAnimatedArmatureConstructor:
     def apply_armature_with_animation_clips_model(self,
                                                   armature_animation_clips_model: 'ArmatureWithAnimationClipsModel'):
         unified_armature_model = armature_animation_clips_model.get_unified_armature_model()
+        armature_offsets_from_center = unified_armature_model.get_offsets_from_center_of_coordinates_system()
+        unified_armature_model = unified_armature_model.bring_to_center_of_coordinates_system()
         blender_edit_mode_armature_model = unified_armature_model.get_blender_edit_mode_armature_model(
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO)
         blender_armature_constructor = BlenderArmatureConstructor()
