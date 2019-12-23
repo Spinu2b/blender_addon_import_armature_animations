@@ -1,8 +1,9 @@
 from typing import List, Optional, Iterator
 from typing import TYPE_CHECKING
+from ....animations_model.constructing.deriving_unified_armature. \
+    animation_frame_model_to_nodes_hierarchy_converter import AnimationFrameModelToNodesHierarchyConverter
+
 if TYPE_CHECKING:
-    from ....animations_model.constructing.deriving_unified_armature.\
-        animation_frame_model_to_nodes_hierarchy_converter import AnimationFrameModelToNodesHierarchyConverter
     from ....animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
     from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 

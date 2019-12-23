@@ -4,7 +4,7 @@ from ..blender_api.blender_armature_constructor import BlenderArmatureConstructo
 from ..blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
 from ..blender_api.blender_operations.constructing_animations.deriving_pose.\
-    animation_frame_model_to_blender_pose_mode_animation_frame_model_converter import \
+    animation_frame_to_blender_pose_mode_model_converter import \
     AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter
 from ..utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
 

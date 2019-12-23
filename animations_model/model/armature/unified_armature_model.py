@@ -2,7 +2,7 @@ import copy
 from typing import TYPE_CHECKING
 
 from ....animations_model.constructing.building_blender_edit_mode_armature.\
-    unified_armature_model_to_blender_edit_mode_armature_model_converter import \
+    armature_model_to_blender_edit_mode_converter import \
     UnifiedArmatureModelToBlenderEditModeArmatureModelConverter
 if TYPE_CHECKING:
     from ....animations_model.model.armature.blender.blender_edit_mode_armature_model import \
