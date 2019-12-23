@@ -24,7 +24,7 @@ class TreeNodeInfo:
 
 class TreeHierarchy(ABC):
     def __init__(self):
-        self.root = None  # type: TreeNodeContainer
+        self.root = None  # type: Optional[TreeNodeContainer]
 
     def _traverse_children_recursively_and_put(
             self, parent_name: str, node_to_put: TreeNodeContainer):
