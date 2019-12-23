@@ -11,13 +11,16 @@ if TYPE_CHECKING:
 
 
 class AnimationFrameModelToNodesHierarchyConverter:
+    ROOT_NAME = "ROOT_NODE"
+
     def convert(self, animation_frame_model: 'AnimationFrameModel') -> NodesHierarchy:
         result = NodesHierarchy()
-        result.add_node(parent_name=None, node=Node(name="ROOT_NODE"))
+        result.add_node(parent_name=None, node=Node(name=self.ROOT_NAME))
         for animation_frame_node_iter in animation_frame_model.iterate_nodes():
             result.add_node(
-                animation_frame_node_iter.parent.node_name if animation_frame_node_iter.parent is not None else None,
-                self._construct_node(animation_frame_node_iter.animation_frame_node_model))
+                parent_name=animation_frame_node_iter.parent.node_name if animation_frame_node_iter.parent
+                is not None else self.ROOT_NAME,
+                node=self._construct_node(animation_frame_node_iter.animation_frame_node_model))
         result = self._recalculate_nodes_offsets_as_root_being_geometrical_center(result)
         return result
 
@@ -67,6 +70,10 @@ class AnimationFrameModelToNodesHierarchyConverter:
         nodes_hierarchy = self._recalculate_root_children_nodes_local_offsets(nodes_hierarchy)
         return nodes_hierarchy
 
+    def _is_close_enough_to_zero(self, value: float) -> bool:
+        margin = 0.000001
+        return abs(value) < margin
+
     def _recalculate_root_children_nodes_local_offsets(self, nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
         nodes_hierarchy = copy.deepcopy(nodes_hierarchy)
         root_container = nodes_hierarchy.get_root()  # type: TreeNodeContainer
@@ -91,8 +98,19 @@ class AnimationFrameModelToNodesHierarchyConverter:
             root_child.local_rotation_y += old_root_rotation_y
             root_child.local_rotation_z += old_root_rotation_z
 
-            root_child.local_scale_x /= old_root_scale_x
-            root_child.local_scale_y /= old_root_scale_y
-            root_child.local_scale_z /= old_root_scale_z
+            if not self._is_close_enough_to_zero(old_root_scale_x):
+                root_child.local_scale_x /= old_root_scale_x
+            else:
+                root_child.local_scale_x = 0.0
+
+            if not self._is_close_enough_to_zero(old_root_scale_y):
+                root_child.local_scale_y /= old_root_scale_y
+            else:
+                root_child.local_scale_y = 0.0
+
+            if not self._is_close_enough_to_zero(old_root_scale_z):
+                root_child.local_scale_z /= old_root_scale_z
+            else:
+                root_child.local_scale_z = 0.0
 
         return nodes_hierarchy

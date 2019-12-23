@@ -46,14 +46,15 @@ class TreeHierarchy(ABC):
         node = copy.deepcopy(node)
         node_container = TreeNodeContainer(node=node)
         if parent_name is None:
-            self.root = node
+            self.root = node_container
         else:
             self._traverse_children_recursively_and_put(
                 parent_name=parent_name,
                 node_to_put=node_container)
 
     def iterate_nodes(self) -> Iterator[TreeNodeIter]:
-        yield from self._traverse_nodes_hierarchy(parent=None, current_node=self.root)
+        if self.root is not None:
+            yield from self._traverse_nodes_hierarchy(parent=None, current_node=self.root)
 
     def get_node(self, name: str) -> TreeNodeInfo:
         for node_iter in self.iterate_nodes():
