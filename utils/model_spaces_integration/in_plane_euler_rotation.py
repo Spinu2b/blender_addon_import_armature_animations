@@ -1,23 +1,25 @@
 import copy
 from math import cos, sin
-
+from typing import TYPE_CHECKING
 from ...utils.model_spaces_integration.axis import Axis
 from ...utils.model_spaces_integration.axis_direction import AxisDirection
-from ...utils.model_spaces_integration.axis_info import AxisInfo
-from ...utils.model_spaces_integration.euler_plane import EulerPlane
-from ...utils.model_spaces_integration.matrix3x3 import Matrix3x3
 from ...utils.model_spaces_integration.quaternion import Quaternion
 from ...utils.model_spaces_integration.vector3d import Vector3d
+
+if TYPE_CHECKING:
+    from ...utils.model_spaces_integration.axis_info import AxisInfo
+    from ...utils.model_spaces_integration.euler_plane import EulerPlane
+    from ...utils.model_spaces_integration.matrix3x3 import Matrix3x3
 
 
 class InPlaneEulerRotation:
     def __init__(self,
-                 rotation_plane: EulerPlane,
+                 rotation_plane: 'EulerPlane',
                  rotation_axis: Axis,
                  rotation_axis_direction: AxisDirection,
                  counterclockwise_rotation: bool,
                  angle: float,
-                 axis_info: AxisInfo):
+                 axis_info: 'AxisInfo'):
         self.rotation_plane = copy.deepcopy(rotation_plane)  # type: EulerPlane
         self.angle = angle  # type: float
         self.rotation_axis = rotation_axis  # type: Axis
@@ -34,7 +36,7 @@ class InPlaneEulerRotation:
         d = rotation_axis_vector.z * sin(angle / 2)  # type: float
         return Quaternion(a, b, c, d)
 
-    def get_rotation_matrix(self) -> Matrix3x3:
+    def get_rotation_matrix(self) -> 'Matrix3x3':
         rotation_quaternion = self._get_rotation_quaternion()
         w = rotation_quaternion.w
         x = rotation_quaternion.x

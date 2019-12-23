@@ -1,14 +1,17 @@
 import copy
+from typing import TYPE_CHECKING
 
 from ...utils.model_spaces_integration.axis import Axis
-from ...utils.model_spaces_integration.axis_direction import AxisDirection
-from ...utils.model_spaces_integration.axis_info import AxisInfo
 from ...utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
 from ...utils.model_spaces_integration.vector3d import Vector3d
 
+if TYPE_CHECKING:
+    from ...utils.model_spaces_integration.axis_direction import AxisDirection
+    from ...utils.model_spaces_integration.axis_info import AxisInfo
+
 
 class ModelVector3d:
-    def __init__(self, axis_info: AxisInfo, x: float = 0.0, y: float = 0.0, z: float = 0.0):
+    def __init__(self, axis_info: 'AxisInfo', x: float = 0.0, y: float = 0.0, z: float = 0.0):
         self.x = x  # type: float
         self.y = y  # type: float
         self.z = z  # type: float
@@ -25,7 +28,7 @@ class ModelVector3d:
     def get_forward_axis(self) -> Axis:
         return self.axis_info.forward_axis
 
-    def get_forward_axis_direction(self) -> AxisDirection:
+    def get_forward_axis_direction(self) -> 'AxisDirection':
         return self.axis_info.forward_direction_values
 
     def get_up_axis_value(self) -> float:
@@ -39,7 +42,7 @@ class ModelVector3d:
     def get_up_axis(self) -> Axis:
         return self.axis_info.up_axis
 
-    def get_up_axis_direction(self) -> AxisDirection:
+    def get_up_axis_direction(self) -> 'AxisDirection':
         return self.axis_info.up_direction_values
 
     def get_side_axis_value(self) -> float:
@@ -53,7 +56,7 @@ class ModelVector3d:
     def get_side_axis(self) -> Axis:
         return self.axis_info.side_axis
 
-    def get_side_axis_right_direction(self) -> AxisDirection:
+    def get_side_axis_right_direction(self) -> 'AxisDirection':
         return self.axis_info.right_direction_values
 
     def set_forward_axis_value(self, value: float, flip_value: bool):
@@ -83,7 +86,7 @@ class ModelVector3d:
         elif self.get_up_axis() == Axis.Z:
             self.z = value
 
-    def translate_to_model_axis(self, target_axis_info: AxisInfo):
+    def translate_to_model_axis(self, target_axis_info: 'AxisInfo'):
         forward_axis_value, forward_axis_direction = self.get_forward_axis_value(), self.get_forward_axis_direction()
         side_axis_value, side_axis_direction = self.get_side_axis_value(), self.get_side_axis_right_direction()
         up_axis_value, up_axis_direction = self.get_up_axis_value(), self.get_up_axis_direction()

@@ -1,9 +1,12 @@
-from ..animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from typing import TYPE_CHECKING
 from ..blender_api.blender_operations.constructing_armature.blender_armature_generator import BlenderArmatureGenerator
+
+if TYPE_CHECKING:
+    from ..animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
 
 
 class BlenderArmatureConstructor:
-    def build_armature(self, blender_edit_mode_armature_model: BlenderEditModeArmatureModel):
+    def build_armature(self, blender_edit_mode_armature_model: 'BlenderEditModeArmatureModel'):
         blender_armature_generator = BlenderArmatureGenerator()
         blender_armature_generator.create_armature()
         for armature_bone_model in blender_edit_mode_armature_model.iterate_nodes():

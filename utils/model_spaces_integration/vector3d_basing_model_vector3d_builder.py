@@ -1,11 +1,14 @@
 import copy
+from typing import TYPE_CHECKING
 
-from ...utils.model_spaces_integration.axis_info import AxisInfo
 from ...utils.model_spaces_integration.vector3d import Vector3d
+
+if TYPE_CHECKING:
+    from ...utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class Vector3dBasingModelVector3dBuilder:
-    def __init__(self, axis_info: AxisInfo):
+    def __init__(self, axis_info: 'AxisInfo'):
         self.axis_info = copy.deepcopy(axis_info)
         self.result = Vector3d()
 
