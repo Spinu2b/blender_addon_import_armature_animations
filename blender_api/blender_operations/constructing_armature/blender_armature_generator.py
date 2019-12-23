@@ -16,7 +16,9 @@ class BlenderArmatureGenerator:
         blender_armature_manipulator = BlenderArmatureManipulator()
         return blender_armature_manipulator.create_armature(name=name)
 
-    def place_bone(self, armature_bone_model: 'BlenderEditModeArmatureNodeModel'):
+    def place_bone(self,
+                   armature: 'Armature',
+                   armature_bone_model: 'BlenderEditModeArmatureNodeModel'):
         blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
         blender_armature_bone_creation_manipulator.enter_edit_mode()
         blender_armature_bone_creation_manipulator.add_bone(
@@ -26,12 +28,17 @@ class BlenderArmatureGenerator:
             tail_position=(armature_bone_model.tail_position_x,
                            armature_bone_model.tail_position_y,
                            armature_bone_model.tail_position_z),
-            name=armature_bone_model.name
+            name=armature_bone_model.name,
+            armature=armature
         )
 
-    def parent_bone_to(self, child: 'BlenderEditModeArmatureNodeModel', parent: 'BlenderEditModeArmatureNodeModel'):
+    def parent_bone_to(self,
+                       child: 'BlenderEditModeArmatureNodeModel',
+                       parent: 'BlenderEditModeArmatureNodeModel',
+                       armature: 'Armature'):
         blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
         if parent is not None:
             blender_armature_bone_creation_manipulator.parent_bone_to(
                 child_bone_name=child.name,
-                parent_bone_name=parent.name)
+                parent_bone_name=parent.name,
+                armature=armature)
