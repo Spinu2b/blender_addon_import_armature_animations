@@ -43,12 +43,12 @@ class BlenderEditModeBonesConstructionHelper:
             Vector3dBasingModelVector3dBuilder(axis_info=blender_axis_info)
             .forward_axis_value(value=0.0, forward_increasing=True)
             .side_right_value(value=0.0, side_right_increasing=True)
-            .up_axis_value(value=0.5, up_increasing=True)
+            .up_axis_value(value=0.10, up_increasing=True)
             .build(),
             tail_position=Vector3dBasingModelVector3dBuilder(axis_info=blender_axis_info)
             .forward_axis_value(value=0.0, forward_increasing=True)
             .side_right_value(value=0.0, side_right_increasing=True)
-            .up_axis_value(value=-0.5, up_increasing=True)
+            .up_axis_value(value=-0.10, up_increasing=True)
             .build(),
         )
         working_bone.position_using_bone_center(bone_center_absolute_position.to_vector3d())
