@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, Tuple
 
+from ..blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
 from ..blender_api.blender_armature_constructor import BlenderArmatureConstructor
 from ..blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
@@ -30,23 +31,27 @@ class BlenderAnimatedArmatureConstructor:
             blender_edit_mode_armature_model=blender_edit_mode_armature_model,
             name=self.ARMATURE_NAME)  # type: Armature
         animation_clips = armature_animation_clips_model.get_animation_clips()
+
+        blender_editor_manipulation = BlenderEditorManipulation()
+        blender_editor_manipulation.enter_pose_mode()
+
         for animation_clip_name in animation_clips:
+            action = blender_editor_manipulation.enter_animation_clip(name=animation_clip_name)
             animation_frames = animation_clips[animation_clip_name].get_animation_frames()
             for animation_frame_number in animation_frames:
                 animation_frame = animation_frames[animation_frame_number]
+                blender_editor_manipulation.enter_frame_number(frame_number=animation_frame_number)
                 self.add_animation_frame_to_animation_clip_of_armature(
                     unified_armature_model,
-                    animation_clip_name,
-                    animation_frame_number,
                     animation_frame,
+                    armature,
                     armature_offsets_from_center)
 
     def add_animation_frame_to_animation_clip_of_armature(
             self,
             unified_armature_model: 'UnifiedArmatureModel',
-            animation_clip_name: str,
-            animation_frame_number: int,
             animation_frame_model: 'AnimationFrameModel',
+            armature: Armature,
             armature_offsets_from_center: Tuple[float, float, float]):
         blender_pose_mode_animation_frame_model = \
             AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter().\
@@ -58,7 +63,6 @@ class BlenderAnimatedArmatureConstructor:
 
         blender_armature_animation_constructor = BlenderArmatureAnimationConstructor()
         blender_armature_animation_constructor.setup_keyframe_in_animation_clip(
-            animation_clip_name,
-            animation_frame_number,
-            blender_pose_mode_animation_frame_model
+            blender_pose_mode_animation_frame_model,
+            armature
         )
