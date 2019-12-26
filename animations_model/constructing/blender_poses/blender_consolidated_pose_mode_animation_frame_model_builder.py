@@ -1,5 +1,6 @@
 from typing import Optional
 
+from ....utils.model_spaces_integration.math_utils import MathUtils
 from ....animations_model.model.armature.nodes_hierarchy.node import Node
 from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from ....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
@@ -9,6 +10,9 @@ from ....animations_model.model.blender_poses.blender_consolidated_pose_mode_ani
 class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
     def __init__(self):
         self.result_nodes_hierarchy = NodesHierarchy()
+
+    def _get_scale(self, scale: float, reference_scale: float) -> float:
+        return scale / reference_scale if not MathUtils.is_close_enough_to_zero(reference_scale) else 0.0
 
     def consolidate_and_add_node(self,
                                  parent_name: Optional[str],
@@ -32,9 +36,9 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
                 scale_x=node_to_consolidate.scale_x,
                 scale_y=node_to_consolidate.scale_y,
                 scale_z=node_to_consolidate.scale_z,
-                local_scale_x=node_to_consolidate.scale_x / reference.scale_x,
-                local_scale_y=node_to_consolidate.scale_y / reference.scale_y,
-                local_scale_z=node_to_consolidate.scale_z / reference.scale_z
+                local_scale_x=self._get_scale(node_to_consolidate.scale_x, reference.scale_x),
+                local_scale_y=self._get_scale(node_to_consolidate.scale_y, reference.scale_y),
+                local_scale_z=self._get_scale(node_to_consolidate.scale_z, reference.scale_z),
             )
 
         self.result_nodes_hierarchy.add_node(parent_name=parent_name, node=node_to_add)

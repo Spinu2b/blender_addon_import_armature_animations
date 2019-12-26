@@ -1,6 +1,7 @@
 import copy
 from typing import TYPE_CHECKING
 
+from ....utils.model_spaces_integration.math_utils import MathUtils
 from ....animations_model.model.armature.nodes_hierarchy.node import Node
 from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from ....utils.model.tree_hierarchy import TreeNodeContainer
@@ -70,10 +71,6 @@ class AnimationFrameModelToNodesHierarchyConverter:
         nodes_hierarchy = self._recalculate_root_children_nodes_local_offsets(nodes_hierarchy)
         return nodes_hierarchy
 
-    def _is_close_enough_to_zero(self, value: float) -> bool:
-        margin = 0.000001
-        return abs(value) < margin
-
     def _recalculate_root_children_nodes_local_offsets(self, nodes_hierarchy: NodesHierarchy) -> NodesHierarchy:
         nodes_hierarchy = copy.deepcopy(nodes_hierarchy)
         root_container = nodes_hierarchy.get_root()  # type: TreeNodeContainer
@@ -98,17 +95,17 @@ class AnimationFrameModelToNodesHierarchyConverter:
             root_child.local_rotation_y += old_root_rotation_y
             root_child.local_rotation_z += old_root_rotation_z
 
-            if not self._is_close_enough_to_zero(old_root_scale_x):
+            if not MathUtils.is_close_enough_to_zero(old_root_scale_x):
                 root_child.local_scale_x /= old_root_scale_x
             else:
                 root_child.local_scale_x = 0.0
 
-            if not self._is_close_enough_to_zero(old_root_scale_y):
+            if not MathUtils.is_close_enough_to_zero(old_root_scale_y):
                 root_child.local_scale_y /= old_root_scale_y
             else:
                 root_child.local_scale_y = 0.0
 
-            if not self._is_close_enough_to_zero(old_root_scale_z):
+            if not MathUtils.is_close_enough_to_zero(old_root_scale_z):
                 root_child.local_scale_z /= old_root_scale_z
             else:
                 root_child.local_scale_z = 0.0

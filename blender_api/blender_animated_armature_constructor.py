@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 
 from ..blender_api.blender_armature_constructor import BlenderArmatureConstructor
 from ..blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
@@ -11,7 +11,6 @@ from ..utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
 if TYPE_CHECKING:
     from bpy.types import Armature
     from ..animations_model.model.animations.animation_frame_model import AnimationFrameModel
-    from ..animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
     from ..animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
     from ..animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 
@@ -36,25 +35,25 @@ class BlenderAnimatedArmatureConstructor:
             for animation_frame_number in animation_frames:
                 animation_frame = animation_frames[animation_frame_number]
                 self.add_animation_frame_to_animation_clip_of_armature(
-                    blender_edit_mode_armature_model,
                     unified_armature_model,
                     animation_clip_name,
                     animation_frame_number,
-                    animation_frame)
+                    animation_frame,
+                    armature_offsets_from_center)
 
     def add_animation_frame_to_animation_clip_of_armature(
             self,
-            blender_edit_mode_armature_model: 'BlenderEditModeArmatureModel',
             unified_armature_model: 'UnifiedArmatureModel',
             animation_clip_name: str,
             animation_frame_number: int,
-            animation_frame_model: 'AnimationFrameModel'):
+            animation_frame_model: 'AnimationFrameModel',
+            armature_offsets_from_center: Tuple[float, float, float]):
         blender_pose_mode_animation_frame_model = \
             AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter().\
             derive_using_consolidation_of_armature_models_with_home_positioning(
                 unified_armature_model=unified_armature_model,
-                blender_edit_mode_armature_model=blender_edit_mode_armature_model,
-                animation_frame_model=animation_frame_model
+                animation_frame_model=animation_frame_model,
+                armature_offsets_from_center=armature_offsets_from_center
             )
 
         blender_armature_animation_constructor = BlenderArmatureAnimationConstructor()

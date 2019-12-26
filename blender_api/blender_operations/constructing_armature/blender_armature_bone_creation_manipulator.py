@@ -5,9 +5,6 @@ from bpy.types import Armature, EditBone
 
 
 class BlenderArmatureBoneCreationManipulator:
-    def enter_edit_mode(self):
-        bpy.ops.object.mode_set(mode='EDIT')
-
     def add_bone(self,
                  head_position: Tuple[float, float, float],
                  tail_position: Tuple[float, float, float],

@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 from bpy.types import Armature
 
+from ....blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
 from ....blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
     BlenderArmatureBoneCreationManipulator
 from ....blender_api.blender_operations.constructing_armature.blender_armature_manipulator import\
@@ -20,7 +21,8 @@ class BlenderArmatureGenerator:
                    armature: 'Armature',
                    armature_bone_model: 'BlenderEditModeArmatureNodeModel'):
         blender_armature_bone_creation_manipulator = BlenderArmatureBoneCreationManipulator()
-        blender_armature_bone_creation_manipulator.enter_edit_mode()
+        blender_editor_manipulation = BlenderEditorManipulation()
+        blender_editor_manipulation.enter_edit_mode()
         blender_armature_bone_creation_manipulator.add_bone(
             head_position=(armature_bone_model.head_position_x,
                            armature_bone_model.head_position_y,
