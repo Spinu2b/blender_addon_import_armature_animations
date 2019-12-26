@@ -1,5 +1,9 @@
 from typing import Optional
 
+from ....animations_model.constructing.deriving_unified_armature.consolidation.node_in_hierarchy_info import \
+    NodeInHierarchyInfo
+from ....animations_model.constructing.deriving_unified_armature.consolidation.node_in_hierarchy_infos_set import \
+    NodeInHierarchyInfosSet
 from ....utils.model_spaces_integration.math_utils import MathUtils
 from ....animations_model.model.armature.nodes_hierarchy.node import Node
 from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
@@ -10,6 +14,7 @@ from ....animations_model.model.blender_poses.blender_consolidated_pose_mode_ani
 class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
     def __init__(self):
         self.result_nodes_hierarchy = NodesHierarchy()
+        self.nodes_to_add_set = NodeInHierarchyInfosSet(set())
 
     def _get_scale(self, scale: float, reference_scale: float) -> float:
         return scale / reference_scale if not MathUtils.is_close_enough_to_zero(reference_scale) else 0.0
@@ -41,7 +46,11 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
                 local_scale_z=self._get_scale(node_to_consolidate.scale_z, reference.scale_z),
             )
 
-        self.result_nodes_hierarchy.add_node(parent_name=parent_name, node=node_to_add)
+        self.nodes_to_add_set.node_in_hierarchy_infos_set.add(
+            NodeInHierarchyInfo(node=node_to_add, parent_name=parent_name))
 
     def build(self) -> BlenderConsolidatedPoseModeAnimationFrameModel:
-        return BlenderConsolidatedPoseModeAnimationFrameModel(nodes_hierarchy=self.result_nodes_hierarchy)
+        return BlenderConsolidatedPoseModeAnimationFrameModel(
+            nodes_hierarchy=self.nodes_to_add_set.fullfil_nodes_hierarchy_with_parent_child_chains(
+                nodes_hierarchy=self.result_nodes_hierarchy
+            ))
