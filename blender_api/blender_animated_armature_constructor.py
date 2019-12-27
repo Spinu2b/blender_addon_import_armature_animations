@@ -39,7 +39,8 @@ class BlenderAnimatedArmatureConstructor:
         blender_editor_manipulation.set_context_space_data_ui_mode_to_action()
 
         for animation_clip_name in animation_clips:
-            blender_editor_manipulation.enter_animation_clip(name=animation_clip_name)
+            action = blender_editor_manipulation.enter_animation_clip(name=animation_clip_name)
+            blender_editor_manipulation.set_armature_active_action(armature_obj, action)
             animation_frames = animation_clips[animation_clip_name].get_animation_frames()
             for animation_frame_number in animation_frames:
                 animation_frame = animation_frames[animation_frame_number]

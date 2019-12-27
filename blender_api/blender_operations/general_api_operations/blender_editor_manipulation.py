@@ -1,5 +1,5 @@
 import bpy
-from bpy.types import Action
+from bpy.types import Action, Armature, Object
 
 
 class BlenderEditorManipulation:
@@ -13,8 +13,7 @@ class BlenderEditorManipulation:
         bpy.context.scene.frame_current = frame_number
 
     def enter_animation_clip(self, name: str) -> Action:
-        action = bpy.ops.action.new()
-        #bpy.data.actions[name].name = name
+        action = bpy.data.actions.new(name=name)
         return action
 
     def set_context_space_data_ui_mode_to_action(self):
@@ -22,3 +21,6 @@ class BlenderEditorManipulation:
 
     def set_context_area_ui_type_to_dopesheet(self):
         bpy.context.area.ui_type = 'DOPESHEET'
+
+    def set_armature_active_action(self, armature_obj: Object, action: Action):
+        bpy.context.space_data.action = action
