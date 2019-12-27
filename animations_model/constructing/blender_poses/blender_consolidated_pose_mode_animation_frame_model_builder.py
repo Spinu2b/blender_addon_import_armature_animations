@@ -49,6 +49,38 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
         self.nodes_to_add_set.node_in_hierarchy_infos_set.add(
             NodeInHierarchyInfo(node=node_to_add, parent_name=parent_name))
 
+    def consolidate_non_present_bone_and_add_node(self,
+                                                  parent_name: Optional[str],
+                                                  node_to_consolidate: Node):
+
+        local_scale_minimizing = 0.0000001
+
+        node_to_add = \
+            Node(
+                name=node_to_consolidate.name,
+                position_x=node_to_consolidate.position_x,
+                position_y=node_to_consolidate.position_y,
+                position_z=node_to_consolidate.position_z,
+                local_position_x=0.0,
+                local_position_y=0.0,
+                local_position_z=0.0,
+                rotation_x=node_to_consolidate.rotation_x,
+                rotation_y=node_to_consolidate.rotation_y,
+                rotation_z=node_to_consolidate.rotation_z,
+                local_rotation_x=0.0,
+                local_rotation_y=0.0,
+                local_rotation_z=0.0,
+                scale_x=node_to_consolidate.scale_x,
+                scale_y=node_to_consolidate.scale_y,
+                scale_z=node_to_consolidate.scale_z,
+                local_scale_x=local_scale_minimizing,
+                local_scale_y=local_scale_minimizing,
+                local_scale_z=local_scale_minimizing,
+            )
+
+        self.nodes_to_add_set.node_in_hierarchy_infos_set.add(
+            NodeInHierarchyInfo(node=node_to_add, parent_name=parent_name))
+
     def build(self) -> BlenderConsolidatedPoseModeAnimationFrameModel:
         return BlenderConsolidatedPoseModeAnimationFrameModel(
             nodes_hierarchy=self.nodes_to_add_set.fullfil_nodes_hierarchy_with_parent_child_chains(
