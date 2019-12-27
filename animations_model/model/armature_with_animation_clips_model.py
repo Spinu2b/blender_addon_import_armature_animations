@@ -1,3 +1,4 @@
+import copy
 from typing import Dict
 from typing import TYPE_CHECKING
 
@@ -21,3 +22,8 @@ class ArmatureWithAnimationClipsModel:
 
     def get_animation_clips(self) -> Dict[str, 'AnimationClipModel']:
         return self.animation_clips
+
+    def remove_animation_clips_longer_than(self, frames_count: int):
+        self.animation_clips = {animation_clip_name: self.animation_clips[animation_clip_name]
+                                for animation_clip_name in self.animation_clips if
+                                len(self.animation_clips[animation_clip_name].frames) <= frames_count}

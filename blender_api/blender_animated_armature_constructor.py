@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING, Tuple, Dict
 from bpy.types import Object
 
 from ..blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
@@ -42,14 +42,24 @@ class BlenderAnimatedArmatureConstructor:
             action = blender_editor_manipulation.enter_animation_clip(name=animation_clip_name)
             blender_editor_manipulation.set_armature_active_action(armature_obj, action)
             animation_frames = animation_clips[animation_clip_name].get_animation_frames()
+
+            animation_frame_index_counter = 1
+            keyframe_period = 3
+
+            print("Animation clip: {}".format(animation_clip_name))
+
             for animation_frame_number in animation_frames:
-                animation_frame = animation_frames[animation_frame_number]
-                blender_editor_manipulation.enter_frame_number(frame_number=animation_frame_number)
-                self.add_animation_frame_to_animation_clip_of_armature(
-                    unified_armature_model,
-                    animation_frame,
-                    armature_obj,
-                    armature_offsets_from_center)
+                if (animation_frame_index_counter - 1) % keyframe_period == 0 or\
+                        animation_frame_index_counter == self._get_last_frame_number(animation_frames):
+                    print("Frame: {}".format(animation_frame_index_counter))
+                    animation_frame = animation_frames[animation_frame_number]
+                    blender_editor_manipulation.enter_frame_number(frame_number=animation_frame_number)
+                    self.add_animation_frame_to_animation_clip_of_armature(
+                        unified_armature_model,
+                        animation_frame,
+                        armature_obj,
+                        armature_offsets_from_center)
+                animation_frame_index_counter += 1
 
     def add_animation_frame_to_animation_clip_of_armature(
             self,
@@ -70,3 +80,6 @@ class BlenderAnimatedArmatureConstructor:
             blender_pose_mode_animation_frame_model,
             armature_obj
         )
+
+    def _get_last_frame_number(self, animation_frames: Dict[int, 'AnimationFrameModel']) -> int:
+        return max(list(animation_frames.keys()))
