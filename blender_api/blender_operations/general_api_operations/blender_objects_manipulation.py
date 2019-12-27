@@ -17,3 +17,6 @@ class BlenderObjectsManipulation:
 
     def deselect_all_objects(self):
         bpy.ops.object.select_all(action='DESELECT')
+
+    def deselect_all_pose_objects(self):
+        bpy.ops.pose.select_all(action='DESELECT')

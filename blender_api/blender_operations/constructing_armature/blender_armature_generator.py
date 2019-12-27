@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING
-from bpy.types import Armature
+from typing import TYPE_CHECKING, Tuple
+from bpy.types import Armature, Object
 
 from ....blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
 from ....blender_api.blender_operations.constructing_armature.blender_armature_bone_creation_manipulator import \
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class BlenderArmatureGenerator:
-    def create_armature(self, name: str) -> Armature:
+    def create_armature(self, name: str) -> Tuple[Armature, Object]:
         blender_armature_manipulator = BlenderArmatureManipulator()
         return blender_armature_manipulator.create_armature(name=name)
 

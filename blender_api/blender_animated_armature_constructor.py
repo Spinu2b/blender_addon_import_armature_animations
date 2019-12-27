@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, Tuple
+from bpy.types import Object
 
 from ..blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
 from ..blender_api.blender_armature_constructor import BlenderArmatureConstructor
@@ -10,7 +11,6 @@ from ..blender_api.blender_operations.constructing_animations.deriving_pose.\
 from ..utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
 
 if TYPE_CHECKING:
-    from bpy.types import Armature
     from ..animations_model.model.animations.animation_frame_model import AnimationFrameModel
     from ..animations_model.model.armature.unified_armature_model import UnifiedArmatureModel
     from ..animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
@@ -27,16 +27,19 @@ class BlenderAnimatedArmatureConstructor:
         blender_edit_mode_armature_model = unified_armature_model.get_blender_edit_mode_armature_model(
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO)
         blender_armature_constructor = BlenderArmatureConstructor()
-        armature = blender_armature_constructor.build_armature(
+        armature, armature_obj = blender_armature_constructor.build_armature(
             blender_edit_mode_armature_model=blender_edit_mode_armature_model,
-            name=self.ARMATURE_NAME)  # type: Armature
+            name=self.ARMATURE_NAME)
         animation_clips = armature_animation_clips_model.get_animation_clips()
 
         blender_editor_manipulation = BlenderEditorManipulation()
         blender_editor_manipulation.enter_pose_mode()
 
+        blender_editor_manipulation.set_context_area_ui_type_to_dopesheet()
+        blender_editor_manipulation.set_context_space_data_ui_mode_to_action()
+
         for animation_clip_name in animation_clips:
-            action = blender_editor_manipulation.enter_animation_clip(name=animation_clip_name)
+            blender_editor_manipulation.enter_animation_clip(name=animation_clip_name)
             animation_frames = animation_clips[animation_clip_name].get_animation_frames()
             for animation_frame_number in animation_frames:
                 animation_frame = animation_frames[animation_frame_number]
@@ -44,14 +47,14 @@ class BlenderAnimatedArmatureConstructor:
                 self.add_animation_frame_to_animation_clip_of_armature(
                     unified_armature_model,
                     animation_frame,
-                    armature,
+                    armature_obj,
                     armature_offsets_from_center)
 
     def add_animation_frame_to_animation_clip_of_armature(
             self,
             unified_armature_model: 'UnifiedArmatureModel',
             animation_frame_model: 'AnimationFrameModel',
-            armature: Armature,
+            armature_obj: Object,
             armature_offsets_from_center: Tuple[float, float, float]):
         blender_pose_mode_animation_frame_model = \
             AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter().\
@@ -64,5 +67,5 @@ class BlenderAnimatedArmatureConstructor:
         blender_armature_animation_constructor = BlenderArmatureAnimationConstructor()
         blender_armature_animation_constructor.setup_keyframe_in_animation_clip(
             blender_pose_mode_animation_frame_model,
-            armature
+            armature_obj
         )

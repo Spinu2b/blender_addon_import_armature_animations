@@ -13,4 +13,12 @@ class BlenderEditorManipulation:
         bpy.context.scene.frame_current = frame_number
 
     def enter_animation_clip(self, name: str) -> Action:
-        bpy.ops.anim.
+        action = bpy.ops.action.new()
+        #bpy.data.actions[name].name = name
+        return action
+
+    def set_context_space_data_ui_mode_to_action(self):
+        bpy.context.space_data.ui_mode = 'ACTION'
+
+    def set_context_area_ui_type_to_dopesheet(self):
+        bpy.context.area.ui_type = 'DOPESHEET'

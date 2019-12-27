@@ -40,9 +40,9 @@ class AnimationFrameModelToNodesHierarchyConverter:
             local_rotation_x=animation_frame_node_model.local_rotation_x,
             local_rotation_y=animation_frame_node_model.local_rotation_y,
             local_rotation_z=animation_frame_node_model.local_rotation_z,
-            scale_x=animation_frame_node_model.rotation_x,
-            scale_y=animation_frame_node_model.rotation_y,
-            scale_z=animation_frame_node_model.rotation_z,
+            scale_x=animation_frame_node_model.scale_x,
+            scale_y=animation_frame_node_model.scale_y,
+            scale_z=animation_frame_node_model.scale_z,
             local_scale_x=animation_frame_node_model.local_scale_x,
             local_scale_y=animation_frame_node_model.local_scale_y,
             local_scale_z=animation_frame_node_model.local_scale_z
