@@ -1,4 +1,6 @@
 from typing import TYPE_CHECKING
+
+from ....utils.model_spaces_integration.model_quaternion import ModelQuaternion
 from ....animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
 from ....animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
     BlenderEditModeArmatureNodeModel
@@ -28,15 +30,15 @@ class UnifiedArmatureModelToBlenderEditModeArmatureModelConverter:
             self, node: 'Node', base_space_model: 'AxisInfo') -> BlenderEditModeArmatureNodeModel:
 
         position = ModelVector3d(
-            x=node.position_x, y=node.position_y, z=node.position_z,
+            x=node.position.x, y=node.position.y, z=node.position.z,
             axis_info=base_space_model
         )
-        rotation = ModelVector3d(
-            x=node.rotation_x, y=node.rotation_y, z=node.rotation_z,
+        rotation = ModelQuaternion(
+            w=node.rotation.w, x=node.rotation.x, y=node.rotation.y, z=node.rotation.z,
             axis_info=base_space_model
         )
         scale = ModelVector3d(
-            x=node.scale_x, y=node.scale_y, z=node.scale_z,
+            x=node.scale.x, y=node.scale.y, z=node.scale.z,
             axis_info=base_space_model
         )
 

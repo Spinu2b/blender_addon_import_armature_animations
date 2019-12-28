@@ -1,3 +1,5 @@
+from ...utils.model_spaces_integration.quaternion import Quaternion
+from ...utils.model_spaces_integration.vector3d import Vector3d
 from ...animations_model.constructing.animation_frame_model_builder import AnimationFrameModelBuilder
 from ...animations_model.model.animations.animation_clip_model import AnimationClipModel
 from ...animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
@@ -27,24 +29,38 @@ class ArmatureWithAnimationClipsModelBuilder:
             animation_frame_model_builder.add_skeleton_node_under(
                 parent_node_name=root_node_name,
                 node_name=skeleton_subpart_node["boneName"],
-                position_x=skeleton_subpart_node["positionX"],
-                position_y=skeleton_subpart_node["positionY"],
-                position_z=skeleton_subpart_node["positionZ"],
-                local_position_x=skeleton_subpart_node["localPositionX"],
-                local_position_y=skeleton_subpart_node["localPositionY"],
-                local_position_z=skeleton_subpart_node["localPositionZ"],
-                rotation_x=skeleton_subpart_node["rotationX"],
-                rotation_y=skeleton_subpart_node["rotationY"],
-                rotation_z=skeleton_subpart_node["rotationZ"],
-                local_rotation_x=skeleton_subpart_node["localRotationX"],
-                local_rotation_y=skeleton_subpart_node["localRotationY"],
-                local_rotation_z=skeleton_subpart_node["localRotationZ"],
-                scale_x=skeleton_subpart_node["scaleX"],
-                scale_y=skeleton_subpart_node["scaleY"],
-                scale_z=skeleton_subpart_node["scaleZ"],
-                local_scale_x=skeleton_subpart_node["localScaleX"],
-                local_scale_y=skeleton_subpart_node["localScaleY"],
-                local_scale_z=skeleton_subpart_node["localScaleZ"]
+                position=Vector3d(
+                    x=skeleton_subpart_node["positionX"],
+                    y=skeleton_subpart_node["positionY"],
+                    z=skeleton_subpart_node["positionZ"]
+                ),
+                local_position=Vector3d(
+                    x=skeleton_subpart_node["localPositionX"],
+                    y=skeleton_subpart_node["localPositionY"],
+                    z=skeleton_subpart_node["localPositionZ"]
+                ),
+                rotation=Quaternion(
+                    w=skeleton_subpart_node["rotationW"],
+                    x=skeleton_subpart_node["rotationX"],
+                    y=skeleton_subpart_node["rotationY"],
+                    z=skeleton_subpart_node["rotationZ"]
+                ),
+                local_rotation=Quaternion(
+                    w=skeleton_subpart_node["localRotationW"],
+                    x=skeleton_subpart_node["localRotationX"],
+                    y=skeleton_subpart_node["localRotationY"],
+                    z=skeleton_subpart_node["localRotationZ"]
+                ),
+                scale=Vector3d(
+                    x=skeleton_subpart_node["scaleX"],
+                    y=skeleton_subpart_node["scaleY"],
+                    z=skeleton_subpart_node["scaleZ"]
+                ),
+                local_scale=Vector3d(
+                    x=skeleton_subpart_node["localScaleX"],
+                    y=skeleton_subpart_node["localScaleY"],
+                    z=skeleton_subpart_node["localScaleZ"]
+                )
             )
 
             self._traverse_bones_tree_and_build_animation_frame_model(

@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
+
+from ....utils.model_spaces_integration.quaternion import Quaternion
+
 if TYPE_CHECKING:
-    from ....utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
     from ....utils.model_spaces_integration.vector3d import Vector3d
 
 
@@ -40,12 +42,14 @@ class BlenderEditModeBone:
         # that saves us some boring time of actually implementing it
         pass
 
-    def rotate_using_euler_angles(self, absolute_euler_rotation: 'EulerRotationModelVector3d'):
+    def rotate(self, absolute_rotation: 'Quaternion'):
         # rotation could not necessarily be needed, yet it gives better picture of how the bones are
         # positioned and stuff
         # it provides more convenient view on the armature, and makes later working in Blender and life in general
         # easier
 
+        raise NotImplementedError
+        """
         head_position_from_center_vector = self.head_position - self.get_bone_center()  # type: Vector3d
         tail_position_from_center_vector = self.tail_position - self.get_bone_center()  # type: Vector3d
 
@@ -76,3 +80,4 @@ class BlenderEditModeBone:
 
         self.head_position = self.get_bone_center() + head_position_from_center_vector
         self.tail_position = self.get_bone_center() + tail_position_from_center_vector
+        """

@@ -1,10 +1,11 @@
 from typing import Optional
 
+from ....utils.model_spaces_integration.quaternion_math_helper import QuaternionMathHelper
+from ....utils.model_spaces_integration.vector3d import Vector3d
 from ....animations_model.constructing.deriving_unified_armature.consolidation.node_in_hierarchy_info import \
     NodeInHierarchyInfo
 from ....animations_model.constructing.deriving_unified_armature.consolidation.node_in_hierarchy_infos_set import \
     NodeInHierarchyInfosSet
-from ....utils.model_spaces_integration.math_utils import MathUtils
 from ....animations_model.model.armature.nodes_hierarchy.node import Node
 from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
 from ....animations_model.model.blender_poses.blender_consolidated_pose_mode_animation_frame_model import \
@@ -16,8 +17,8 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
         self.result_nodes_hierarchy = NodesHierarchy()
         self.nodes_to_add_set = NodeInHierarchyInfosSet(set())
 
-    def _get_scale(self, scale: float, reference_scale: float) -> float:
-        return scale / reference_scale if not MathUtils.is_close_enough_to_zero(reference_scale) else 0.0
+    def _get_scale(self, scale: Vector3d, reference_scale: Vector3d) -> Vector3d:
+        raise NotImplementedError
 
     def consolidate_and_add_node(self,
                                  parent_name: Optional[str],
@@ -26,24 +27,15 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
         node_to_add = \
             Node(
                 name=reference.name,
-                position_x=node_to_consolidate.position_x,
-                position_y=node_to_consolidate.position_y,
-                position_z=node_to_consolidate.position_z,
-                local_position_x=node_to_consolidate.position_x - reference.position_x,
-                local_position_y=node_to_consolidate.position_y - reference.position_y,
-                local_position_z=node_to_consolidate.position_z - reference.position_z,
-                rotation_x=node_to_consolidate.rotation_x,
-                rotation_y=node_to_consolidate.rotation_y,
-                rotation_z=node_to_consolidate.rotation_z,
-                local_rotation_x=node_to_consolidate.rotation_x - reference.rotation_x,
-                local_rotation_y=node_to_consolidate.rotation_y - reference.rotation_y,
-                local_rotation_z=node_to_consolidate.rotation_z - reference.rotation_z,
-                scale_x=node_to_consolidate.scale_x,
-                scale_y=node_to_consolidate.scale_y,
-                scale_z=node_to_consolidate.scale_z,
-                local_scale_x=self._get_scale(node_to_consolidate.scale_x, reference.scale_x),
-                local_scale_y=self._get_scale(node_to_consolidate.scale_y, reference.scale_y),
-                local_scale_z=self._get_scale(node_to_consolidate.scale_z, reference.scale_z),
+                position=node_to_consolidate.position,
+                local_position=node_to_consolidate.position - reference.position,
+                rotation=node_to_consolidate.rotation,
+                local_rotation=QuaternionMathHelper.derive_local_quaternion_rotation(
+                    child_absolute_rotation=node_to_consolidate.rotation,
+                    parent_absolute_rotation=reference.rotation
+                ),
+                scale=node_to_consolidate.scale,
+                local_scale=self._get_scale(node_to_consolidate.scale, reference.scale),
             )
 
         self.nodes_to_add_set.node_in_hierarchy_infos_set.add(
@@ -53,29 +45,17 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
                                                   parent_name: Optional[str],
                                                   node_to_consolidate: Node):
 
-        local_scale_minimizing = 0.0000001
+        local_scale_minimizing = Vector3d(0.0000001, 0.0000001, 0.0000001)
 
         node_to_add = \
             Node(
                 name=node_to_consolidate.name,
-                position_x=node_to_consolidate.position_x,
-                position_y=node_to_consolidate.position_y,
-                position_z=node_to_consolidate.position_z,
-                local_position_x=0.0,
-                local_position_y=0.0,
-                local_position_z=0.0,
-                rotation_x=node_to_consolidate.rotation_x,
-                rotation_y=node_to_consolidate.rotation_y,
-                rotation_z=node_to_consolidate.rotation_z,
-                local_rotation_x=0.0,
-                local_rotation_y=0.0,
-                local_rotation_z=0.0,
-                scale_x=node_to_consolidate.scale_x,
-                scale_y=node_to_consolidate.scale_y,
-                scale_z=node_to_consolidate.scale_z,
-                local_scale_x=local_scale_minimizing,
-                local_scale_y=local_scale_minimizing,
-                local_scale_z=local_scale_minimizing,
+                position=node_to_consolidate.position,
+                local_position=Vector3d(0.0, 0.0, 0.0),
+                rotation=node_to_consolidate.rotation,
+                local_rotation=QuaternionMathHelper.get_zero_relative_rotation_quaternion(),
+                scale=node_to_consolidate.scale,
+                local_scale=local_scale_minimizing
             )
 
         self.nodes_to_add_set.node_in_hierarchy_infos_set.add(

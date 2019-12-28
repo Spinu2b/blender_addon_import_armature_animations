@@ -1,6 +1,7 @@
 from typing import Tuple
 from typing import TYPE_CHECKING
 
+from ....utils.model_spaces_integration.model_quaternion import ModelQuaternion
 from ....utils.blender.edit_mode_bones.blender_edit_mode_bone import BlenderEditModeBone
 from ....utils.model_spaces_integration.axis import Axis
 from ....utils.model_spaces_integration.axis_direction import AxisDirection
@@ -16,7 +17,7 @@ class BlenderEditModeBonesConstructionHelper:
     def calculate_head_and_tail_position(
             self,
             position: 'ModelVector3d',
-            rotation: 'ModelVector3d',
+            rotation: 'ModelQuaternion',
             scale: 'ModelVector3d'
     ) -> Tuple[Tuple[float, float, float], Tuple[float, float, float]]:
         blender_axis_info = AxisInfo(
@@ -31,8 +32,8 @@ class BlenderEditModeBonesConstructionHelper:
         # and vice versa
         bone_center_absolute_position = \
             position.translate_to_model_axis(target_axis_info=blender_axis_info)  # type: ModelVector3d
-        bone_absolute_euler_rotation = \
-            rotation.translate_to_model_axis(target_axis_info=blender_axis_info)  # type: ModelVector3d
+        bone_absolute_rotation = \
+            rotation.translate_to_model_axis(target_axis_info=blender_axis_info)  # type: ModelQuaternion
         bone_absolute_scale = \
             scale.translate_to_model_axis(target_axis_info=blender_axis_info)  # type: ModelVector3d
 
@@ -53,7 +54,7 @@ class BlenderEditModeBonesConstructionHelper:
         )
         working_bone.position_using_bone_center(bone_center_absolute_position.to_vector3d())
         working_bone.scale_as_if_inside_bounding_box(bone_absolute_scale.to_vector3d())
-        working_bone.rotate_using_euler_angles(bone_absolute_euler_rotation.to_euler_rotation_model_vector3d())
+        working_bone.rotate(bone_absolute_rotation.to_quaternion())
 
         head_position = working_bone.head_position.x, working_bone.head_position.y, working_bone.head_position.z
         tail_position = working_bone.tail_position.x, working_bone.tail_position.y, working_bone.tail_position.z

@@ -2,7 +2,6 @@ import copy
 from typing import TYPE_CHECKING
 
 from ...utils.model_spaces_integration.axis import Axis
-from ...utils.model_spaces_integration.euler_rotation_model_vector3d import EulerRotationModelVector3d
 from ...utils.model_spaces_integration.vector3d import Vector3d
 
 if TYPE_CHECKING:
@@ -102,5 +101,3 @@ class ModelVector3d:
     def to_vector3d(self) -> Vector3d:
         return Vector3d(x=self.x, y=self.y, z=self.z)
 
-    def to_euler_rotation_model_vector3d(self) -> EulerRotationModelVector3d:
-        return EulerRotationModelVector3d(self)

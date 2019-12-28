@@ -15,17 +15,21 @@ class BlenderArmatureBonePoseSetterFacade:
         pose = armature_obj.pose  # type: Pose
 
         complementary_pose_bone = pose.bones.get(animation_frame_armature_bone_model.name)  # type: PoseBone
-        complementary_pose_bone.location[0] = animation_frame_armature_bone_model.local_position_x
-        complementary_pose_bone.location[1] = animation_frame_armature_bone_model.local_position_y
-        complementary_pose_bone.location[2] = animation_frame_armature_bone_model.local_position_z
 
-        complementary_pose_bone.rotation_euler[0] = animation_frame_armature_bone_model.local_rotation_x
-        complementary_pose_bone.rotation_euler[1] = animation_frame_armature_bone_model.local_rotation_y
-        complementary_pose_bone.rotation_euler[2] = animation_frame_armature_bone_model.local_rotation_z
+        complementary_pose_bone.rotation_mode = 'QUATERNION'
 
-        complementary_pose_bone.scale[0] = animation_frame_armature_bone_model.local_scale_x
-        complementary_pose_bone.scale[1] = animation_frame_armature_bone_model.local_scale_y
-        complementary_pose_bone.scale[2] = animation_frame_armature_bone_model.local_scale_z
+        complementary_pose_bone.location[0] = animation_frame_armature_bone_model.local_position.x
+        complementary_pose_bone.location[1] = animation_frame_armature_bone_model.local_position.y
+        complementary_pose_bone.location[2] = animation_frame_armature_bone_model.local_position.z
+
+        complementary_pose_bone.rotation_quaternion[0] = animation_frame_armature_bone_model.local_rotation.w
+        complementary_pose_bone.rotation_quaternion[1] = animation_frame_armature_bone_model.local_rotation.x
+        complementary_pose_bone.rotation_quaternion[2] = animation_frame_armature_bone_model.local_rotation.y
+        complementary_pose_bone.rotation_quaternion[3] = animation_frame_armature_bone_model.local_rotation.z
+
+        complementary_pose_bone.scale[0] = animation_frame_armature_bone_model.local_scale.x
+        complementary_pose_bone.scale[1] = animation_frame_armature_bone_model.local_scale.y
+        complementary_pose_bone.scale[2] = animation_frame_armature_bone_model.local_scale.z
 
     def lock_rotation_scale_position(self):
         bpy.ops.anim.keyframe_insert_menu(type='LocRotScale')
