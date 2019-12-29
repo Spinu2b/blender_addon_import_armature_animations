@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Iterator
 
 if TYPE_CHECKING:
     from ....animations_model.model.armature.nodes_hierarchy.nodes_hierarchy import NodesHierarchy
-    from utils.model.tree_hierarchy import TreeNodeIter
+    from ....utils.model.tree_hierarchy import TreeNodeIter
 
 
 class BlenderConsolidatedPoseModeAnimationFrameModel:

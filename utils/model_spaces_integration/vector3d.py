@@ -35,6 +35,13 @@ class Vector3d:
             z=self.z / other
         )
 
+    def __neg__(self):
+        return Vector3d(
+            x=-self.x,
+            y=-self.y,
+            z=-self.z
+        )
+
     def to_matrix_elements(self) -> List[List[float]]:
         return [[self.x], [self.y], [self.z]]
 

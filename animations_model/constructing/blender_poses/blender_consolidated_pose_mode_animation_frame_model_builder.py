@@ -1,5 +1,6 @@
 from typing import Optional
 
+from ....utils.model_spaces_integration.math_utils import MathUtils
 from ....utils.model_spaces_integration.quaternion_math_helper import QuaternionMathHelper
 from ....utils.model_spaces_integration.vector3d import Vector3d
 from ....animations_model.constructing.deriving_unified_armature.consolidation.node_in_hierarchy_info import \
@@ -18,7 +19,7 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
         self.nodes_to_add_set = NodeInHierarchyInfosSet(set())
 
     def _get_scale(self, scale: Vector3d, reference_scale: Vector3d) -> Vector3d:
-        raise NotImplementedError
+        return MathUtils.get_scale_ratio_vector3d(scale, reference_scale)
 
     def consolidate_and_add_node(self,
                                  parent_name: Optional[str],

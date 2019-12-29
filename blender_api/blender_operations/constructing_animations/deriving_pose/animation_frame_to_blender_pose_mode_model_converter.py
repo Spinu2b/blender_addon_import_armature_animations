@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, Tuple
 
+from .....utils.model_spaces_integration.vector3d import Vector3d
 from .....blender_api.blender_operations.constructing_animations.deriving_pose.frame_model_consolidator import \
     FrameModelConsolidator
 from .....utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
@@ -16,7 +17,7 @@ class AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter:
             self,
             unified_armature_model: 'UnifiedArmatureModel',
             animation_frame_model: 'AnimationFrameModel',
-            armature_offsets_from_center: Tuple[float, float, float]) ->\
+            armature_offsets_from_center: Vector3d) ->\
             'BlenderConsolidatedPoseModeAnimationFrameModel':
         unified_armature_model = unified_armature_model.translate_to_space_model(
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO,
@@ -28,9 +29,7 @@ class AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter:
             animation_frame_model.get_nodes_hierarchy()\
             .\
             translate_absolute_offsets_by(
-                    offset_x=-armature_offsets_from_center[0],
-                    offset_y=-armature_offsets_from_center[1],
-                    offset_z=-armature_offsets_from_center[2]
+                    offsets=-armature_offsets_from_center
             ).\
             translate_to_space_model(
                     base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO,

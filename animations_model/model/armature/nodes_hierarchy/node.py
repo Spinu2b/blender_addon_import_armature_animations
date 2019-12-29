@@ -17,8 +17,8 @@ class Node:
                  local_position: Vector3d=Vector3d(0.0, 0.0, 0.0),
                  rotation: Quaternion=QuaternionMathHelper.get_zero_relative_rotation_quaternion(),
                  local_rotation: Quaternion=QuaternionMathHelper.get_zero_relative_rotation_quaternion(),
-                 scale: Vector3d=Vector3d(0.0, 0.0, 0.0),
-                 local_scale: Vector3d=Vector3d(0.0, 0.0, 0.0),
+                 scale: Vector3d=Vector3d(1.0, 1.0, 1.0),
+                 local_scale: Vector3d=Vector3d(1.0, 1.0, 1.0),
                  ):
         self.name = name  # type: str
         self.position = copy.deepcopy(position)  # type: Vector3d

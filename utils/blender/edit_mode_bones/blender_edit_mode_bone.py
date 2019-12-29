@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from ....utils.model_spaces_integration.quaternion_math_helper import QuaternionMathHelper
 from ....utils.model_spaces_integration.quaternion import Quaternion
 
 if TYPE_CHECKING:
@@ -48,36 +49,12 @@ class BlenderEditModeBone:
         # it provides more convenient view on the armature, and makes later working in Blender and life in general
         # easier
 
-        raise NotImplementedError
-        """
-        head_position_from_center_vector = self.head_position - self.get_bone_center()  # type: Vector3d
-        tail_position_from_center_vector = self.tail_position - self.get_bone_center()  # type: Vector3d
+        # rotate with bone's head being the center of rotation
 
-        in_forward_plane_rotation, in_up_plane_rotation, in_side_plane_rotation = absolute_euler_rotation.\
-            get_in_plane_rotations()
+        tail_position_from_head_vector = self.tail_position - self.head_position
 
-        in_forward_plane_rotation_matrix = in_side_plane_rotation.get_rotation_matrix()
-        in_up_plane_rotation_matrix = in_up_plane_rotation.get_rotation_matrix()
-        in_side_plane_rotation_matrix = in_side_plane_rotation.get_rotation_matrix()
+        tail_position_from_head_vector = QuaternionMathHelper.rotate_vector_by(
+            vector=tail_position_from_head_vector,
+            rotation=absolute_rotation)
 
-        head_position_from_center_vector = in_forward_plane_rotation_matrix.multiply_to_vector(
-            head_position_from_center_vector)
-        head_position_from_center_vector = in_up_plane_rotation_matrix.multiply_to_vector(
-            head_position_from_center_vector
-        )
-        head_position_from_center_vector = in_side_plane_rotation_matrix.multiply_to_vector(
-            head_position_from_center_vector
-        )
-
-        tail_position_from_center_vector = in_forward_plane_rotation_matrix.multiply_to_vector(
-            tail_position_from_center_vector)
-        tail_position_from_center_vector = in_up_plane_rotation_matrix.multiply_to_vector(
-            tail_position_from_center_vector
-        )
-        tail_position_from_center_vector = in_side_plane_rotation_matrix.multiply_to_vector(
-            tail_position_from_center_vector
-        )
-
-        self.head_position = self.get_bone_center() + head_position_from_center_vector
-        self.tail_position = self.get_bone_center() + tail_position_from_center_vector
-        """
+        self.tail_position = tail_position_from_head_vector + self.head_position

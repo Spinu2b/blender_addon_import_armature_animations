@@ -31,14 +31,10 @@ class NodesHierarchy(TreeHierarchy):
     def get_root_offsets_from_center(self) -> Vector3d:
         return copy.deepcopy(self.root.node.position)
 
-    def translate_absolute_offsets_by(self, offset_x: float, offset_y: float, offset_z: float):
+    def translate_absolute_offsets_by(self, offsets: Vector3d):
         result = copy.deepcopy(self)
         for node_iter in result.iterate_nodes():
             node_iter.node.assign_from(
-                node_iter.node.translate_absolute_offsets_by(
-                    offset_x=offset_x,
-                    offset_y=offset_y,
-                    offset_z=offset_z
-                )
+                node_iter.node.translate_absolute_offsets_by(offsets)
             )
         return result
