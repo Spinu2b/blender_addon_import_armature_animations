@@ -1,5 +1,6 @@
 from typing import Optional
 
+from ....utils.model_spaces_integration.quaternion import Quaternion
 from ....utils.model_spaces_integration.math_utils import MathUtils
 from ....utils.model_spaces_integration.quaternion_math_helper import QuaternionMathHelper
 from ....utils.model_spaces_integration.vector3d import Vector3d
@@ -23,18 +24,21 @@ class BlenderConsolidatedPoseModeAnimationFrameModelBuilder:
 
     def consolidate_and_add_node(self,
                                  parent_name: Optional[str],
+                                 parent: Optional[Node],
                                  reference: Node,
                                  node_to_consolidate: Node):
+        local_rotation = QuaternionMathHelper.derive_local_quaternion_rotation(
+            child_absolute_rotation=node_to_consolidate.rotation,
+            parent_absolute_rotation=parent.rotation if parent is not None else node_to_consolidate.rotation
+        )
+        
         node_to_add = \
             Node(
                 name=reference.name,
                 position=node_to_consolidate.position,
                 local_position=node_to_consolidate.position - reference.position,
                 rotation=node_to_consolidate.rotation,
-                local_rotation=QuaternionMathHelper.derive_local_quaternion_rotation(
-                    child_absolute_rotation=node_to_consolidate.rotation,
-                    parent_absolute_rotation=reference.rotation
-                ),
+                local_rotation=local_rotation,
                 scale=node_to_consolidate.scale,
                 local_scale=self._get_scale(node_to_consolidate.scale, reference.scale),
             )

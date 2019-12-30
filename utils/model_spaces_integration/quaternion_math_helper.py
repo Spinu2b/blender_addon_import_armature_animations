@@ -20,13 +20,14 @@ class QuaternionManipulator:
         g = quaternion_b.y
         h = quaternion_b.z
 
-        return cls._zero_out_too_small_coefficients(Quaternion(
+        result = cls._zero_out_too_small_coefficients(Quaternion(
             w=a*e - b*f - c*g - d*h,
             x=b*e + a*f + c*h - d*g,
             y=a*g - b*h + c*e + d*f,
             z=a*h + b*g - c*f + d*e
         ))
-
+        return result
+        
     @classmethod
     def _zero_out_too_small_coefficients(cls, quaternion: Quaternion) -> Quaternion:
         margin = 0.0000001

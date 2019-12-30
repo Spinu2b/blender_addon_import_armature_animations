@@ -24,8 +24,17 @@ class FrameModelConsolidator:
                 name=animation_frame_model_node_iter.node.name
             )
 
+            if complementary_armature_node_info.parent_name is not None:
+                complementary_node_parent_info = animation_frame_model_nodes_hierarchy.get_node(
+                    name=complementary_armature_node_info.parent_name
+                )
+            else:
+                complementary_node_parent_info = None
+
             result_builder.consolidate_and_add_node(
                 parent_name=complementary_armature_node_info.parent_name,
+                parent=complementary_node_parent_info.node if
+                complementary_node_parent_info is not None else None,
                 reference=complementary_armature_node_info.node,
                 node_to_consolidate=animation_frame_model_node_iter.node
             )
