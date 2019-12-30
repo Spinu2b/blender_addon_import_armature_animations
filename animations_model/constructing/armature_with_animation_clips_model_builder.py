@@ -12,6 +12,7 @@ class ArmatureWithAnimationClipsModelBuilder:
     def add_animation_clip(self, animation_clip_name):
         self.armature_with_animation_clips_model.animation_clips[animation_clip_name] =\
             AnimationClipModel(animation_clip_name)
+        return self
 
     def add_frame_to_animation_clip(self, animation_clip_name, animation_frame_dict, animation_frame_number):
         animation_frame_model_builder = AnimationFrameModelBuilder()
@@ -22,6 +23,7 @@ class ArmatureWithAnimationClipsModelBuilder:
         animation_frame_model = animation_frame_model_builder.build()
         self.armature_with_animation_clips_model.animation_clips[animation_clip_name]. \
             frames[animation_frame_number] = animation_frame_model
+        return self
 
     def _traverse_bones_tree_and_build_animation_frame_model(self, root_nodes, animation_frame_model_builder,
                                                              root_node_name=None):

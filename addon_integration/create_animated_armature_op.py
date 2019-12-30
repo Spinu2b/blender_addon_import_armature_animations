@@ -1,5 +1,6 @@
 import bpy
 
+from ..tests.test_quaternion_rotations import TestQuaternionRotations
 from ..main import MainAddonLogic
 
 
@@ -9,5 +10,5 @@ class CreateAnimatedArmatureOperator(bpy.types.Operator):
     bl_description = "Import animated armature from Raymap"
 
     def execute(self, context):
-        MainAddonLogic().run()
+        TestQuaternionRotations().run()
         return {'FINISHED'}
