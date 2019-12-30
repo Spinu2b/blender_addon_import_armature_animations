@@ -1,5 +1,11 @@
-from ...utils.model_spaces_integration.vector3d import Vector3d
-from ...utils.model_spaces_integration.quaternion import Quaternion
+import copy
+
+try:
+    from ...utils.model_spaces_integration.vector3d import Vector3d
+    from ...utils.model_spaces_integration.quaternion import Quaternion
+except ValueError:
+    from utils.model_spaces_integration.vector3d import Vector3d
+    from utils.model_spaces_integration.quaternion import Quaternion
 
 
 class QuaternionManipulator:
@@ -14,12 +20,30 @@ class QuaternionManipulator:
         g = quaternion_b.y
         h = quaternion_b.z
 
-        return Quaternion(
+        return cls._zero_out_too_small_coefficients(Quaternion(
             w=a*e - b*f - c*g - d*h,
             x=b*e + a*f + c*h - d*g,
             y=a*g - b*h + c*e + d*f,
             z=a*h + b*g - c*f + d*e
-        )
+        ))
+
+    @classmethod
+    def _zero_out_too_small_coefficients(cls, quaternion: Quaternion) -> Quaternion:
+        margin = 0.0000001
+        result = copy.deepcopy(quaternion)
+        result.w = result.w if abs(result.w) > margin else 0.0
+        result.x = result.x if abs(result.x) > margin else 0.0
+        result.y = result.y if abs(result.y) > margin else 0.0
+        result.z = result.z if abs(result.z) > margin else 0.0
+        return result
+
+    @classmethod
+    def is_equal(cls, quaternion_a: Quaternion, quaternion_b: Quaternion) -> bool:
+        margin = 0.0000001
+        return abs(quaternion_a.w - quaternion_b.w) < margin and \
+            abs(quaternion_a.x - quaternion_b.x) < margin and \
+            abs(quaternion_a.y - quaternion_b.y) < margin and \
+            abs(quaternion_a.z - quaternion_b.z) < margin
 
 
 class QuaternionMathHelper:

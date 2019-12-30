@@ -1,6 +1,11 @@
-from ...utils.model_spaces_integration.axis import Axis
-from ...utils.model_spaces_integration.axis_direction import AxisDirection
-from ...utils.model_spaces_integration.axis_info import AxisInfo
+try:
+    from ...utils.model_spaces_integration.axis import Axis
+    from ...utils.model_spaces_integration.axis_direction import AxisDirection
+    from ...utils.model_spaces_integration.axis_info import AxisInfo
+except ValueError:
+    from utils.model_spaces_integration.axis import Axis
+    from utils.model_spaces_integration.axis_direction import AxisDirection
+    from utils.model_spaces_integration.axis_info import AxisInfo
 
 
 class ModelSpacesInfo:

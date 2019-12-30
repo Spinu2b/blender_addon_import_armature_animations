@@ -1,8 +1,12 @@
 from enum import Enum
 from math import sin, cos
 
-from ..utils.model_spaces_integration.quaternion import Quaternion
-from ..utils.model_spaces_integration.vector3d import Vector3d
+try:
+    from .quaternion import Quaternion
+    from .vector3d import Vector3d
+except ValueError:
+    from utils.model_spaces_integration.quaternion import Quaternion
+    from utils.model_spaces_integration.vector3d import Vector3d
 
 
 class AngleUnit(Enum):

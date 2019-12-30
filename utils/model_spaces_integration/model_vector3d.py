@@ -1,8 +1,12 @@
 import copy
 from typing import TYPE_CHECKING
 
-from ...utils.model_spaces_integration.axis import Axis
-from ...utils.model_spaces_integration.vector3d import Vector3d
+try:
+    from ...utils.model_spaces_integration.axis import Axis
+    from ...utils.model_spaces_integration.vector3d import Vector3d
+except ValueError:
+    from utils.model_spaces_integration.axis import Axis
+    from utils.model_spaces_integration.vector3d import Vector3d
 
 if TYPE_CHECKING:
     from ...utils.model_spaces_integration.axis_direction import AxisDirection
