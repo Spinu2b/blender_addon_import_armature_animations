@@ -1,3 +1,4 @@
+from math import sqrt
 
 
 class Quaternion:
@@ -23,3 +24,16 @@ class Quaternion:
             x=quaternion_conjugate.x / denominator,
             y=quaternion_conjugate.y / denominator,
             z=quaternion_conjugate.z / denominator)
+
+    def magnitude(self) -> float:
+        return sqrt(self.w**2 + self.x**2 + self.y**2 + self.z**2)
+
+    def normalized(self):
+        quaternion_magnitude = self.magnitude()
+
+        return Quaternion(
+            w=self.w / quaternion_magnitude,
+            x=self.x / quaternion_magnitude,
+            y=self.y / quaternion_magnitude,
+            z=self.z / quaternion_magnitude
+        )

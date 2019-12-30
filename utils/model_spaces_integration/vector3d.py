@@ -1,3 +1,4 @@
+from math import sqrt
 from typing import List
 
 
@@ -12,6 +13,13 @@ class Vector3d:
             x=self.x + other.x,
             y=self.y + other.y,
             z=self.z + other.z
+        )
+
+    def __mul__(self, scalar: float):
+        return Vector3d(
+            x=self.x * scalar,
+            y=self.y * scalar,
+            z=self.z * scalar
         )
 
     def __sub__(self, other):
@@ -41,6 +49,9 @@ class Vector3d:
             y=-self.y,
             z=-self.z
         )
+
+    def magnitude(self) -> float:
+        return sqrt(self.x**2 + self.y**2 + self.z**2)
 
     def to_matrix_elements(self) -> List[List[float]]:
         return [[self.x], [self.y], [self.z]]

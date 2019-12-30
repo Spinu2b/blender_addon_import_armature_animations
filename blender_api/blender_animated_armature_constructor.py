@@ -1,6 +1,7 @@
-from typing import TYPE_CHECKING, Tuple, Dict
+from typing import TYPE_CHECKING, Dict
 from bpy.types import Object
 
+from ..utils.model_spaces_integration.vector3d import Vector3d
 from ..blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
 from ..blender_api.blender_armature_constructor import BlenderArmatureConstructor
 from ..blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
@@ -66,7 +67,7 @@ class BlenderAnimatedArmatureConstructor:
             unified_armature_model: 'UnifiedArmatureModel',
             animation_frame_model: 'AnimationFrameModel',
             armature_obj: Object,
-            armature_offsets_from_center: Tuple[float, float, float]):
+            armature_offsets_from_center: Vector3d):
         blender_pose_mode_animation_frame_model = \
             AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter().\
             derive_using_consolidation_of_armature_models_with_home_positioning(
