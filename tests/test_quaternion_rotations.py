@@ -25,14 +25,14 @@ class TestQuaternionRotations:
                     name="TEST_BONE",
                     rotation=
                     RotationBuilder()
-                    .set_rotation_axis(
+                    .set_rotation_axis_and_angle(
                         axis=Vector3dBasingModelVector3dBuilder(axis_info=ModelSpacesInfo.MODEL_AXIS_INFO)
                         .forward_axis_value(value=0.0, forward_increasing=True)
                         .side_right_value(value=-1.0, side_right_increasing=True)
                         .up_axis_value(value=0.0, up_increasing=True)
-                        .build()
+                        .build(),
+                        angle=angle, angle_unit=AngleUnit.DEGREES, counterclockwise=True
                     )
-                    .set_angle(angle=angle, angle_unit=AngleUnit.DEGREES, counterclockwise=True)
                     .build()
                 )
                 .build()

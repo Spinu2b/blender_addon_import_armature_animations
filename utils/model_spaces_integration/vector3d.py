@@ -56,6 +56,9 @@ class Vector3d:
     def to_matrix_elements(self) -> List[List[float]]:
         return [[self.x], [self.y], [self.z]]
 
+    def normalized(self):
+        return self / self.magnitude()
+
     @classmethod
     def from_matrix_elements(cls, matrix_elements: List[List[float]]):
         columns = len(matrix_elements[0])

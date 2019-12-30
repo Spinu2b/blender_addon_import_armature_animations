@@ -36,7 +36,7 @@ class AnimationFrameDictNode:
 
     def to_dictionary(self):
         result = dict()
-        result["bone_name"] = self.bone_name
+        result["boneName"] = self.bone_name
         result["positionX"] = self.position.x
         result["positionY"] = self.position.y
         result["positionZ"] = self.position.z
@@ -58,6 +58,7 @@ class AnimationFrameDictNode:
         result["localScaleY"] = self.local_scale.y
         result["localScaleZ"] = self.local_scale.z
         result["children"] = self._get_children_list()
+        return result
 
     def _get_children_list(self):
         return [node.to_dictionary() for node in self.children]
@@ -91,6 +92,7 @@ class AnimationFrameDictModel:
     def _traverse_and_add_node(self, parent_name: Optional[str], node_to_add: AnimationFrameDictNode):
         if parent_name is None:
             self.nodes.append(node_to_add)
+            return
 
         for node in self.nodes:
             if node.traverse_and_add_node(parent_name=parent_name, node_to_add=node_to_add):
@@ -129,6 +131,7 @@ class AnimationFrameDictBuilder:
             scale=scale,
             local_scale=local_scale
         )
+        return self
 
     def build(self):
         return self.result.to_dictionary()
