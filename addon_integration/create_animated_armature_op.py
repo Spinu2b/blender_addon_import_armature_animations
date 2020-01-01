@@ -10,5 +10,5 @@ class CreateAnimatedArmatureOperator(bpy.types.Operator):
     bl_description = "Import animated armature from Raymap"
 
     def execute(self, context):
-        TestQuaternionRotations().run()
+        MainAddonLogic().run()
         return {'FINISHED'}
