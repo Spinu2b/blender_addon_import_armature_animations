@@ -37,8 +37,9 @@ class TreeHierarchy(ABC):
 
     def _traverse_nodes_hierarchy(self, parent: Optional[TreeNodeContainer],
                                   current_node: TreeNodeContainer) -> Iterator[TreeNodeIter]:
-        yield TreeNodeIter(parent=parent.node if parent is not None else None,
-                           node=current_node.node, children=current_node.children)
+        for child_node in current_node.children:
+            yield TreeNodeIter(parent=current_node.node,
+                               node=child_node.node, children=child_node.children)
         for child_node in current_node.children:
             yield from self._traverse_nodes_hierarchy(parent=current_node, current_node=child_node)
 
@@ -54,6 +55,8 @@ class TreeHierarchy(ABC):
 
     def iterate_nodes(self) -> Iterator[TreeNodeIter]:
         if self.root is not None:
+            yield TreeNodeIter(parent=None,
+                               node=self.root.node, children=self.root.children)
             yield from self._traverse_nodes_hierarchy(parent=None, current_node=self.root)
 
     def get_node(self, name: str) -> TreeNodeInfo:
