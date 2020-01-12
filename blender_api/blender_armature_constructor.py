@@ -18,9 +18,11 @@ class BlenderArmatureConstructor:
                 armature=armature)
 
         for child_parent_pair in blender_edit_mode_armature_model.iterate_all_child_parent_pairs():
-            blender_armature_generator.parent_bone_to(
-                child=child_parent_pair.child,
-                parent=child_parent_pair.parent,
-                armature=armature)
+            if child_parent_pair.parent is not None:
+                blender_armature_generator.parent_bone_to(
+                    child=child_parent_pair.child,
+                    #parent=child_parent_pair.parent,
+                    parent=blender_edit_mode_armature_model.root.node,
+                    armature=armature)
 
         return armature, armature_obj
