@@ -23,30 +23,31 @@ class BlenderArmatureBonePoseSetterFacade:
         #bpy.context.space_data.transform_orientation = "LOCAL"
 
         if not self._is_minimized(animation_frame_armature_bone_model.local_scale):
-            loc = Matrix.Translation(Vector((
-                animation_frame_armature_bone_model.position.x,
-                animation_frame_armature_bone_model.position.y,
-                animation_frame_armature_bone_model.position.z)))
+            if animation_frame_armature_bone_model.name != "ROOT_NODE":
+                loc = Matrix.Translation(Vector((
+                    animation_frame_armature_bone_model.position.x,
+                    animation_frame_armature_bone_model.position.y,
+                    animation_frame_armature_bone_model.position.z)))
 
-            rot = Quaternion(Vector((
-                animation_frame_armature_bone_model.rotation.w,
-                animation_frame_armature_bone_model.rotation.x,
-                animation_frame_armature_bone_model.rotation.y,
-                animation_frame_armature_bone_model.rotation.z)),
-                ).to_matrix().to_4x4()
+                rot = Quaternion(Vector((
+                    animation_frame_armature_bone_model.rotation.w,
+                    animation_frame_armature_bone_model.rotation.x,
+                    animation_frame_armature_bone_model.rotation.y,
+                    animation_frame_armature_bone_model.rotation.z)),
+                    ).to_matrix().to_4x4()
 
-            scale = Matrix()
-            scale[0][0] = animation_frame_armature_bone_model.scale.x
-            scale[1][1] = animation_frame_armature_bone_model.scale.y
-            scale[2][2] = animation_frame_armature_bone_model.scale.z
+                scale = Matrix()
+                scale[0][0] = animation_frame_armature_bone_model.scale.x
+                scale[1][1] = animation_frame_armature_bone_model.scale.y
+                scale[2][2] = animation_frame_armature_bone_model.scale.z
 
-            world_mat = loc @ rot @ scale
+                world_mat = loc @ rot @ scale
 
-            complementary_pose_bone.matrix = armature_obj.convert_space(
-                pose_bone=complementary_pose_bone,
-                matrix=world_mat,
-                from_space='WORLD',
-                to_space='POSE')
+                complementary_pose_bone.matrix = armature_obj.convert_space(
+                    pose_bone=complementary_pose_bone,
+                    matrix=world_mat,
+                    from_space='WORLD',
+                    to_space='POSE')
         else:
             local_scale_minimizing = Vector3d(0.0000001, 0.0000001, 0.0000001)
             complementary_pose_bone.location[0] = 0.0
