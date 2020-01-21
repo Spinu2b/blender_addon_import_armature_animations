@@ -20,4 +20,3 @@ class AnimationFrameNodeModel:
         self.local_rotation = copy.deepcopy(local_rotation)  # type: Quaternion
         self.scale = copy.deepcopy(scale)  # type: Vector3d
         self.local_scale = copy.deepcopy(local_scale)  # type: Vector3d
-        self.nodes = []  # type: List[AnimationFrameNodeModel]
