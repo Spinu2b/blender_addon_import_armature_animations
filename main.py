@@ -1,3 +1,4 @@
+from model.objects.constructing.export_objects_library_model_loader import ExportObjectsLibraryModelLoader
 from .animations_model.constructing.armature_with_animation_clips_model_loader import\
     ArmatureWithAnimationClipsModelLoader
 

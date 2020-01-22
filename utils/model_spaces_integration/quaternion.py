@@ -37,3 +37,7 @@ class Quaternion:
             y=self.y / quaternion_magnitude,
             z=self.z / quaternion_magnitude
         )
+
+    @classmethod
+    def from_json_dict(cls, quaternion_json_dict):
+        raise NotImplementedError

@@ -68,3 +68,7 @@ class Vector3d:
             raise ValueError("Invalid size of matrix to convert to Vector3d! {} x {}".format(rows, columns))
 
         return Vector3d(x=matrix_elements[0][0], y=matrix_elements[1][0], z=matrix_elements[2][0])
+
+    @classmethod
+    def from_json_dict(cls, vector3d_json_dict):
+        raise NotImplementedError

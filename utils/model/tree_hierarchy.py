@@ -1,5 +1,5 @@
 import copy
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Optional, List, Iterator
 
 
@@ -20,6 +20,12 @@ class TreeNodeInfo:
     def __init__(self, parent_name: str, node):
         self.parent_name = parent_name  # str
         self.node = node
+
+
+class TreeNode(ABC):
+    @abstractmethod
+    def from_json_dict_tree_building(self, json_dict):
+        raise NotImplementedError
 
 
 class TreeHierarchy(ABC):
