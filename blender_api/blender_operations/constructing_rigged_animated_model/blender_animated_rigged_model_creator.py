@@ -2,13 +2,27 @@ from typing import Dict
 
 from bpy.types import Object
 
+from blender_api.blender_armature_constructor import BlenderArmatureConstructor
 from blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
+from blender_api.blender_operations.constructing_rigged_animated_model.blender_object_with_mesh_geometry_constructor import \
+    BlenderObjectWithMeshGeometryConstructor
 from blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
+from blender_api.blender_operations.general_api_operations.blender_objects_manipulation import \
+    BlenderObjectsManipulation
 from model.animations.model.animations.animation_frame_model import AnimationFrameModel
 from model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 from model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 from utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
+
+
+class BlenderRiggingHelper:
+    def parent_blender_object_to_armature_with_bones_vertex_groups(
+            self,
+            armature_obj: Object,
+            bones_vertex_groups: Dict[str, Dict[int, float]],
+            blender_mesh_obj: Object):
+        raise NotImplementedError
 
 
 class BlenderAnimatedRiggedModelCreator:
@@ -17,9 +31,12 @@ class BlenderAnimatedRiggedModelCreator:
     def construct_using(self, armature_bind_pose_model: ArmatureBindPoseModel,
                         animated_export_objects: Dict[str, AnimatedExportObjectModel],
                         armature_animation_clips_model: ArmatureWithAnimationClipsModel):
+        blender_mesh_objects = dict()  # type: Dict[str, Object]
+
         for animated_export_object_name in animated_export_objects:
             animated_export_object = animated_export_objects[animated_export_object_name]
-            BlenderObjectWithMeshGeometryConstructor().construct(animated_export_object)
+            blender_mesh_obj = BlenderObjectWithMeshGeometryConstructor().construct(animated_export_object)
+            blender_mesh_objects[blender_mesh_obj.name] = blender_mesh_obj
 
         blender_edit_mode_armature_model = armature_bind_pose_model.get_blender_edit_mode_armature_model(
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO)
@@ -29,13 +46,18 @@ class BlenderAnimatedRiggedModelCreator:
             blender_edit_mode_armature_model=blender_edit_mode_armature_model,
             name=self.ARMATURE_NAME)
 
+        blender_rigging_helper = BlenderRiggingHelper()
+
         for animated_export_object_name in animated_export_objects:
             animated_export_object = animated_export_objects[animated_export_object_name]
-            BlenderObjectManipulator().parent_blender_object_to_armature_with_bones_vertex_groups(
-
+            blender_rigging_helper.parent_blender_object_to_armature_with_bones_vertex_groups(
+                armature_obj=blender_armature_obj,
+                bones_vertex_groups=animated_export_object.mesh_geometry.bones_weights,
+                blender_mesh_obj=blender_mesh_objects[animated_export_object_name]
             )
 
-        BlenderObjectManipulator().join_all_objects(animated_export_objects)
+        BlenderObjectsManipulation().join_all_objects([blender_mesh_objects[obj_name] for obj_name
+                                                       in blender_mesh_objects])
 
         self._animate_armature_with_animation_clips(
             armature_animation_clips_model=armature_animation_clips_model,

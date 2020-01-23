@@ -1,3 +1,5 @@
+from typing import List
+
 import bpy
 from bpy.types import Object, BlendData
 
@@ -20,3 +22,6 @@ class BlenderObjectsManipulation:
 
     def deselect_all_pose_objects(self):
         bpy.ops.pose.select_all(action='DESELECT')
+
+    def join_all_objects(self, objects: List[Object]):
+        raise NotImplementedError
