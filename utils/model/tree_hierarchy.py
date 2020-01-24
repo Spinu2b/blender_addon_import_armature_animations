@@ -11,9 +11,10 @@ class TreeNodeContainer:
 
 
 class TreeNodeIter:
-    def __init__(self, parent, node, key, children):
+    def __init__(self, parent, node, parent_key, key, children):
         self.parent = parent
         self.node = node
+        self.parent_key = parent_key
         self.key = key
         self.children = children  # type: List[TreeNodeContainer]
 
@@ -42,6 +43,7 @@ class TreeHierarchy(ABC):
         for child_node in current_node.children:
             yield TreeNodeIter(parent=current_node.node,
                                node=child_node.node,
+                               parent_key=current_node.key,
                                key=child_node.key,
                                children=child_node.children)
         for child_node in current_node.children:
@@ -63,9 +65,14 @@ class TreeHierarchy(ABC):
         if self.root is not None:
             yield TreeNodeIter(parent=None,
                                node=self.root.node,
+                               parent_key=None,
                                key=self.root.key,
                                children=self.root.children)
             yield from self._traverse_nodes_hierarchy(parent=None, current_node=self.root)
+
+    def iterate_parent_child_key_pairs(self):
+        for node_iter in self.iterate_nodes():
+            yield (node_iter.parent_key, node_iter.key)
 
     def get_node(self, key) -> TreeNodeInfo:
         for node_iter in self.iterate_nodes():

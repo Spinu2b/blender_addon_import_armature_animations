@@ -1,7 +1,6 @@
 from typing import Dict
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ....animations_model.model.animations.animation_frame_model import AnimationFrameModel
+
+from .....model.animations.model.animations.animation_frame_model import AnimationFrameModel
 
 
 class AnimationClipModel:
