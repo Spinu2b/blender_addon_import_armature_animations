@@ -2,19 +2,22 @@ from typing import Dict
 
 from bpy.types import Object
 
-from blender_api.blender_armature_constructor import BlenderArmatureConstructor
-from blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
+from ....model.objects.model.export_objects_library_model_description.armature_bind_pose_model import \
+    ArmatureBindPoseModel
+from ....blender_api.blender_armature_constructor import BlenderArmatureConstructor
+from ....blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
-from blender_api.blender_operations.constructing_rigged_animated_model.blender_object_with_mesh_geometry_constructor import \
+from ....blender_api.blender_operations.constructing_rigged_animated_model.blender_object_with_mesh_geometry_constructor import \
     BlenderObjectWithMeshGeometryConstructor
-from blender_api.blender_operations.constructing_rigged_animated_model.blender_rigging_helper import \
+from ....blender_api.blender_operations.constructing_rigged_animated_model.blender_rigging_helper import \
     BlenderRiggingHelper
-from blender_api.blender_operations.general_api_operations.blender_editor_manipulation import BlenderEditorManipulation
-from blender_api.blender_operations.general_api_operations.blender_objects_manipulation import \
+from ....blender_api.blender_operations.general_api_operations.blender_editor_manipulation import \
+    BlenderEditorManipulation
+from ....blender_api.blender_operations.general_api_operations.blender_objects_manipulation import \
     BlenderObjectsManipulation
-from model.animations.model.animations.animation_frame_model import AnimationFrameModel
-from model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
-from model.objects.model.animated_export_object_model import AnimatedExportObjectModel
+from ....model.animations.model.animations.animation_frame_model import AnimationFrameModel
+from ....model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
+from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 
 
 class BlenderAnimatedRiggedModelCreator:

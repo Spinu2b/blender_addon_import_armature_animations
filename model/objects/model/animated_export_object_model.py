@@ -1,8 +1,8 @@
 from typing import Dict
 
-from model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
-from model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
-from model.objects.model.animated_export_object_model_description.transform_model import TransformModel
+from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
+from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
+from ....model.objects.model.animated_export_object_model_description.transform_model import TransformModel
 
 
 class AnimatedExportObjectModel:

@@ -1,7 +1,7 @@
-from blender_api.blender_animated_rigged_model_constructor import BlenderAnimatedRiggedModelConstructor
-from model.animations.constructing.armature_with_animation_clips_model_loader import \
+from .blender_api.blender_animated_rigged_model_constructor import BlenderAnimatedRiggedModelConstructor
+from .model.animations.constructing.armature_with_animation_clips_model_loader import \
     ArmatureWithAnimationClipsModelLoader
-from model.objects.constructing.export_objects_library_model_loader import ExportObjectsLibraryModelLoader
+from .model.objects.constructing.export_objects_library_model_loader import ExportObjectsLibraryModelLoader
 
 
 class MainAddonLogic:

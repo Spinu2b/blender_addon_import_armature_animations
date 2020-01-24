@@ -1,4 +1,5 @@
-from model.objects.model.export_objects_library_model_description.armature_hierarchy_model import ArmatureHierarchyModel
+from ....model.objects.model.export_objects_library_model_description.armature_hierarchy_model import\
+    ArmatureHierarchyModel
 
 
 class ExportObjectsLibraryModel:

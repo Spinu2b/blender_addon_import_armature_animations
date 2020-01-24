@@ -1,8 +1,8 @@
-from animations_model.model.animations.animation_frame_model import AnimationFrameModel
-from animations_model.model.animations.animation_frame_node_model import AnimationFrameNodeModel
-from utils.model.json_dict_tree_builder import JsonDictTreeBuilder
-from ...animations_model.model.animations.animation_clip_model import AnimationClipModel
-from ...animations_model.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
+from ....model.animations.model.animations.animation_frame_model import AnimationFrameModel
+from ....model.animations.model.animations.animation_frame_node_model import AnimationFrameNodeModel
+from ....utils.model.json_dict_tree_builder import JsonDictTreeBuilder
+from ....model.animations.model.animations.animation_clip_model import AnimationClipModel
+from ....model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 
 
 class ArmatureWithAnimationClipsModelBuilder:

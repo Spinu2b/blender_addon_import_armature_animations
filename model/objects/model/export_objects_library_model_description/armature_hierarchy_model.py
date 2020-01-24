@@ -1,4 +1,4 @@
-from utils.model.tree_hierarchy import TreeHierarchy
+from .....utils.model.tree_hierarchy import TreeHierarchy
 
 
 class ArmatureHierarchyModelNode:

@@ -1,8 +1,8 @@
-from model.objects.constructing.animated_export_object_model_builder import AnimatedExportObjectModelBuilder
-from model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
-from model.objects.model.export_objects_library_model_description.armature_hierarchy_model import \
+from ....model.objects.constructing.animated_export_object_model_builder import AnimatedExportObjectModelBuilder
+from ....model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
+from ....model.objects.model.export_objects_library_model_description.armature_hierarchy_model import \
     ArmatureHierarchyModel, ArmatureHierarchyModelNode
-from utils.model.json_dict_tree_builder import JsonDictTreeBuilder
+from ....utils.model.json_dict_tree_builder import JsonDictTreeBuilder
 
 
 class ExportObjectsLibraryModelBuilder:

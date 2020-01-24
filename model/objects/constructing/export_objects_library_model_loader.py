@@ -1,7 +1,7 @@
 import json
 
-from model.objects.constructing.export_objects_library_model_constructor import ExportObjectsLibraryModelConstructor
-from model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
+from ....model.objects.constructing.export_objects_library_model_constructor import ExportObjectsLibraryModelConstructor
+from ....model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
 
 
 class ExportObjectsLibraryModelLoader:

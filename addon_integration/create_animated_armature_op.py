@@ -1,6 +1,5 @@
 import bpy
 
-from ..tests.test_quaternion_rotations import TestQuaternionRotations
 from ..main import MainAddonLogic
 
 

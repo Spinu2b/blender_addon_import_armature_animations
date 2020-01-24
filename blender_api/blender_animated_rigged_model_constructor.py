@@ -1,8 +1,8 @@
-from blender_api.blender_operations.constructing_rigged_animated_model.blender_animated_rigged_model_creator import \
+from ..blender_api.blender_operations.constructing_rigged_animated_model.blender_animated_rigged_model_creator import \
     BlenderAnimatedRiggedModelCreator
-from model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
-from model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
-from utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
+from ..model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
+from ..model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
+from ..utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
 
 
 class BlenderAnimatedRiggedModelConstructor:

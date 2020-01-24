@@ -1,4 +1,5 @@
-from model.objects.model.animated_export_object_model import AnimatedExportObjectModel
+from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
+from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 
 
 class BlenderMeshBuilder:

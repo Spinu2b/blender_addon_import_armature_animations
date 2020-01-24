@@ -1,4 +1,4 @@
-from ...animations_model.constructing.armature_with_animation_clips_model_builder import\
+from ....model.animations.constructing.armature_with_animation_clips_model_builder import\
     ArmatureWithAnimationClipsModelBuilder
 
 

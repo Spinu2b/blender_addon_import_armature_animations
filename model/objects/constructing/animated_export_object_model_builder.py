@@ -1,11 +1,11 @@
 from typing import Dict, Tuple
 
-from model.objects.model.animated_export_object_model import AnimatedExportObjectModel
-from model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
-from model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
-from model.objects.model.animated_export_object_model_description.transform_model import TransformModel
-from utils.model_spaces_integration.quaternion import Quaternion
-from utils.model_spaces_integration.vector3d import Vector3d
+from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
+from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
+from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
+from ....model.objects.model.animated_export_object_model_description.transform_model import TransformModel
+from ....utils.model_spaces_integration.quaternion import Quaternion
+from ....utils.model_spaces_integration.vector3d import Vector3d
 
 
 class AnimatedExportObjectModelBuilder:
