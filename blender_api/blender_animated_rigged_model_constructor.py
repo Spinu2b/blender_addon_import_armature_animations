@@ -9,8 +9,6 @@ class BlenderAnimatedRiggedModelConstructor:
     def build_animated_rigged_model(
             self, export_objects_library_model: ExportObjectsLibraryModel,
             armature_animation_clips_model: ArmatureWithAnimationClipsModel):
-        armature_bind_pose_model = export_objects_library_model.get_armature_bind_pose_model()
-        # type: ArmatureBindPoseModel
         armature_animation_clips_model = armature_animation_clips_model.\
             filter_to_only_animation_clips_matching_armature(export_objects_library_model.armature_hierarchy)
         # type: ArmatureWithAnimationClipsModel
@@ -19,6 +17,11 @@ class BlenderAnimatedRiggedModelConstructor:
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO,
             target_space_model=ModelSpacesInfo.BLENDER_AXIS_INFO
         )
+
+        export_objects_library_model = export_objects_library_model.reform_for_blender_building_process()
+
+        armature_bind_pose_model = export_objects_library_model.\
+            get_armature_bind_pose_model() # type: ArmatureBindPoseModel
 
         armature_animation_clips_model = armature_animation_clips_model.translate_to_space_model(
             base_space_model=ModelSpacesInfo.MODEL_AXIS_INFO,
