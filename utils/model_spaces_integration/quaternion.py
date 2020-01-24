@@ -40,4 +40,9 @@ class Quaternion:
 
     @classmethod
     def from_json_dict(cls, quaternion_json_dict):
-        raise NotImplementedError
+        return Quaternion(
+            w=float(quaternion_json_dict["w"]),
+            x=float(quaternion_json_dict["x"]),
+            y=float(quaternion_json_dict["y"]),
+            z=float(quaternion_json_dict["z"])
+        )

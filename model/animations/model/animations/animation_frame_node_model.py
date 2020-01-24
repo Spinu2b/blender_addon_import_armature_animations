@@ -19,3 +19,15 @@ class AnimationFrameNodeModel:
         self.local_rotation = copy.deepcopy(local_rotation)  # type: Quaternion
         self.scale = copy.deepcopy(scale)  # type: Vector3d
         self.local_scale = copy.deepcopy(local_scale)  # type: Vector3d
+
+    @classmethod
+    def from_json_dict_tree_building(cls, json_dict):
+        return AnimationFrameNodeModel(
+            node_name=json_dict["boneName"],
+            position=Vector3d.from_json_dict(json_dict["position"]),
+            local_position=Vector3d.from_json_dict(json_dict["localPosition"]),
+            rotation=Quaternion.from_json_dict(json_dict["rotation"]),
+            local_rotation=Quaternion.from_json_dict(json_dict["localRotation"]),
+            scale=Vector3d.from_json_dict(json_dict["scale"]),
+            local_scale=Vector3d.from_json_dict(json_dict["localScale"])
+        )

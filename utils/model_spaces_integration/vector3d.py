@@ -71,4 +71,8 @@ class Vector3d:
 
     @classmethod
     def from_json_dict(cls, vector3d_json_dict):
-        raise NotImplementedError
+        return Vector3d(
+            x=float(vector3d_json_dict["x"]),
+            y=float(vector3d_json_dict["y"]),
+            z=float(vector3d_json_dict["z"])
+        )
