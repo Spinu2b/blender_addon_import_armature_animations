@@ -1,5 +1,8 @@
 import copy
 
+from .....model.objects.constructing.armature.armature_bind_pose_model_to_blender_edit_mode_armature_model_converter import \
+    ArmatureBindPoseModelToBlenderEditModeArmatureModelConverter
+from .....model.animations.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
 from .....utils.model_spaces_integration.quaternion import Quaternion
 from .....utils.model_spaces_integration.vector3d import Vector3d
 from .....utils.model.tree_hierarchy import TreeHierarchy
@@ -18,4 +21,5 @@ class ArmatureBindPoseModelNode:
 
 
 class ArmatureBindPoseModel(TreeHierarchy):
-    pass
+    def get_blender_edit_mode_armature_model(self) -> BlenderEditModeArmatureModel:
+        return ArmatureBindPoseModelToBlenderEditModeArmatureModelConverter().convert(self)

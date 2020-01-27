@@ -1,11 +1,8 @@
 from typing import Iterator
-from typing import TYPE_CHECKING
 
-from .....utils.model.tree_hierarchy import TreeHierarchy
-
-if TYPE_CHECKING:
-    from .....animations_model.model.armature.blender.blender_edit_mode_armature_node_model import \
-        BlenderEditModeArmatureNodeModel
+from ......model.animations.model.armature.blender.blender_edit_mode_armature_node_model import \
+    BlenderEditModeArmatureNodeModel
+from ......utils.model.tree_hierarchy import TreeHierarchy
 
 
 class BlenderChildParentBonePair:

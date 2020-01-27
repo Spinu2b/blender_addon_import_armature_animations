@@ -20,7 +20,7 @@ class MeshGeometry:
                            for v in self.vertices]
         return result
 
-    def get_blender_pydata_form(self) -> Tuple[List[Tuple[float, float, float]], List[List[int, int]],
+    def get_blender_pydata_form(self) -> Tuple[List[Tuple[float, float, float]], List[List[int]],
                                                List[Tuple[int, int, int]]]:
         def flatten(object):
             for item in object:

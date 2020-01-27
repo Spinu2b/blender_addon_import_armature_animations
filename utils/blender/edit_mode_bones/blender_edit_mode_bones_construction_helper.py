@@ -1,31 +1,21 @@
 from typing import Tuple
-from typing import TYPE_CHECKING
 
+from ....utils.model_spaces_integration.quaternion import Quaternion
+from ....utils.model_spaces_integration.vector3d import Vector3d
 from ....utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
-from ....utils.model_spaces_integration.model_quaternion import ModelQuaternion
 from ....utils.blender.edit_mode_bones.blender_edit_mode_bone import BlenderEditModeBone
 from ....utils.model_spaces_integration.vector3d_basing_model_vector3d_builder import Vector3dBasingModelVector3dBuilder
-
-
-if TYPE_CHECKING:
-    from ....utils.model_spaces_integration.model_vector3d import ModelVector3d
 
 
 class BlenderEditModeBonesConstructionHelper:
     def calculate_head_and_tail_position(
             self,
-            position: 'ModelVector3d',
-            rotation: 'ModelQuaternion',
-            scale: 'ModelVector3d'
+            position: 'Vector3d',
+            rotation: 'Quaternion',
+            scale: 'Vector3d'
     ) -> Tuple[Tuple[float, float, float], Tuple[float, float, float]]:
         # Let's assume first that position given is in the middle of bone's length, in the half-way from tail to bone
         # and vice versa
-        bone_center_absolute_position = \
-            position.translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO)  # type: ModelVector3d
-        bone_absolute_rotation = \
-            rotation.translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO)  # type: ModelQuaternion
-        bone_absolute_scale = \
-            scale.translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO)  # type: ModelVector3d
 
         # Let's assume that bone with no applied rotation to it (that means 0, 0, 0)
         # will be staying vertical with head on the top
@@ -42,9 +32,9 @@ class BlenderEditModeBonesConstructionHelper:
             .up_axis_value(value=0.0, up_increasing=True)
             .build(),
         )
-        working_bone.position_using_bone_center(bone_center_absolute_position.to_vector3d())
-        working_bone.scale_as_if_inside_bounding_box(bone_absolute_scale.to_vector3d())
-        working_bone.rotate(bone_absolute_rotation.to_quaternion())
+        working_bone.position_using_bone_center(position)
+        working_bone.scale_as_if_inside_bounding_box(scale)
+        working_bone.rotate(rotation)
 
         head_position = working_bone.head_position.x, working_bone.head_position.y, working_bone.head_position.z
         tail_position = working_bone.tail_position.x, working_bone.tail_position.y, working_bone.tail_position.z

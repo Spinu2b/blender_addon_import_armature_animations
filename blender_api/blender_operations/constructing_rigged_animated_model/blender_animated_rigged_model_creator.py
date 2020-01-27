@@ -31,7 +31,7 @@ class BlenderAnimatedRiggedModelCreator:
         for animated_export_object_name in animated_export_objects:
             animated_export_object = animated_export_objects[animated_export_object_name]
             blender_mesh_obj = BlenderObjectWithMeshGeometryConstructor().construct(animated_export_object)
-            blender_mesh_objects[blender_mesh_obj.name] = blender_mesh_obj
+            blender_mesh_objects[animated_export_object.name] = blender_mesh_obj
 
         blender_edit_mode_armature_model = armature_bind_pose_model.get_blender_edit_mode_armature_model()
 
