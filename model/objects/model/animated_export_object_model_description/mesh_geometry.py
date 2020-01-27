@@ -19,3 +19,18 @@ class MeshGeometry:
                            translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
                            for v in self.vertices]
         return result
+
+    def get_blender_pydata_form(self) -> Tuple[List[Tuple[float, float, float]], List[List[int, int]],
+                                               List[Tuple[int, int, int]]]:
+        def flatten(object):
+            for item in object:
+                if isinstance(item, (list)):
+                    yield from flatten(item)
+                else:
+                    yield item
+        vertices_list = [(v.x, v.y, v.z) for v in self.vertices]
+        edges_list = [list(x) for x in list(set(flatten([[frozenset([f[0], f[1]]), frozenset([f[1], f[2]]),
+                                                          frozenset([f[2], f[0]])] for f in
+                                                         self.triangles])))]
+        triangles_list = [(f[0], f[1], f[2]) for f in self.triangles]
+        return vertices_list, edges_list, triangles_list
