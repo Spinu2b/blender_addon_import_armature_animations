@@ -1,3 +1,4 @@
+from ..model.objects.model.export_objects_library_model_description.armature_bind_pose_model import ArmatureBindPoseModel
 from ..blender_api.blender_operations.constructing_rigged_animated_model.blender_animated_rigged_model_creator import \
     BlenderAnimatedRiggedModelCreator
 from ..model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel

@@ -14,6 +14,7 @@ class AnimatedExportObjectModelBuilder:
         result.transform_model = self._get_transform_model(animated_export_object_model_json_dict["transform"])
         result.mesh_geometry = self._get_mesh_geometry(animated_export_object_model_json_dict["meshGeometry"])
         result.bind_bone_poses = self._get_bind_bone_poses(animated_export_object_model_json_dict["bindBonePoses"])
+        result.name = animated_export_object_model_json_dict["Name"]
         return result
 
     def _get_transform_model(self, transform_json_dict) -> TransformModel:

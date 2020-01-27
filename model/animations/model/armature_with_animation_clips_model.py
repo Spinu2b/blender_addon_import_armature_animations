@@ -1,6 +1,7 @@
 import copy
 from typing import Dict
 
+from ....utils.model_spaces_integration.axis_info import AxisInfo
 from ....model.objects.model.export_objects_library_model_description.armature_hierarchy_model import\
     ArmatureHierarchyModel
 from ....model.animations.model.animations.animation_clip_model import AnimationClipModel
@@ -38,4 +39,14 @@ class ArmatureWithAnimationClipsModel:
              if AnimationClipsFilter.is_matching_armature_hierarchy(
                 armature_hierarchy_model=armature_hierarchy_model,
                 animation_clip=self.animation_clips[animation_clip_name])}
+        return result
+
+    def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
+        result = ArmatureWithAnimationClipsModel()
+        for animation_clip_name in self.animation_clips:
+            animation_clip = self.animation_clips[animation_clip_name]
+            result.animation_clips[animation_clip_name] = animation_clip.translate_to_space_model(
+                base_space_model=base_space_model,
+                target_space_model=target_space_model
+            )
         return result
