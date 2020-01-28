@@ -2,13 +2,15 @@ from typing import Dict
 
 from bpy.types import Object
 
+from ....model.objects.model.export_objects_library_model_description.armature_hierarchy_model import\
+    ArmatureHierarchyModel
 from ....model.objects.model.export_objects_library_model_description.armature_bind_pose_model import \
     ArmatureBindPoseModel
 from ....blender_api.blender_armature_constructor import BlenderArmatureConstructor
 from ....blender_api.blender_operations.constructing_animations.blender_armature_animation_constructor import \
     BlenderArmatureAnimationConstructor
-from ....blender_api.blender_operations.constructing_rigged_animated_model.blender_object_with_mesh_geometry_constructor import \
-    BlenderObjectWithMeshGeometryConstructor
+from ....blender_api.blender_operations.constructing_rigged_animated_model.\
+    blender_object_with_mesh_geometry_constructor import BlenderObjectWithMeshGeometryConstructor
 from ....blender_api.blender_operations.constructing_rigged_animated_model.blender_rigging_helper import \
     BlenderRiggingHelper
 from ....blender_api.blender_operations.general_api_operations.blender_editor_manipulation import \
@@ -40,6 +42,7 @@ class BlenderAnimatedRiggedModelCreator:
             blender_edit_mode_armature_model=blender_edit_mode_armature_model,
             name=self.ARMATURE_NAME)
 
+        """
         blender_rigging_helper = BlenderRiggingHelper()
 
         for animated_export_object_name in animated_export_objects:
@@ -52,14 +55,17 @@ class BlenderAnimatedRiggedModelCreator:
 
         BlenderObjectsManipulation().join_all_objects([blender_mesh_objects[obj_name] for obj_name
                                                        in blender_mesh_objects])
+        """
 
         self._animate_armature_with_animation_clips(
+            armature_bind_pose_model=armature_bind_pose_model,
             armature_animation_clips_model=armature_animation_clips_model,
             blender_armature_obj=blender_armature_obj
         )
 
     def _animate_armature_with_animation_clips(
             self,
+            armature_bind_pose_model: ArmatureBindPoseModel,
             armature_animation_clips_model: ArmatureWithAnimationClipsModel,
             blender_armature_obj: Object):
         animation_clips = armature_animation_clips_model.get_animation_clips()
@@ -87,15 +93,19 @@ class BlenderAnimatedRiggedModelCreator:
                     animation_frame = animation_frames[animation_frame_number]
                     blender_editor_manipulation.enter_frame_number(frame_number=animation_frame_number)
                     self._add_animation_frame_to_animation_clip_of_armature(
+                        armature_bind_pose_model,
                         animation_frame,
                         blender_armature_obj)
                 animation_frame_index_counter += 1
 
     def _add_animation_frame_to_animation_clip_of_armature(
             self,
+            armature_bind_pose_model: ArmatureBindPoseModel,
             animation_frame_model: 'AnimationFrameModel',
             armature_obj: Object):
-        blender_pose_mode_animation_frame_model = animation_frame_model.get_blender_pose_mode_animation_frame_model()
+        blender_pose_mode_animation_frame_model = animation_frame_model.get_blender_pose_mode_animation_frame_model(
+            armature_bind_pose_model=armature_bind_pose_model
+        )
 
         blender_armature_animation_constructor = BlenderArmatureAnimationConstructor()
         blender_armature_animation_constructor.setup_keyframe_in_animation_clip(

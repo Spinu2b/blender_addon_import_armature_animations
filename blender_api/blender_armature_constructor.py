@@ -1,9 +1,8 @@
-from typing import TYPE_CHECKING, Tuple
+from typing import Tuple
 from bpy.types import Armature, Object
-from ..blender_api.blender_operations.constructing_armature.blender_armature_generator import BlenderArmatureGenerator
 
-if TYPE_CHECKING:
-    from ..animations_model.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from ..model.animations.model.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
+from ..blender_api.blender_operations.constructing_armature.blender_armature_generator import BlenderArmatureGenerator
 
 
 class BlenderArmatureConstructor:

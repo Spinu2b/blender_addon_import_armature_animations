@@ -1,10 +1,9 @@
 from typing import TYPE_CHECKING
 
+from .....model.animations.model.blender_edit_mode_armature_model import BlenderEditModeArmatureModel, \
+    BlenderEditModeArmatureNodeModel
 from .....utils.blender.edit_mode_bones.blender_edit_mode_bones_construction_helper import \
     BlenderEditModeBonesConstructionHelper
-from .....model.animations.model.armature.blender.blender_edit_mode_armature_model import BlenderEditModeArmatureModel
-from .....model.animations.model.armature.blender.blender_edit_mode_armature_node_model import \
-    BlenderEditModeArmatureNodeModel
 
 if TYPE_CHECKING:
     from .....model.objects.model.export_objects_library_model_description.armature_bind_pose_model import \

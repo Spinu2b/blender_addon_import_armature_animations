@@ -78,7 +78,7 @@ class TreeHierarchy(ABC):
         for node_iter in self.iterate_nodes():
             if node_iter.key == key:
                 node = copy.deepcopy(node_iter.node)
-                return TreeNodeInfo(parent_name=node_iter.parent.key if node_iter.parent is not None else None,
+                return TreeNodeInfo(parent_name=node_iter.parent_key if node_iter.parent is not None else None,
                                     node=node)
         raise Exception("Did not find node of that key in tree hierarchy: {}".format(key))
 

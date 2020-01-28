@@ -1,5 +1,9 @@
 import copy
 
+from .....model.objects.model.export_objects_library_model_description.armature_bind_pose_model import\
+    ArmatureBindPoseModel
+from .....model.animations.model.blender_pose_mode_animation_frame_model import BlenderPoseModeAnimationFrameModel, \
+    BlenderPoseModeAnimationFrameModelNode
 from .....utils.model_spaces_integration.axis_info import AxisInfo
 from .....utils.model_spaces_integration.model_quaternion import ModelQuaternion
 from .....utils.model_spaces_integration.model_vector3d import ModelVector3d
@@ -59,15 +63,51 @@ class AnimationFrameNodeModel:
             local_scale=ModelVector3d(
                 x=self.local_scale.x, y=self.local_scale.y, z=self.local_scale.z,
                 axis_info=base_space_model).translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-
         )
         return result
+
+    def assign_from(self, other):
+        self.position = copy.deepcopy(other.position)  # type: Vector3d
+        self.local_position = copy.deepcopy(other.local_position)  # type: Vector3d
+        self.rotation = copy.deepcopy(other.rotation)  # type: Quaternion
+        self.local_rotation = copy.deepcopy(other.local_rotation)  # type: Quaternion
+        self.scale = copy.deepcopy(other.scale)  # type: Vector3d
+        self.local_scale = copy.deepcopy(other.local_scale)  # type: Vector3d
 
 
 class AnimationFrameModel(TreeHierarchy):
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
         result = copy.deepcopy(self)
         for node_iter in result.iterate_nodes():
-            node_iter.node = node_iter.node.translate_to_space_model(
-                base_space_model=base_space_model, target_space_model=target_space_model)
+            node_iter.node.assign_from(node_iter.node.translate_to_space_model(
+                base_space_model=base_space_model, target_space_model=target_space_model))
+        return result
+
+    def get_blender_pose_mode_animation_frame_model(
+            self, armature_bind_pose_model: ArmatureBindPoseModel) -> BlenderPoseModeAnimationFrameModel:
+        result = BlenderPoseModeAnimationFrameModel()
+        animation_frame_nodes_iters_dict = {node_iter.key: node_iter for node_iter in self.iterate_nodes()}
+        for bind_pose_model_node_iter in armature_bind_pose_model.iterate_nodes():
+            if bind_pose_model_node_iter.key in animation_frame_nodes_iters_dict:
+                result.add_node(
+                    parent_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key,
+                    node_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key,
+                    node=BlenderPoseModeAnimationFrameModelNode(
+                        bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
+                        position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
+                        rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
+                        scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
+                    )
+                )
+            else:
+                result.add_node(
+                    parent_key=bind_pose_model_node_iter.parent_key,
+                    node_key=bind_pose_model_node_iter.key,
+                    node=BlenderPoseModeAnimationFrameModelNode(
+                        bone_name=bind_pose_model_node_iter.node.name,
+                        position=Vector3d(0.0, 0.0, 0.0),
+                        rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
+                        scale=Vector3d(0.0001, 0.0001, 0.0001)
+                    )
+                )
         return result

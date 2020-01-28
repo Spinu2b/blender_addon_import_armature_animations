@@ -35,7 +35,7 @@ class ArmatureWithAnimationClipsModel:
         result = ArmatureWithAnimationClipsModel()
         result.animation_clips = \
             {animation_clip_name: copy.deepcopy(self.animation_clips[animation_clip_name])
-             for animation_clip_name in result.animation_clips
+             for animation_clip_name in self.animation_clips
              if AnimationClipsFilter.is_matching_armature_hierarchy(
                 armature_hierarchy_model=armature_hierarchy_model,
                 animation_clip=self.animation_clips[animation_clip_name])}
