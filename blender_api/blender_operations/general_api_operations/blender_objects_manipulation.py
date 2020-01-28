@@ -25,3 +25,6 @@ class BlenderObjectsManipulation:
 
     def join_all_objects(self, objects: List[Object]):
         raise NotImplementedError
+
+    def parent_object_to(self, child: Object, parent: Object):
+        child.parent = parent

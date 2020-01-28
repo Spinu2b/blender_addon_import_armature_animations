@@ -42,7 +42,6 @@ class BlenderAnimatedRiggedModelCreator:
             blender_edit_mode_armature_model=blender_edit_mode_armature_model,
             name=self.ARMATURE_NAME)
 
-        """
         blender_rigging_helper = BlenderRiggingHelper()
 
         for animated_export_object_name in animated_export_objects:
@@ -53,9 +52,8 @@ class BlenderAnimatedRiggedModelCreator:
                 blender_mesh_obj=blender_mesh_objects[animated_export_object_name]
             )
 
-        BlenderObjectsManipulation().join_all_objects([blender_mesh_objects[obj_name] for obj_name
-                                                       in blender_mesh_objects])
-        """
+        #BlenderObjectsManipulation().join_all_objects([blender_mesh_objects[obj_name] for obj_name
+        #                                               in blender_mesh_objects])
 
         self._animate_armature_with_animation_clips(
             armature_bind_pose_model=armature_bind_pose_model,
