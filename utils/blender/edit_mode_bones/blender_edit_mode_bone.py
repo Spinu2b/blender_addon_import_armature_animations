@@ -15,17 +15,16 @@ class BlenderEditModeBone:
     def get_bone_center(self) -> 'Vector3d':
         return (self.head_position + self.tail_position) / 2.0
 
-    def position_using_bone_center(self, center_position: 'Vector3d'):
+    def position_using_bone_head_position(self, head_position: 'Vector3d'):
         # position is basis for later work with mesh
         # practically all the bones could just sit in one place in space in edit mode
         # but then for human being it would be pain in the ass to assign vertices groups to bones in such edit mode
         # so we must in this phase position bones in space and treat such arrangement as home position of armature
         # when later positioning bones in pose mode - keep that in mind, it is very important
 
-        head_position_from_center_vector = self.head_position - self.get_bone_center()  # type: Vector3d
-        tail_position_from_center_vector = self.tail_position - self.get_bone_center()  # type: Vector3d
-        self.head_position = center_position + head_position_from_center_vector
-        self.tail_position = center_position + tail_position_from_center_vector
+        tail_position_from_head_relative = self.tail_position - self.head_position  # type: Vector3d
+        self.head_position = head_position
+        self.tail_position = head_position + tail_position_from_head_relative
 
     def scale_as_if_inside_bounding_box(self, absolute_scale: 'Vector3d'):
         # Treat bone as if it was a diagonal of imaginary bounding box in order

@@ -24,15 +24,15 @@ class BlenderEditModeBonesConstructionHelper:
             Vector3dBasingModelVector3dBuilder(axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO)
             .forward_axis_value(value=0.0, forward_increasing=True)
             .side_right_value(value=0.0, side_right_increasing=True)
-            .up_axis_value(value=0.10, up_increasing=True)
+            .up_axis_value(value=0.0, up_increasing=True)
             .build(),
             tail_position=Vector3dBasingModelVector3dBuilder(axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO)
-            .forward_axis_value(value=0.0, forward_increasing=True)
+            .forward_axis_value(value=0.10, forward_increasing=True)
             .side_right_value(value=0.0, side_right_increasing=True)
             .up_axis_value(value=0.0, up_increasing=True)
             .build(),
         )
-        working_bone.position_using_bone_center(position)
+        working_bone.position_using_bone_head_position(position)
         working_bone.scale_as_if_inside_bounding_box(scale)
         working_bone.rotate(rotation)
 
