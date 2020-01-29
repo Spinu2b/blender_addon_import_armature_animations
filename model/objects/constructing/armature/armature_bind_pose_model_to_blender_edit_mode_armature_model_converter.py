@@ -35,5 +35,8 @@ class ArmatureBindPoseModelToBlenderEditModeArmatureModelConverter:
             head_position_z=head_position[2],
             tail_position_x=tail_position[0],
             tail_position_y=tail_position[1],
-            tail_position_z=tail_position[2]
+            tail_position_z=tail_position[2],
+            position=node.position,
+            rotation=node.rotation,
+            scale=node.scale
         )

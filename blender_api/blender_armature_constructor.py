@@ -14,7 +14,8 @@ class BlenderArmatureConstructor:
         for armature_bone_model in blender_edit_mode_armature_model.iterate_nodes():
             blender_armature_generator.place_bone(
                 armature_bone_model=armature_bone_model.node,
-                armature=armature)
+                armature=armature,
+                armature_obj=armature_obj)
 
         for child_parent_pair in blender_edit_mode_armature_model.iterate_all_child_parent_pairs():
             if child_parent_pair.parent is not None:
