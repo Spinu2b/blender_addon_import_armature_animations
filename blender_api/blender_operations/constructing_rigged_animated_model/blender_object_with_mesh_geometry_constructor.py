@@ -1,8 +1,9 @@
 from typing import List
 
 import bpy
-from bpy.types import Object
+from bpy.types import Object, MeshUVLoopLayer, ImageTexture, Image
 
+from ....model.objects.model.animated_export_object_model_description.materials_description.texture import Color
 from ....utils.model_spaces_integration.vector2d import Vector2d
 from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
 from ....blender_api.blender_operations.general_api_operations.blender_objects_manipulation import \
@@ -11,8 +12,41 @@ from ....model.objects.model.animated_export_object_model_description.mesh_geome
 from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 
 
+class BlenderImageHelper:
+    def get_blender_image(self, width: int, height: int,
+                          texture_image_definition: List[Color]) -> Image:
+        raise NotImplementedError
+
+
 class BlenderMeshMaterialApplier:
-    def apply(self, material: Material, uv_map: List[Vector2d], mesh_obj: Object):
+    def _apply_uv_map(self, uv_map: List[Vector2d], mesh_obj: Object,
+                      animated_export_object: AnimatedExportObjectModel) -> MeshUVLoopLayer:
+        uv_loops_layer = mesh_obj.data.uv_layers.new(name=animated_export_object.name + "_UV")  # type: MeshUVLoopLayer
+        for uv_loop_index, uv_loop in uv_loops_layer.data.items():
+            uv_loop.uv[0] = uv_map[uv_loop_index].x
+            uv_loop.uv[1] = uv_map[uv_loop_index].y
+
+        return uv_loops_layer
+
+    def apply(self, material: Material, uv_map: List[Vector2d], mesh_obj: Object,
+              animated_export_object: AnimatedExportObjectModel):
+        blender_material_data_block = bpy.data.materials.new(
+            name=animated_export_object.name + "_MAT_" + material.name)  # type: bpy.types.Material
+        blender_material_data_block.use_nodes = True
+
+        bsdf = blender_material_data_block.node_tree.nodes['Principled BSDF']
+        texture_image_node = blender_material_data_block.node_tree.nodes.new(type='ShaderNodeTexImage')
+        texture_image_node.image = BlenderImageHelper().get_blender_image(
+            width=material.main_texture.width,
+            height=material.main_texture.height,
+            texture_image_definition=material.main_texture.pixels
+        )
+        blender_material_data_block.node_tree.links.new(bsdf.inputs['Base Color'], texture_image_node.outputs['Color'])
+
+        uv_loops_layer = \
+            self._apply_uv_map(uv_map=uv_map, mesh_obj=mesh_obj, animated_export_object=animated_export_object)
+
+        mesh_obj.data.materials.append(blender_material_data_block)
         raise NotImplementedError
 
 
