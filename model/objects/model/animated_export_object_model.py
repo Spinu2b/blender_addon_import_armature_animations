@@ -1,6 +1,7 @@
+import copy
 from typing import Dict, List
 
-from ....model.objects.model.export_objects_library_model_description.materials_description.material import Material
+from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
 from ....utils.model_spaces_integration.axis_info import AxisInfo
 from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
 from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
@@ -28,4 +29,5 @@ class AnimatedExportObjectModel:
              self.bind_bone_poses[bone_name].
              translate_to_space_model(base_space_model=base_space_model, target_space_model=target_space_model)
              for bone_name in self.bind_bone_poses}
+        result.materials = copy.deepcopy(self.materials)
         return result

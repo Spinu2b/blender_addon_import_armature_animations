@@ -1,9 +1,8 @@
 from typing import Dict, Tuple, List
 
-from ....model.objects.model.export_objects_library_model_description.materials_description.texture import Texture, \
-    Color
+from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
+from ....model.objects.model.animated_export_object_model_description.materials_description.texture import Texture, Color
 from ....utils.model_spaces_integration.vector2d import Vector2d
-from ....model.objects.model.export_objects_library_model_description.materials_description.material import Material
 from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
 from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
@@ -26,10 +25,8 @@ class MaterialModelBuilder:
     def from_json_dict(self, material_json_dict) -> Material:
         result = Material()
         result.main_texture = TextureModelBuilder().from_json_dict(material_json_dict["mainTexture"])
-        result.main_texture_offset = Vector2d(float(material_json_dict["mainTextureOffset"]["x"]),
-                                              float(material_json_dict["mainTextureOffset"]["y"]))
-        result.main_texture_scale = Vector2d(float(material_json_dict["mainTextureScale"]["x"]),
-                                             float(material_json_dict["mainTextureScale"]["y"]))
+        result.main_texture_offset = Vector2d.from_json_dict(material_json_dict["mainTextureOffset"])
+        result.main_texture_scale = Vector2d.from_json_dict(material_json_dict["mainTextureScale"])
         result.name = material_json_dict["name"]
         return result
 
@@ -62,6 +59,7 @@ class AnimatedExportObjectModelBuilder:
             mesh_geometry_json_dict["bonesWeights"][bone_weights_bone_name]) for bone_weights_bone_name in
             mesh_geometry_json_dict["bonesWeights"]}
         result.normals = [Vector3d.from_json_dict(x) for x in mesh_geometry_json_dict["normals"]]
+        result.uv_maps = [[Vector2d.from_json_dict(x) for x in uv] for uv in mesh_geometry_json_dict["uvMaps"]]
         return result
 
     def _get_bind_bone_poses(self, bind_bone_poses_json_dict) -> Dict[str, BoneBindPose]:

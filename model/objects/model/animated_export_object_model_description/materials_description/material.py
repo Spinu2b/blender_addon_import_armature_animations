@@ -1,4 +1,4 @@
-from ......model.objects.model.export_objects_library_model_description.materials_description.texture import Texture
+from ......model.objects.model.animated_export_object_model_description.materials_description.texture import Texture
 from ......utils.model_spaces_integration.vector2d import Vector2d
 
 

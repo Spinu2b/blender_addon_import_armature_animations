@@ -1,10 +1,16 @@
 import bpy
-from bpy.types import Mesh, Object
+from bpy.types import Object
 
+from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
 from ....blender_api.blender_operations.general_api_operations.blender_objects_manipulation import \
     BlenderObjectsManipulation
 from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
 from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
+
+
+class BlenderMeshMaterialApplier:
+    def apply(self, material: Material):
+        raise NotImplementedError
 
 
 class BlenderObjectWithMeshGeometryConstructor:
@@ -29,4 +35,7 @@ class BlenderObjectWithMeshGeometryConstructor:
         return mesh_obj
 
     def _apply_mesh_materials(self, animated_export_object: AnimatedExportObjectModel):
-        raise NotImplementedError
+        if len(animated_export_object.materials) > 1:
+            raise ValueError("More than one material per submesh is not supported!")
+        if len(animated_export_object.materials) == 1:
+            BlenderMeshMaterialApplier().apply(animated_export_object.materials[0])
