@@ -1,7 +1,8 @@
 from typing import Dict, Tuple, List
 
 from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
-from ....model.objects.model.animated_export_object_model_description.materials_description.texture import Texture, Color
+from ....model.objects.model.animated_export_object_model_description.materials_description.texture import Texture,\
+    Color
 from ....utils.model_spaces_integration.vector2d import Vector2d
 from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose

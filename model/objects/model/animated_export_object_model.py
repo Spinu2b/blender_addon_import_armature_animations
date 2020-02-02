@@ -1,6 +1,7 @@
 import copy
 from typing import Dict, List
 
+from ....utils.model_spaces_integration.vector2d import Vector2d
 from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
 from ....utils.model_spaces_integration.axis_info import AxisInfo
 from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
@@ -31,3 +32,6 @@ class AnimatedExportObjectModel:
              for bone_name in self.bind_bone_poses}
         result.materials = copy.deepcopy(self.materials)
         return result
+
+    def get_valid_uv_map(self) -> List[Vector2d]:
+        return [x for x in self.mesh_geometry.uv_maps if len(x) > 0][0]
