@@ -24,4 +24,9 @@ class BlenderObjectWithMeshGeometryConstructor:
         vertices, edges, faces = mesh_geometry.get_blender_pydata_form()
 
         mesh_obj.data.from_pydata(vertices, edges, faces)
+
+        self._apply_mesh_materials(animated_export_object)
         return mesh_obj
+
+    def _apply_mesh_materials(self, animated_export_object: AnimatedExportObjectModel):
+        raise NotImplementedError

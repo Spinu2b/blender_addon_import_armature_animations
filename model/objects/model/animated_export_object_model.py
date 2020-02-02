@@ -1,5 +1,6 @@
-from typing import Dict
+from typing import Dict, List
 
+from ....model.objects.model.export_objects_library_model_description.materials_description.material import Material
 from ....utils.model_spaces_integration.axis_info import AxisInfo
 from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
 from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
@@ -12,6 +13,7 @@ class AnimatedExportObjectModel:
         self.transform = TransformModel()
         self.mesh_geometry = MeshGeometry()
         self.bind_bone_poses = dict()  # type: Dict[str, BoneBindPose]
+        self.materials = []  # type: List[Material]
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
         result = AnimatedExportObjectModel()

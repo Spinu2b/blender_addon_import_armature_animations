@@ -1,11 +1,37 @@
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
+from ....model.objects.model.export_objects_library_model_description.materials_description.texture import Texture, \
+    Color
+from ....utils.model_spaces_integration.vector2d import Vector2d
+from ....model.objects.model.export_objects_library_model_description.materials_description.material import Material
 from ....model.objects.model.animated_export_object_model import AnimatedExportObjectModel
 from ....model.objects.model.animated_export_object_model_description.bone_bind_pose import BoneBindPose
 from ....model.objects.model.animated_export_object_model_description.mesh_geometry import MeshGeometry
 from ....model.objects.model.animated_export_object_model_description.transform_model import TransformModel
 from ....utils.model_spaces_integration.quaternion import Quaternion
 from ....utils.model_spaces_integration.vector3d import Vector3d
+
+
+class TextureModelBuilder:
+    def from_json_dict(self, texture_json_dict) -> Texture:
+        result = Texture()
+        result.pixels = [Color(p["red"], p["green"], p["blue"], p["alpha"]) for p in texture_json_dict["pixels"]]
+        result.width = texture_json_dict["width"]
+        result.height = texture_json_dict["height"]
+        result.name = texture_json_dict["name"]
+        return result
+
+
+class MaterialModelBuilder:
+    def from_json_dict(self, material_json_dict) -> Material:
+        result = Material()
+        result.main_texture = TextureModelBuilder().from_json_dict(material_json_dict["mainTexture"])
+        result.main_texture_offset = Vector2d(float(material_json_dict["mainTextureOffset"]["x"]),
+                                              float(material_json_dict["mainTextureOffset"]["y"]))
+        result.main_texture_scale = Vector2d(float(material_json_dict["mainTextureScale"]["x"]),
+                                             float(material_json_dict["mainTextureScale"]["y"]))
+        result.name = material_json_dict["name"]
+        return result
 
 
 class AnimatedExportObjectModelBuilder:
@@ -15,6 +41,7 @@ class AnimatedExportObjectModelBuilder:
         result.mesh_geometry = self._get_mesh_geometry(animated_export_object_model_json_dict["meshGeometry"])
         result.bind_bone_poses = self._get_bind_bone_poses(animated_export_object_model_json_dict["bindBonePoses"])
         result.name = animated_export_object_model_json_dict["Name"]
+        result.materials = self._get_materials(animated_export_object_model_json_dict["materials"])
         return result
 
     def _get_transform_model(self, transform_json_dict) -> TransformModel:
@@ -34,6 +61,7 @@ class AnimatedExportObjectModelBuilder:
         result.bones_weights = {bone_weights_bone_name: self._get_bone_weights_dict(
             mesh_geometry_json_dict["bonesWeights"][bone_weights_bone_name]) for bone_weights_bone_name in
             mesh_geometry_json_dict["bonesWeights"]}
+        result.normals = [Vector3d.from_json_dict(x) for x in mesh_geometry_json_dict["normals"]]
         return result
 
     def _get_bind_bone_poses(self, bind_bone_poses_json_dict) -> Dict[str, BoneBindPose]:
@@ -53,4 +81,11 @@ class AnimatedExportObjectModelBuilder:
         result.rotation = Quaternion.from_json_dict(bone_bind_pose_json_dict["rotation"])
         result.scale = Vector3d.from_json_dict(bone_bind_pose_json_dict["scale"])
         result.bone_name = bone_bind_pose_json_dict["boneName"]
+        return result
+
+    def _get_materials(self, materials_json_list) -> List[Material]:
+        result = []  # type: List[Material]
+        material_model_builder = MaterialModelBuilder()
+        for material_json_dict in materials_json_list:
+            result.append(material_model_builder.from_json_dict(material_json_dict))
         return result
