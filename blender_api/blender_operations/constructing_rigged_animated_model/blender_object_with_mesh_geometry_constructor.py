@@ -1,7 +1,7 @@
 from typing import List
 
 import bpy
-from bpy.types import Object, MeshUVLoopLayer, ImageTexture, Image
+from bpy.types import Object, MeshUVLoopLayer, Image
 
 from ....model.objects.model.animated_export_object_model_description.materials_description.texture import Color
 from ....utils.model_spaces_integration.vector2d import Vector2d
@@ -59,7 +59,6 @@ class BlenderMeshMaterialApplier:
                                                         uv_map_node.outputs['UV'])
 
         mesh_obj.data.materials.append(blender_material_data_block)
-        raise NotImplementedError
 
 
 class BlenderObjectWithMeshGeometryConstructor:
