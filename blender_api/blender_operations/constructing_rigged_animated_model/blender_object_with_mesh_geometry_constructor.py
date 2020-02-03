@@ -34,17 +34,29 @@ class BlenderMeshMaterialApplier:
             name=animated_export_object.name + "_MAT_" + material.name)  # type: bpy.types.Material
         blender_material_data_block.use_nodes = True
 
-        bsdf = blender_material_data_block.node_tree.nodes['Principled BSDF']
+        material_output_node = blender_material_data_block.node_tree.nodes.new(type="ShaderNodeOutputMaterial")
+        material_diffuse_node = blender_material_data_block.node_tree.nodes.new(type="ShaderNodeBsdfDiffuse")
         texture_image_node = blender_material_data_block.node_tree.nodes.new(type='ShaderNodeTexImage')
         texture_image_node.image = BlenderImageHelper().get_blender_image(
             width=material.main_texture.width,
             height=material.main_texture.height,
             texture_image_definition=material.main_texture.pixels
         )
-        blender_material_data_block.node_tree.links.new(bsdf.inputs['Base Color'], texture_image_node.outputs['Color'])
 
         uv_loops_layer = \
-            self._apply_uv_map(uv_map=uv_map, mesh_obj=mesh_obj, animated_export_object=animated_export_object)
+            self._apply_uv_map(
+                uv_map=uv_map, mesh_obj=mesh_obj,
+                animated_export_object=animated_export_object)  # type: MeshUVLoopLayer
+
+        uv_map_node = blender_material_data_block.node_tree.nodes.new(type="ShaderNodeUVMap")
+        uv_map_node.uv_map = uv_loops_layer.name
+
+        blender_material_data_block.node_tree.links.new(material_output_node.inputs['Surface'],
+                                                        material_diffuse_node['BSDF'])
+        blender_material_data_block.node_tree.links.new(material_diffuse_node.inputs['Color'],
+                                                        texture_image_node.outputs['Color'])
+        blender_material_data_block.node_tree.links.new(texture_image_node.inputs['Vector'],
+                                                        uv_map_node.outputs['UV'])
 
         mesh_obj.data.materials.append(blender_material_data_block)
         raise NotImplementedError
