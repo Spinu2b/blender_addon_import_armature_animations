@@ -1,5 +1,8 @@
 from typing import Dict, Tuple, List
 
+from ....utils.model_spaces_integration.model_quaternion import ModelQuaternion
+from ....utils.model_spaces_integration.model_spaces_info import ModelSpacesInfo
+from ....utils.model_spaces_integration.model_vector3d import ModelVector3d
 from ....model.objects.model.animated_export_object_model_description.materials_description.material import Material
 from ....model.objects.model.animated_export_object_model_description.materials_description.texture import Texture,\
     Color
@@ -44,22 +47,68 @@ class AnimatedExportObjectModelBuilder:
 
     def _get_transform_model(self, transform_json_dict) -> TransformModel:
         result = TransformModel()
-        result.position = Vector3d.from_json_dict(transform_json_dict["position"])
-        result.rotation = Quaternion.from_json_dict(transform_json_dict["rotation"])
-        result.scale = Vector3d.from_json_dict(transform_json_dict["scale"])
-        result.local_position = Vector3d.from_json_dict(transform_json_dict["localPosition"])
-        result.local_rotation = Quaternion.from_json_dict(transform_json_dict["localRotation"])
-        result.local_scale = Vector3d.from_json_dict(transform_json_dict["localScale"])
+        result.position = ModelVector3d(
+            x=float(transform_json_dict["position"]["x"]),
+            y=float(transform_json_dict["position"]["y"]),
+            z=float(transform_json_dict["position"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
+        result.rotation = ModelQuaternion(
+            w=float(transform_json_dict["rotation"]["w"]),
+            x=float(transform_json_dict["rotation"]["x"]),
+            y=float(transform_json_dict["rotation"]["y"]),
+            z=float(transform_json_dict["rotation"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO
+        ).translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_quaternion()
+        result.scale = ModelVector3d(
+            x=float(transform_json_dict["scale"]["x"]),
+            y=float(transform_json_dict["scale"]["y"]),
+            z=float(transform_json_dict["scale"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO). \
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
+
+        result.local_position = ModelVector3d(
+            x=float(transform_json_dict["localPosition"]["x"]),
+            y=float(transform_json_dict["localPosition"]["y"]),
+            z=float(transform_json_dict["localPosition"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO). \
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
+        result.local_rotation = ModelQuaternion(
+            w=float(transform_json_dict["localRotation"]["w"]),
+            x=float(transform_json_dict["localRotation"]["x"]),
+            y=float(transform_json_dict["localRotation"]["y"]),
+            z=float(transform_json_dict["localRotation"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO
+        ).translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_quaternion()
+        result.local_scale = ModelVector3d(
+            x=float(transform_json_dict["localScale"]["x"]),
+            y=float(transform_json_dict["localScale"]["y"]),
+            z=float(transform_json_dict["localScale"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO). \
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
         return result
 
     def _get_mesh_geometry(self, mesh_geometry_json_dict) -> MeshGeometry:
         result = MeshGeometry()
-        result.vertices = [Vector3d.from_json_dict(x) for x in mesh_geometry_json_dict["vertices"]]
+        result.vertices = [
+            ModelVector3d(
+                x=float(x["x"]),
+                y=float(x["y"]),
+                z=float(x["z"]),
+                axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d() for
+            x in mesh_geometry_json_dict["vertices"]]
         result.triangles = [self._triangle_definition_from_json_dict(x) for x in mesh_geometry_json_dict["triangles"]]
         result.bones_weights = {bone_weights_bone_name: self._get_bone_weights_dict(
             mesh_geometry_json_dict["bonesWeights"][bone_weights_bone_name]) for bone_weights_bone_name in
             mesh_geometry_json_dict["bonesWeights"]}
-        result.normals = [Vector3d.from_json_dict(x) for x in mesh_geometry_json_dict["normals"]]
+        result.normals = [ModelVector3d(
+                x=float(x["x"]),
+                y=float(x["y"]),
+                z=float(x["z"]),
+                axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d() for x
+            in mesh_geometry_json_dict["normals"]]
         result.uv_maps = [[Vector2d.from_json_dict(x) for x in uv] for uv in mesh_geometry_json_dict["uvMaps"]]
         return result
 
@@ -76,9 +125,25 @@ class AnimatedExportObjectModelBuilder:
 
     def _get_bone_bind_pose_from_json_dict(self, bone_bind_pose_json_dict) -> BoneBindPose:
         result = BoneBindPose()
-        result.position = Vector3d.from_json_dict(bone_bind_pose_json_dict["position"])
-        result.rotation = Quaternion.from_json_dict(bone_bind_pose_json_dict["rotation"])
-        result.scale = Vector3d.from_json_dict(bone_bind_pose_json_dict["scale"])
+        result.position = ModelVector3d(
+            x=float(bone_bind_pose_json_dict["position"]["x"]),
+            y=float(bone_bind_pose_json_dict["position"]["y"]),
+            z=float(bone_bind_pose_json_dict["position"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
+        result.rotation = ModelQuaternion(
+            w=float(bone_bind_pose_json_dict["rotation"]["w"]),
+            x=float(bone_bind_pose_json_dict["rotation"]["x"]),
+            y=float(bone_bind_pose_json_dict["rotation"]["y"]),
+            z=float(bone_bind_pose_json_dict["rotation"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO
+        ).translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_quaternion()
+        result.scale = ModelVector3d(
+            x=float(bone_bind_pose_json_dict["scale"]["x"]),
+            y=float(bone_bind_pose_json_dict["scale"]["y"]),
+            z=float(bone_bind_pose_json_dict["scale"]["z"]),
+            axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
+            translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
         result.bone_name = bone_bind_pose_json_dict["boneName"]
         return result
 
