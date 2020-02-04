@@ -18,20 +18,15 @@ class AnimatedExportObjectModel:
         self.materials = []  # type: List[Material]
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = AnimatedExportObjectModel()
-        result.name = self.name
-        result.transform = self.transform.translate_to_space_model(
+        self.transform.translate_to_space_model(
             base_space_model=base_space_model, target_space_model=target_space_model)
-        result.mesh_geometry = self.mesh_geometry.translate_to_space_model(
+        self.mesh_geometry.translate_to_space_model(
             base_space_model=base_space_model, target_space_model=target_space_model
         )
-        result.bind_bone_poses = \
-            {bone_name:
-             self.bind_bone_poses[bone_name].
-             translate_to_space_model(base_space_model=base_space_model, target_space_model=target_space_model)
-             for bone_name in self.bind_bone_poses}
-        result.materials = copy.deepcopy(self.materials)
-        return result
+
+        for bone_name in self.bind_bone_poses:
+            self.bind_bone_poses[bone_name]. \
+                 translate_to_space_model(base_space_model=base_space_model, target_space_model=target_space_model)
 
     def get_valid_uv_map(self) -> List[Vector2d]:
         return [x for x in self.mesh_geometry.uv_maps if len(x) > 0][0]

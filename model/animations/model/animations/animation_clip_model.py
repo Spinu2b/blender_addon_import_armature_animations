@@ -17,8 +17,6 @@ class AnimationClipModel:
         return self.frames
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = AnimationClipModel(self.animation_clip_name)
         for frame_number in self.frames:
-            result.frames[frame_number] = self.frames[frame_number].\
+            self.frames[frame_number].\
                 translate_to_space_model(base_space_model=base_space_model, target_space_model=target_space_model)
-        return result

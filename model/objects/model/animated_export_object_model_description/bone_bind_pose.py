@@ -18,14 +18,12 @@ class BoneBindPose:
         self.scale = copy.deepcopy(scale)  # type: Vector3d
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = BoneBindPose()
-        result.position = ModelVector3d(x=self.position.x, y=self.position.y, z=self.position.z,
-                                        axis_info=base_space_model).\
+        self.position = ModelVector3d(x=self.position.x, y=self.position.y, z=self.position.z,
+                                      axis_info=base_space_model).\
             translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-        result.rotation = ModelQuaternion(w=self.rotation.w, x=self.rotation.x, y=self.rotation.y, z=self.rotation.z,
-                                          axis_info=base_space_model).\
+        self.rotation = ModelQuaternion(w=self.rotation.w, x=self.rotation.x, y=self.rotation.y, z=self.rotation.z,
+                                        axis_info=base_space_model).\
             translate_to_model_axis(target_axis_info=target_space_model).to_quaternion()
-        result.scale = ModelVector3d(
+        self.scale = ModelVector3d(
             x=self.scale.x, y=self.scale.y, z=self.scale.z, axis_info=base_space_model).\
             translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-        return result

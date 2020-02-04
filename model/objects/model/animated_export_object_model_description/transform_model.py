@@ -25,31 +25,28 @@ class TransformModel:
         self.local_scale = copy.deepcopy(local_scale)  # type: Vector3d
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = copy.deepcopy(self)
-        result.position = ModelVector3d(
-            x=result.position.x, y=result.position.y, z=result.position.z,
+        self.position = ModelVector3d(
+            x=self.position.x, y=self.position.y, z=self.position.z,
             axis_info=base_space_model
         ).translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-        result.rotation = ModelQuaternion(
-            w=result.rotation.w, x=result.rotation.x, y=result.rotation.y, z=result.rotation.z,
+        self.rotation = ModelQuaternion(
+            w=self.rotation.w, x=self.rotation.x, y=self.rotation.y, z=self.rotation.z,
             axis_info=base_space_model
         ).translate_to_model_axis(target_axis_info=target_space_model).to_quaternion()
-        result.scale = ModelVector3d(
-            x=result.scale.x, y=result.scale.y, z=result.scale.z,
+        self.scale = ModelVector3d(
+            x=self.scale.x, y=self.scale.y, z=self.scale.z,
             axis_info=base_space_model
         ).translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
 
-        result.local_position = ModelVector3d(
-            x=result.local_position.x, y=result.local_position.y, z=result.local_position.z,
+        self.local_position = ModelVector3d(
+            x=self.local_position.x, y=self.local_position.y, z=self.local_position.z,
             axis_info=base_space_model
         ).translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-        result.local_rotation = ModelQuaternion(
-            w=result.local_rotation.w, x=result.local_rotation.x, y=result.local_rotation.y, z=result.local_rotation.z,
+        self.local_rotation = ModelQuaternion(
+            w=self.local_rotation.w, x=self.local_rotation.x, y=self.local_rotation.y, z=self.local_rotation.z,
             axis_info=base_space_model
         ).translate_to_model_axis(target_axis_info=target_space_model).to_quaternion()
-        result.local_scale = ModelVector3d(
-            x=result.local_scale.x, y=result.local_scale.y, z=result.local_scale.z,
+        self.local_scale = ModelVector3d(
+            x=self.local_scale.x, y=self.local_scale.y, z=self.local_scale.z,
             axis_info=base_space_model
         ).translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-
-        return result

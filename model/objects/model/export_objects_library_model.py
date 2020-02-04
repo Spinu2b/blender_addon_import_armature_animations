@@ -16,19 +16,13 @@ class ExportObjectsLibraryModel:
 
     def translate_to_space_model(
             self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = ExportObjectsLibraryModel()
-        result.armature_hierarchy = copy.deepcopy(self.armature_hierarchy)
-        result.animated_export_objects = \
-            {animated_export_object_name:
-                self.animated_export_objects[animated_export_object_name].translate_to_space_model(
-                    base_space_model=base_space_model, target_space_model=target_space_model
-                )
-             for animated_export_object_name in self.animated_export_objects}
-        return result
+        for animated_export_object_name in self.animated_export_objects:
+            self.animated_export_objects[animated_export_object_name].translate_to_space_model(
+                base_space_model=base_space_model, target_space_model=target_space_model
+            )
 
     def reform_for_blender_building_process(self):
         self._check_one_channel_to_one_mesh_assumption()
-        return copy.deepcopy(self)
 
     def _check_one_channel_to_one_mesh_assumption(self):
         channel_meshes_count_dict = dict()  # type: Dict[str, int]

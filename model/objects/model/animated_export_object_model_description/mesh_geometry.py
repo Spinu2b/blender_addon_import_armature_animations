@@ -17,16 +17,14 @@ class MeshGeometry:
         self.uv_maps = [[]]  # type: List[List[Vector2d]]
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = copy.deepcopy(self)
-        result.vertices = [ModelVector3d(x=v.x, y=v.y, z=v.z,
-                                         axis_info=base_space_model).
-                           translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-                           for v in self.vertices]
-        result.normals = [ModelVector3d(x=v.x, y=v.y, z=v.z,
-                                        axis_info=base_space_model).
-                          translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
-                          for v in self.normals]
-        return result
+        self.vertices = [ModelVector3d(x=v.x, y=v.y, z=v.z,
+                                       axis_info=base_space_model).
+                         translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
+                         for v in self.vertices]
+        self.normals = [ModelVector3d(x=v.x, y=v.y, z=v.z,
+                                      axis_info=base_space_model).
+                        translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
+                        for v in self.normals]
 
     def get_blender_pydata_form(self) -> Tuple[List[Tuple[float, float, float]], List[List[int]],
                                                List[Tuple[int, int, int]]]:

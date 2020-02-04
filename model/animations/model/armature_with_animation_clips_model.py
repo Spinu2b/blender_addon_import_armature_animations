@@ -32,21 +32,17 @@ class ArmatureWithAnimationClipsModel:
                                 len(self.animation_clips[animation_clip_name].frames) <= frames_count}
 
     def filter_to_only_animation_clips_matching_armature(self, armature_hierarchy_model: ArmatureHierarchyModel):
-        result = ArmatureWithAnimationClipsModel()
-        result.animation_clips = \
-            {animation_clip_name: copy.deepcopy(self.animation_clips[animation_clip_name])
+        self.animation_clips = \
+            {animation_clip_name: self.animation_clips[animation_clip_name]
              for animation_clip_name in self.animation_clips
              if AnimationClipsFilter.is_matching_armature_hierarchy(
                 armature_hierarchy_model=armature_hierarchy_model,
                 animation_clip=self.animation_clips[animation_clip_name])}
-        return result
 
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
-        result = ArmatureWithAnimationClipsModel()
         for animation_clip_name in self.animation_clips:
             animation_clip = self.animation_clips[animation_clip_name]
-            result.animation_clips[animation_clip_name] = animation_clip.translate_to_space_model(
+            animation_clip.translate_to_space_model(
                 base_space_model=base_space_model,
                 target_space_model=target_space_model
             )
-        return result
