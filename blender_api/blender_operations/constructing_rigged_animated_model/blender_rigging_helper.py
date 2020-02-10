@@ -1,6 +1,6 @@
 from typing import Dict
 
-from bpy.types import Object, VertexGroup
+from bpy.types import Object, VertexGroup, Modifier
 
 from ....blender_api.blender_operations.general_api_operations.blender_objects_manipulation import \
     BlenderObjectsManipulation
@@ -22,3 +22,9 @@ class BlenderRiggingHelper:
                 vertex_in_group_weight = vertex_group[vertex_in_group_index]
                 blender_vertex_group.add(index=[vertex_in_group_index], weight=vertex_in_group_weight,
                                          type='ADD')
+
+        self._add_armature_modifier(armature_obj, blender_mesh_obj)
+
+    def _add_armature_modifier(self, armature_obj: Object, blender_mesh_obj: Object):
+        armature_modifier = blender_mesh_obj.modifiers.new(name="ARMATURE_MODIFIER", type="ARMATURE")  # type: Modifier
+        armature_modifier.object = armature_obj

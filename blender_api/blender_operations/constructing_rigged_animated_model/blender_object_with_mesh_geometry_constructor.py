@@ -62,6 +62,8 @@ class BlenderMeshMaterialApplier:
             name=animated_export_object.name + "_MAT_" + material.name)  # type: bpy.types.Material
         blender_material_data_block.use_nodes = True
 
+        blender_material_data_block.node_tree.nodes.clear()
+
         material_output_node = blender_material_data_block.\
             node_tree.nodes.new(type="ShaderNodeOutputMaterial")  # type: Node
         material_diffuse_node = blender_material_data_block.\
@@ -113,6 +115,7 @@ class BlenderObjectWithMeshGeometryConstructor:
         self._apply_normals(animated_export_object, mesh_obj)
 
         self._apply_mesh_materials(animated_export_object, mesh_obj)
+
         return mesh_obj
 
     def _apply_mesh_materials(self, animated_export_object: AnimatedExportObjectModel, mesh_obj: Object):
@@ -122,7 +125,8 @@ class BlenderObjectWithMeshGeometryConstructor:
             raise ValueError("More than one uv map per submesh is not supported!")
         if len(animated_export_object.materials) == 1 and \
                 len([x for x in animated_export_object.mesh_geometry.uv_maps if len(x) > 0]) == 1:
-            BlenderMeshMaterialApplier().apply(
+            blender_mesh_material_applier = BlenderMeshMaterialApplier()
+            blender_mesh_material_applier.apply(
                 material=animated_export_object.materials[0],
                 uv_map=animated_export_object.get_valid_uv_map(),
                 mesh_obj=mesh_obj,
