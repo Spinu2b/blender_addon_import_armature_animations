@@ -13,7 +13,8 @@ class BlenderEditorManipulation:
         bpy.context.scene.frame_current = frame_number
 
     def enter_animation_clip(self, name: str) -> Action:
-        action = bpy.data.actions.new(name=name)
+        action = bpy.data.actions.new(name=name)  # type: Action
+        action.use_fake_user = True
         return action
 
     def set_context_space_data_ui_mode_to_action(self):
