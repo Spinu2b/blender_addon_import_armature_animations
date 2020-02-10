@@ -29,6 +29,7 @@ class BlenderImageHelper:
             pixel_index += 4
 
         blender_image.pixels = pixels_array.tolist()
+        blender_image.pack()
         return blender_image
 
 

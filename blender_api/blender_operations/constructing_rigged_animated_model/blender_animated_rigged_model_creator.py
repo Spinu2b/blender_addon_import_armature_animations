@@ -1,5 +1,6 @@
 from typing import Dict
 
+import bpy
 from bpy.types import Object
 
 from ....model.objects.model.export_objects_library_model_description.armature_hierarchy_model import\
