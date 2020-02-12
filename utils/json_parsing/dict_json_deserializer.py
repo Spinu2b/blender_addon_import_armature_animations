@@ -1,0 +1,4 @@
+
+
+class DictDeserializer:
+    pass
