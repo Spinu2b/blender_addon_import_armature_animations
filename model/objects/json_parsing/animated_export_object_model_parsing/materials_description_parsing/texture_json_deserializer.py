@@ -1,5 +1,26 @@
+from model.objects.model.animated_export_object_model_description.materials_description.texture import Texture, Color
+from utils.json_parsing.float_json_deserializer import FloatJsonDeserializer
+from utils.json_parsing.int_json_deserializer import IntJsonDeserializer
 from utils.json_parsing.json_deserializer import JsonDeserializer
+from utils.json_parsing.list_json_deserializer import ListJsonDeserializer
+from utils.json_parsing.string_json_deserializer import StringJsonDeserializer
+
+
+class ColorJsonDeserializer(JsonDeserializer):
+    ATTRIBUTES = {
+        "red": ("red", FloatJsonDeserializer),
+        "green": ("green", FloatJsonDeserializer),
+        "blue": ("blue", FloatJsonDeserializer),
+        "alpha": ("alpha", FloatJsonDeserializer)
+    }
+    RESULT_CLASS = Color
 
 
 class TextureJsonDeserializer(JsonDeserializer):
-    pass
+    ATTRIBUTES = {
+        "name": ("name", StringJsonDeserializer),
+        "width": ("width", IntJsonDeserializer),
+        "height": ("height", IntJsonDeserializer),
+        "pixels": ("pixels", ListJsonDeserializer[ColorJsonDeserializer])
+    }
+    RESULT_CLASS = Texture

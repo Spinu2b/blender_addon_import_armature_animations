@@ -1,8 +1,12 @@
 from typing import Generic, TypeVar
 
+from utils.json_parsing.json_deserializer import JsonDeserializer
+
 TreeSubclass = TypeVar('TreeSubclass')
-TreeNodeClass = TypeVar('TreeNodeClass')
+TreeNodeKeyJsonDeserializerClass = TypeVar('TreeNodeKeyJsonDeserializerClass')
+TreeNodeJsonDeserializerClass = TypeVar('TreeNodeJsonDeserializerClass')
 
 
-class TreeJsonDeserializer(Generic[TreeSubclass, TreeNodeClass]):
+class TreeJsonDeserializer(JsonDeserializer, Generic[TreeSubclass, TreeNodeKeyJsonDeserializerClass,
+                                                     TreeNodeJsonDeserializerClass]):
     pass

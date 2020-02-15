@@ -12,9 +12,6 @@ class MainAddonLogic:
 
         export_objects_library_model = ExportObjectsLibraryModelLoader().load(path_to_objects_library_file)
         armature_animation_clips_model = ArmatureWithAnimationClipsModelLoader().load(path_to_animations_file)
-        print("Filtering too long animation clips")
-        armature_animation_clips_model.remove_animation_clips_longer_than(frames_count=100)
-        print("Filtering done")
 
         animated_rigged_model_constructor = BlenderAnimatedRiggedModelConstructor()
         animated_rigged_model_constructor.build_animated_rigged_model(
