@@ -1,6 +1,6 @@
 from typing import Any
 
-from utils.json_parsing.json_parsing_helper import JsonParsingHelper
+from ...utils.json_parsing.json_parsing_helper import JsonParsingHelper
 
 
 class JsonDeserializer:

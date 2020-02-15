@@ -1,4 +1,4 @@
-from model.objects.json_parsing.export_objects_library_model_json_deserializer import \
+from ....model.objects.json_parsing.export_objects_library_model_json_deserializer import \
     ExportObjectsLibraryModelJsonDeserializer
 from ....model.objects.model.export_objects_library_model import ExportObjectsLibraryModel
 

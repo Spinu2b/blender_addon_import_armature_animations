@@ -1,7 +1,7 @@
-from model.objects.json_parsing.animated_export_object_model_parsing.transform_model_json_deserializer import \
+from ....model.objects.json_parsing.animated_export_object_model_parsing.transform_model_json_deserializer import \
     TransformModelJsonDeserializer
-from utils.json_parsing.json_deserializer import JsonDeserializer
-from utils.json_parsing.string_json_deserializer import StringJsonDeserializer
+from ....utils.json_parsing.json_deserializer import JsonDeserializer
+from ....utils.json_parsing.string_json_deserializer import StringJsonDeserializer
 
 
 class AnimatedExportObjectModelJsonDeserializer(JsonDeserializer):

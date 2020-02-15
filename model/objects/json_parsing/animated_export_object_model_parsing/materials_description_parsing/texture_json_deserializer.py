@@ -1,9 +1,9 @@
-from model.objects.model.animated_export_object_model_description.materials_description.texture import Texture, Color
-from utils.json_parsing.float_json_deserializer import FloatJsonDeserializer
-from utils.json_parsing.int_json_deserializer import IntJsonDeserializer
-from utils.json_parsing.json_deserializer import JsonDeserializer
-from utils.json_parsing.list_json_deserializer import ListJsonDeserializer
-from utils.json_parsing.string_json_deserializer import StringJsonDeserializer
+from ......model.objects.model.animated_export_object_model_description.materials_description.texture import Texture, Color
+from ......utils.json_parsing.float_json_deserializer import FloatJsonDeserializer
+from ......utils.json_parsing.int_json_deserializer import IntJsonDeserializer
+from ......utils.json_parsing.json_deserializer import JsonDeserializer
+from ......utils.json_parsing.list_json_deserializer import ListJsonDeserializer
+from ......utils.json_parsing.string_json_deserializer import StringJsonDeserializer
 
 
 class ColorJsonDeserializer(JsonDeserializer):
