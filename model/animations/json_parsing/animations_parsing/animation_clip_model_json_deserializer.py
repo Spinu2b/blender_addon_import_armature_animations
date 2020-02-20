@@ -1,3 +1,4 @@
+from .....model.animations.model.animations.animation_clip_model import AnimationClipModel
 from .....model.animations.json_parsing.animations_parsing.animation_frame_model_json_deserializer import \
     AnimationFrameModelJsonDeserializer
 from .....utils.json_parsing.dict_json_deserializer import DictJsonDeserializer
@@ -11,3 +12,4 @@ class AnimationClipModelJsonDeserializer(JsonDeserializer):
         "animationClipName": ("animation_clip_name", StringJsonDeserializer),
         "frames": ("frames", DictJsonDeserializer[IntJsonDeserializer, AnimationFrameModelJsonDeserializer])
     }
+    RESULT_CLASS = AnimationClipModel

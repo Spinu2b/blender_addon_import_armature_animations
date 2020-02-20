@@ -1,3 +1,4 @@
+from ....model.animations.model.armature_with_animation_clips_model import ArmatureWithAnimationClipsModel
 from ....model.animations.json_parsing.animations_parsing.animation_clip_model_json_deserializer import \
     AnimationClipModelJsonDeserializer
 from ....utils.json_parsing.dict_json_deserializer import DictJsonDeserializer
@@ -10,3 +11,4 @@ class ArmatureWithAnimationClipsModelJsonDeserializer(JsonDeserializer):
         "animationClips": ("animation_clips", DictJsonDeserializer[
             StringJsonDeserializer, AnimationClipModelJsonDeserializer])
     }
+    RESULT_CLASS = ArmatureWithAnimationClipsModel

@@ -26,7 +26,7 @@ class JsonStringTraversingHelper:
         return StringTraversingHelper.advance_to_next_one_of_these_characters(
             current_char_index=parsing_start_char_index,
             string_to_search_in=json_string,
-            character_criteria=lambda character: re.match(r"\"|-?[0-9]|{", character) is not None
+            character_criteria=lambda character: re.match(r"\"|-?[0-9]|{|\[", character) is not None
         )
 
     @classmethod
@@ -59,6 +59,7 @@ class JsonStringTraversingHelper:
 
 
 class JsonParsingHelper:
+    INVALID_CHAR_INDEX = -1
     INVALID_ATTRIBUTE_CODE = -1
 
     @classmethod
@@ -74,3 +75,7 @@ class JsonParsingHelper:
         parsing_start_char_index = JsonStringTraversingHelper.\
             advance_from_here_to_attribute_value_opening_char(json_string, parsing_start_char_index)
         return attribute_name, parsing_start_char_index
+
+    @classmethod
+    def go_to_next_value_in_json_list(cls, json_string: str, parsing_start_char_index: int) -> int:
+        raise NotImplementedError

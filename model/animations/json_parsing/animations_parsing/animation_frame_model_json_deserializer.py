@@ -5,7 +5,7 @@ from .....utils.json_parsing.string_json_deserializer import StringJsonDeseriali
 from .....utils.json_parsing.tree_json_deserializer import TreeJsonDeserializer
 
 
-class AnimationFrameModelJsonDeserializer(TreeJsonDeserializer[AnimationFrameModel,
-                                                               StringJsonDeserializer,
-                                                               AnimationFrameNodeModelJsonDeserializer]):
-    pass
+class AnimationFrameModelJsonDeserializer(TreeJsonDeserializer):
+    RESULT_CLASS = AnimationFrameModel
+    TREE_NODE_KEY_JSON_DESERIALIZER_CLASS = StringJsonDeserializer
+    TREE_NODE_JSON_DESERIALIZER_CLASS = AnimationFrameNodeModelJsonDeserializer

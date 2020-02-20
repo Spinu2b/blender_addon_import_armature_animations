@@ -33,8 +33,7 @@ class JsonDeserializer:
         deserialized_object, start_char_index =\
             deserializer_class.deserialize(
                 json_string=json_string,
-                parsing_start_char_index=start_char_index,
-                result_class=deserializer_class.RESULT_CLASS)
+                parsing_start_char_index=start_char_index)
 
         result.__setattr__(object=result, name=python_attribute_name,
                            value=deserialized_object)

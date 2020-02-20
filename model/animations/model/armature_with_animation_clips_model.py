@@ -1,4 +1,3 @@
-import copy
 from typing import Dict
 
 from ....utils.model_spaces_integration.axis_info import AxisInfo
