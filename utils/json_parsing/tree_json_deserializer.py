@@ -30,9 +30,9 @@ class TreeNodeChildrenListJsonDeserializer:
 
 
 class TreeNodeContainerJsonDeserializer:
-    CHILDREN_ATTRIBUTE_LABEL = None
-    NODE_ATTRIBUTE_LABEL = None
-    KEY_ATTRIBUTE_LABEL = None
+    CHILDREN_ATTRIBUTE_LABEL = "Children"
+    NODE_ATTRIBUTE_LABEL = "Node"
+    KEY_ATTRIBUTE_LABEL = "Id"
 
     @classmethod
     def deserialize(cls, json_string: str, parsing_start_char_index: int,

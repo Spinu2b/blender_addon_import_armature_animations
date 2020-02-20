@@ -38,7 +38,7 @@ class JsonStringTraversingHelper:
         )
 
     @classmethod
-    def gather_attribute_name_and_advance_from_here_to_ending_quote(
+    def gather_string_value_and_advance_from_here_to_ending_quote(
             cls, json_string: str, parsing_start_char_index: int) -> Tuple[str, int]:
         end_quote_index = StringTraversingHelper.advance_to_next_one_of_these_characters(
             current_char_index=parsing_start_char_index,
@@ -57,6 +57,10 @@ class JsonStringTraversingHelper:
             character_criteria=lambda character: character == '"'
         )
 
+    @classmethod
+    def advance_from_here_to_last_digit_of_current_number(cls, json_string: str, parsing_start_char_index: int):
+        raise NotImplementedError
+
 
 class JsonParsingHelper:
     INVALID_CHAR_INDEX = -1
@@ -67,7 +71,7 @@ class JsonParsingHelper:
         parsing_start_char_index = JsonStringTraversingHelper.advance_from_here_to_attribute_name_opening_quote(
             json_string, parsing_start_char_index)
         attribute_name, parsing_start_char_index = \
-            JsonStringTraversingHelper.gather_attribute_name_and_advance_from_here_to_ending_quote(
+            JsonStringTraversingHelper.gather_string_value_and_advance_from_here_to_ending_quote(
                 json_string, parsing_start_char_index
             )
         parsing_start_char_index = JsonStringTraversingHelper.advance_from_here_to_colon(
