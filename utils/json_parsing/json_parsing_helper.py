@@ -25,12 +25,8 @@ class JsonStringTraversingHelper:
 
 
 class JsonParsingHelper:
+    INVALID_ATTRIBUTE_CODE = -1
+
     @classmethod
-    def iterate_object_attributes(cls, json_string: str, parsing_start_char_index: int) -> Iterator[Tuple[str, int]]:
-        attribute_value_start_char_index = parsing_start_char_index + 1
-        attribute_name, attribute_value_start_char_index = \
-            JsonStringTraversingHelper.get_next_attribute_info(json_string, attribute_value_start_char_index)
-        while attribute_value_start_char_index != -1:
-            yield attribute_name, attribute_value_start_char_index
-            attribute_name, attribute_value_start_char_index = \
-                JsonStringTraversingHelper.get_next_attribute_info(json_string, attribute_value_start_char_index)
+    def get_next_attribute_in_json_object(cls, json_string: str, parsing_start_char_index: int) -> Tuple[str, int]:
+        raise NotImplementedError
