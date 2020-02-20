@@ -83,3 +83,7 @@ class JsonParsingHelper:
     @classmethod
     def go_to_next_value_in_json_list(cls, json_string: str, parsing_start_char_index: int) -> int:
         raise NotImplementedError
+
+    @classmethod
+    def go_to_the_end_of_that_inner_object(cls, json_string: str, parsing_start_char_index: int) -> int:
+        raise NotImplementedError
