@@ -1,27 +1,61 @@
-from typing import Iterator, Tuple
+import re
+from typing import Tuple, Callable
+
+
+class StringTraversingHelper:
+    @classmethod
+    def advance_to_next_one_of_these_characters(cls, current_char_index: int,
+                                                string_to_search_in: str,
+                                                character_criteria: Callable[[str], bool]) -> int:
+        current_char_index += 1
+        while current_char_index < len(string_to_search_in) and \
+                not character_criteria(string_to_search_in[current_char_index]):
+            current_char_index += 1
+
+        if current_char_index >= len(string_to_search_in):
+            return JsonParsingHelper.INVALID_ATTRIBUTE_CODE
+        elif character_criteria(string_to_search_in[current_char_index]):
+            return current_char_index
+        else:
+            raise ValueError('Traversing string went wrong')
 
 
 class JsonStringTraversingHelper:
     @classmethod
-    def get_next_attribute_info(cls, json_string: str, current_char_index: int) -> Tuple[str, int]:
-        current_char_index = cls._advance_from_here_to_attribute_name_opening_quote(json_string, current_char_index)
-        attribute_name, current_char_index = cls._harvest_attribute_name_and_advance_to_colon(
-            json_string, current_char_index)
-        current_char_index = cls._advance_from_here_to_char_beginning_attribute_actual_value_definition(
-            json_string, current_char_index)
+    def advance_from_here_to_attribute_value_opening_char(cls, json_string: str, parsing_start_char_index: int):
+        return StringTraversingHelper.advance_to_next_one_of_these_characters(
+            current_char_index=parsing_start_char_index,
+            string_to_search_in=json_string,
+            character_criteria=lambda character: re.match(r"\"|-?[0-9]|{", character) is not None
+        )
 
     @classmethod
-    def _advance_from_here_to_attribute_name_opening_quote(cls, json_string: str, current_char_index: int) -> int:
-        raise NotImplementedError
+    def advance_from_here_to_colon(cls, json_string: str, parsing_start_char_index: int) -> int:
+        return StringTraversingHelper.advance_to_next_one_of_these_characters(
+            current_char_index=parsing_start_char_index,
+            string_to_search_in=json_string,
+            character_criteria=lambda character: character == ':'
+        )
 
     @classmethod
-    def _harvest_attribute_name_and_advance_to_colon(cls, json_string: str, current_char_index: int) -> int:
-        raise NotImplementedError
+    def gather_attribute_name_and_advance_from_here_to_ending_quote(
+            cls, json_string: str, parsing_start_char_index: int) -> Tuple[str, int]:
+        end_quote_index = StringTraversingHelper.advance_to_next_one_of_these_characters(
+            current_char_index=parsing_start_char_index,
+            string_to_search_in=json_string,
+            character_criteria=lambda character: character == '"'
+        )
+
+        attribute_name = json_string[parsing_start_char_index+1:end_quote_index]
+        return attribute_name, end_quote_index
 
     @classmethod
-    def _advance_from_here_to_char_beginning_attribute_actual_value_definition(
-            cls, json_string: str, current_char_index: int) -> int:
-        raise NotImplementedError
+    def advance_from_here_to_attribute_name_opening_quote(cls, json_string: str, parsing_start_char_index: int) -> int:
+        return StringTraversingHelper.advance_to_next_one_of_these_characters(
+            current_char_index=parsing_start_char_index,
+            string_to_search_in=json_string,
+            character_criteria=lambda character: character == '"'
+        )
 
 
 class JsonParsingHelper:
@@ -29,4 +63,14 @@ class JsonParsingHelper:
 
     @classmethod
     def get_next_attribute_in_json_object(cls, json_string: str, parsing_start_char_index: int) -> Tuple[str, int]:
-        raise NotImplementedError
+        parsing_start_char_index = JsonStringTraversingHelper.advance_from_here_to_attribute_name_opening_quote(
+            json_string, parsing_start_char_index)
+        attribute_name, parsing_start_char_index = \
+            JsonStringTraversingHelper.gather_attribute_name_and_advance_from_here_to_ending_quote(
+                json_string, parsing_start_char_index
+            )
+        parsing_start_char_index = JsonStringTraversingHelper.advance_from_here_to_colon(
+            json_string, parsing_start_char_index)
+        parsing_start_char_index = JsonStringTraversingHelper.\
+            advance_from_here_to_attribute_value_opening_char(json_string, parsing_start_char_index)
+        return attribute_name, parsing_start_char_index
