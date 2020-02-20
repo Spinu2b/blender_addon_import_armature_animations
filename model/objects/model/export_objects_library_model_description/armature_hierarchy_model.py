@@ -2,7 +2,7 @@ from .....utils.model.tree_hierarchy import TreeHierarchy
 
 
 class ArmatureHierarchyModelNode:
-    def __init__(self, bone_name: str):
+    def __init__(self, bone_name: str=""):
         self.bone_name = bone_name
 
     @classmethod

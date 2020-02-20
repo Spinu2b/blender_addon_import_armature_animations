@@ -35,6 +35,8 @@ class JsonDeserializer:
                 json_string=json_string,
                 parsing_start_char_index=start_char_index)
 
-        result.__setattr__(object=result, name=python_attribute_name,
-                           value=deserialized_object)
+        if not hasattr(result, python_attribute_name):
+            raise ValueError("{} has no attribute of name {}".format(result.__class__.__name__, python_attribute_name))
+
+        setattr(result, python_attribute_name, deserialized_object)
         return start_char_index

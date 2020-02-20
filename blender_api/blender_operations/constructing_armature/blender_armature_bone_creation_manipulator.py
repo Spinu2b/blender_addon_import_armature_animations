@@ -48,8 +48,6 @@ class BlenderArmatureBoneCreationManipulator:
                 from_space='WORLD',
                 to_space='LOCAL')
 
-
-
     def _find_bone_with_name(self, armature: Armature, name: str) -> EditBone:
         for edit_bone in armature.edit_bones:
             if edit_bone.name == name:
