@@ -8,8 +8,8 @@ class JsonDeserializer:
     RESULT_CLASS = None
 
     @classmethod
-    def deserialize(cls, json_string: str, result_class: Any, parsing_start_char_index: int=0) -> Tuple[Any, int]:
-        result = result_class()
+    def deserialize(cls, json_string: str, parsing_start_char_index: int=0) -> Tuple[Any, int]:
+        result = cls.RESULT_CLASS()
         attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
             json_string, parsing_start_char_index)
         old_parsing_start_char_index = -1

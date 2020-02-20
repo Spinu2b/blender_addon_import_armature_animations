@@ -8,7 +8,5 @@ class ExportObjectsLibraryModelLoader:
         with open(path_to_json_file, 'r') as json_file:
             json_string = json_file.read()
         return ExportObjectsLibraryModelJsonDeserializer.deserialize(
-            json_string=json_string,
-            parsing_start_char_index=0,
-            result_class=ExportObjectsLibraryModel
-        )
+            json_string=json_string
+        )[0]
