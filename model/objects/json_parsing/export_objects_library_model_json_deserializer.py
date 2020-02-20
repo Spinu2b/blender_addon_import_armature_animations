@@ -8,11 +8,15 @@ from ....utils.json_parsing.json_deserializer import JsonDeserializer
 from ....utils.json_parsing.string_json_deserializer import StringJsonDeserializer
 
 
+class AnimatedExportObjectsJsonDeserializer(DictJsonDeserializer):
+    KEY_JSON_DESERIALIZER_CLASS = StringJsonDeserializer
+    VALUE_JSON_DESERIALIZER_CLASS = AnimatedExportObjectModelJsonDeserializer
+
+
 class ExportObjectsLibraryModelJsonDeserializer(JsonDeserializer):
     ATTRIBUTES = {
         "armatureHierarchy": ("armature_hierarchy", ArmatureHierarchyModelJsonDeserializer),
         "animatedExportObjects": ("animated_export_objects",
-                                  DictJsonDeserializer[StringJsonDeserializer,
-                                                       AnimatedExportObjectModelJsonDeserializer])
+                                  AnimatedExportObjectsJsonDeserializer)
     }
     RESULT_CLASS = ExportObjectsLibraryModel
