@@ -31,6 +31,9 @@ class CSharpTriangleTupleJsonDeserializer(JsonDeserializer):
             IntJsonDeserializer.deserialize(json_string=json_string,
                                             parsing_start_char_index=parsing_start_char_index)
 
+        parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(
+            json_string=json_string, parsing_start_char_index=parsing_start_char_index)
+
         return (item1_value, item2_value, item3_value), parsing_start_char_index
 
 

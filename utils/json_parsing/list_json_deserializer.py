@@ -23,4 +23,7 @@ class ListJsonDeserializer(JsonDeserializer):
             attribute_name, parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
                 json_string, parsing_start_char_index)
 
+        old_parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(
+            json_string=json_string, parsing_start_char_index=old_parsing_start_char_index)
+
         return result, old_parsing_start_char_index

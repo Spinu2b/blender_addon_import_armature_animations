@@ -24,6 +24,8 @@ class JsonDeserializer:
             attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
                 json_string, parsing_start_char_index)
 
+        old_parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(
+            json_string=json_string, parsing_start_char_index=old_parsing_start_char_index)
         return result, old_parsing_start_char_index
 
     @classmethod
@@ -34,9 +36,6 @@ class JsonDeserializer:
             deserializer_class.deserialize(
                 json_string=json_string,
                 parsing_start_char_index=start_char_index)
-
-        start_char_index = JsonParsingHelper.go_to_the_end_of_that_inner_object(
-            json_string=json_string, parsing_start_char_index=start_char_index)
 
         if not hasattr(result, python_attribute_name):
             raise ValueError("{} has no attribute of name {}".format(result.__class__.__name__, python_attribute_name))
