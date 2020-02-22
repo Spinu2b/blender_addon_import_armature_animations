@@ -20,7 +20,7 @@ class BlenderArmatureBonePoseSetterFacade:
                 animation_frame_armature_bone_model.position.y,
                 animation_frame_armature_bone_model.position.z)))
             rot = Quaternion(Vector((
-                -animation_frame_armature_bone_model.rotation.w,
+                animation_frame_armature_bone_model.rotation.w,
                 animation_frame_armature_bone_model.rotation.x,
                 animation_frame_armature_bone_model.rotation.y,
                 animation_frame_armature_bone_model.rotation.z)),

@@ -32,7 +32,7 @@ class BlenderArmatureBoneCreationManipulator:
                 position.y,
                 position.z)))
             rot = mathutils.Quaternion(mathutils.Vector((
-                -rotation.w,
+                - rotation.w,
                 rotation.x,
                 rotation.y,
                 rotation.z)),
