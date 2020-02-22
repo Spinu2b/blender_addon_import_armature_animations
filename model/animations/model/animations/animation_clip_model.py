@@ -5,7 +5,7 @@ from .....model.animations.model.animations.animation_frame_model import Animati
 
 
 class AnimationClipModel:
-    def __init__(self, animation_clip_name: str):
+    def __init__(self, animation_clip_name: str = ""):
         self.animation_clip_name = animation_clip_name  # type: str
         self.frames = dict()  # type: Dict[int, AnimationFrameModel]
 

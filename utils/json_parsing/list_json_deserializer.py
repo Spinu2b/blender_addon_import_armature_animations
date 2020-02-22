@@ -10,7 +10,7 @@ class ListJsonDeserializer(JsonDeserializer):
     @classmethod
     def deserialize(cls, json_string: str, parsing_start_char_index: int = 0) -> Tuple[Any, int]:
         result = []
-        attribute_name, parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
+        parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
             json_string, parsing_start_char_index)
         old_parsing_start_char_index = -1
         while parsing_start_char_index != JsonParsingHelper.INVALID_ATTRIBUTE_CODE:
@@ -20,7 +20,7 @@ class ListJsonDeserializer(JsonDeserializer):
             )
             result.append(element_obj)
             old_parsing_start_char_index = parsing_start_char_index
-            attribute_name, parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
+            parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
                 json_string, parsing_start_char_index)
 
         old_parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(

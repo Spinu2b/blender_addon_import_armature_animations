@@ -1,5 +1,6 @@
 from typing import Tuple, Any, List
 
+from ...utils.json_parsing.string_json_deserializer import StringJsonDeserializer
 from ...utils.model.tree_hierarchy import TreeNodeContainer
 from ...utils.json_parsing.json_parsing_helper import JsonParsingHelper
 from ...utils.json_parsing.json_deserializer import JsonDeserializer
@@ -11,23 +12,22 @@ class TreeNodeChildrenListJsonDeserializer:
                     tree_node_key_json_deserializer_class: Any) -> Tuple[List[TreeNodeContainer], int]:
         result = []  # type: List[TreeNodeContainer]
 
-        parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
+        list_element_value_mark = JsonParsingHelper.go_to_next_value_in_json_list(
             json_string, parsing_start_char_index
         )
-        old_parsing_start_char_index = JsonParsingHelper.INVALID_CHAR_INDEX
-        while parsing_start_char_index != JsonParsingHelper.INVALID_CHAR_INDEX:
+        while list_element_value_mark != JsonParsingHelper.INVALID_CHAR_INDEX:
+            parsing_start_char_index = list_element_value_mark
             current_node, parsing_start_char_index = TreeNodeContainerJsonDeserializer.deserialize(
                 json_string=json_string, parsing_start_char_index=parsing_start_char_index,
                 tree_node_json_deserializer_class=tree_node_json_deserializer_class,
                 tree_node_key_json_deserializer_class=tree_node_key_json_deserializer_class
             )
             result.append(current_node)
-            old_parsing_start_char_index = parsing_start_char_index
-            attribute_name, parsing_start_char_index = JsonParsingHelper.go_to_next_value_in_json_list(
+            list_element_value_mark = JsonParsingHelper.go_to_next_value_in_json_list(
                 json_string, parsing_start_char_index)
 
         old_parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(
-            json_string=json_string, parsing_start_char_index=old_parsing_start_char_index)
+            json_string=json_string, parsing_start_char_index=parsing_start_char_index)
         return result, old_parsing_start_char_index
 
 
@@ -42,7 +42,9 @@ class TreeNodeContainerJsonDeserializer:
             Tuple[TreeNodeContainer, int]:
         result = TreeNodeContainer(key=None, node=None)
         attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
-            json_string, parsing_start_char_index)
+            json_string=json_string,
+            parsing_start_char_index=parsing_start_char_index,
+            attribute_name_value_deserializer_class=StringJsonDeserializer)
         old_parsing_start_char_index = -1
         while parsing_start_char_index != JsonParsingHelper.INVALID_ATTRIBUTE_CODE:
             if attribute_name == cls.KEY_ATTRIBUTE_LABEL:
@@ -71,7 +73,9 @@ class TreeNodeContainerJsonDeserializer:
 
             old_parsing_start_char_index = parsing_start_char_index
             attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
-                json_string, parsing_start_char_index)
+                json_string=json_string,
+                parsing_start_char_index=parsing_start_char_index,
+                attribute_name_value_deserializer_class=StringJsonDeserializer)
 
         old_parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(
             json_string=json_string, parsing_start_char_index=old_parsing_start_char_index)
@@ -90,7 +94,9 @@ class TreeJsonDeserializer(JsonDeserializer):
     def deserialize(cls, json_string: str, parsing_start_char_index: int = 0) -> Tuple[Any, int]:
         result = cls.RESULT_CLASS()
         attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
-            json_string, parsing_start_char_index)
+            json_string=json_string,
+            parsing_start_char_index=parsing_start_char_index,
+            attribute_name_value_deserializer_class=StringJsonDeserializer)
         while parsing_start_char_index != JsonParsingHelper.INVALID_ATTRIBUTE_CODE:
             if attribute_name == cls.ROOT_ATTRIBUTE_LABEL:
                 root_node, parsing_start_char_index = TreeNodeContainerJsonDeserializer.deserialize(

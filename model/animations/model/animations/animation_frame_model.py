@@ -14,13 +14,15 @@ from .....utils.model.tree_hierarchy import TreeHierarchy
 
 
 class AnimationFrameNodeModel:
-    def __init__(self, node_name : str,
-                 position: Vector3d,
-                 local_position: Vector3d,
-                 rotation: Quaternion,
-                 local_rotation: Quaternion,
-                 scale: Vector3d,
-                 local_scale: Vector3d):
+    def __init__(self,
+                 node_name : str = "",
+                 position: Vector3d = Vector3d(),
+                 local_position: Vector3d = Vector3d(),
+                 rotation: Quaternion = Quaternion(),
+                 local_rotation: Quaternion = Quaternion(),
+                 scale: Vector3d = Vector3d(),
+                 local_scale: Vector3d = Vector3d(),
+                 has_bone: bool = True):
         self.node_name = node_name  # type: str
         self.position = copy.deepcopy(position)  # type: Vector3d
         self.local_position = copy.deepcopy(local_position)  # type: Vector3d
@@ -28,6 +30,7 @@ class AnimationFrameNodeModel:
         self.local_rotation = copy.deepcopy(local_rotation)  # type: Quaternion
         self.scale = copy.deepcopy(scale)  # type: Vector3d
         self.local_scale = copy.deepcopy(local_scale)  # type: Vector3d
+        self.has_bone = has_bone
 
     @classmethod
     def from_json_dict_tree_building(cls, json_dict):

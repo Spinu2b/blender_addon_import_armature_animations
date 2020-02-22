@@ -16,20 +16,27 @@ class CSharpTriangleTupleJsonDeserializer(JsonDeserializer):
     @classmethod
     def deserialize(cls, json_string: str, parsing_start_char_index: int = 0) -> Tuple[Tuple[int, int, int], int]:
         attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
-            json_string, parsing_start_char_index)
+            json_string=json_string,
+            parsing_start_char_index=parsing_start_char_index,
+            attribute_name_value_deserializer_class=StringJsonDeserializer)
         item1_value, parsing_start_char_index = \
             IntJsonDeserializer.deserialize(json_string=json_string,
                                             parsing_start_char_index=parsing_start_char_index)
         attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
-            json_string, parsing_start_char_index)
+            json_string=json_string,
+            parsing_start_char_index=parsing_start_char_index,
+            attribute_name_value_deserializer_class=StringJsonDeserializer)
         item2_value, parsing_start_char_index = \
             IntJsonDeserializer.deserialize(json_string=json_string,
                                             parsing_start_char_index=parsing_start_char_index)
         attribute_name, parsing_start_char_index = JsonParsingHelper.get_next_attribute_in_json_object(
-            json_string, parsing_start_char_index)
+            json_string=json_string,
+            parsing_start_char_index=parsing_start_char_index,
+            attribute_name_value_deserializer_class=StringJsonDeserializer)
         item3_value, parsing_start_char_index = \
-            IntJsonDeserializer.deserialize(json_string=json_string,
-                                            parsing_start_char_index=parsing_start_char_index)
+            IntJsonDeserializer.deserialize(
+                json_string=json_string,
+                parsing_start_char_index=parsing_start_char_index)
 
         parsing_start_char_index = JsonParsingHelper.go_to_the_end_of_that_json_object(
             json_string=json_string, parsing_start_char_index=parsing_start_char_index)

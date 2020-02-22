@@ -16,11 +16,15 @@ class ColorJsonDeserializer(JsonDeserializer):
     RESULT_CLASS = Color
 
 
+class PixelsJsonDeserializer(ListJsonDeserializer):
+    LIST_ELEMENT_JSON_DESERIALIZER_CLASS = ColorJsonDeserializer
+
+
 class TextureJsonDeserializer(JsonDeserializer):
     ATTRIBUTES = {
         "name": ("name", StringJsonDeserializer),
         "width": ("width", IntJsonDeserializer),
         "height": ("height", IntJsonDeserializer),
-        "pixels": ("pixels", ListJsonDeserializer[ColorJsonDeserializer])
+        "pixels": ("pixels", PixelsJsonDeserializer)
     }
     RESULT_CLASS = Texture

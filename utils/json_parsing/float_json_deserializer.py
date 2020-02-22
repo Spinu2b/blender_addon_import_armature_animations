@@ -10,5 +10,7 @@ class FloatJsonDeserializer(JsonDeserializer):
         last_digit_index = JsonStringTraversingHelper.advance_from_here_to_last_digit_of_current_number(
             json_string, parsing_start_char_index
         )
-        float_value = float(json_string[parsing_start_char_index:last_digit_index + 1])
+        number_value = json_string[parsing_start_char_index:last_digit_index + 1]
+        number_value = number_value.replace('"', '')
+        float_value = float(number_value)
         return float_value, last_digit_index
