@@ -84,3 +84,19 @@ class TreeHierarchy(ABC):
 
     def get_root(self) -> TreeNodeContainer:
         return self.root
+
+    def extend_tree_hierarchy(self, new_nodes_infos):
+        while len(new_nodes_infos) > 0:
+            new_node_info = new_nodes_infos.pop()
+            parent_key = new_node_info[0]
+
+            if parent_key is None or parent_key in [node.key for node in self.iterate_nodes()]:
+                node_key = new_node_info[1]
+                new_node = new_node_info[2]
+                self.add_node(
+                    parent_key=parent_key,
+                    node_key=node_key,
+                    node=new_node
+                )
+            else:
+                new_nodes_infos.add(new_node_info)

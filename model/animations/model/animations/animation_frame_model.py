@@ -221,28 +221,53 @@ class AnimationFrameModel(TreeHierarchy):
     def get_blender_pose_mode_animation_frame_model(
             self, armature_bind_pose_model: ArmatureBindPoseModel) -> BlenderPoseModeAnimationFrameModel:
         result = BlenderPoseModeAnimationFrameModel()
+
+        nodes_building_infos = set()
+
         animation_frame_nodes_iters_dict = {node_iter.key: node_iter for node_iter in self.iterate_nodes()}
         for bind_pose_model_node_iter in armature_bind_pose_model.iterate_nodes():
             if bind_pose_model_node_iter.key in animation_frame_nodes_iters_dict:
-                result.add_node(
-                    parent_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key,
-                    node_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key,
-                    node=BlenderPoseModeAnimationFrameModelNode(
-                        bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
-                        position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
-                        rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
-                        scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
-                    )
-                )
+                parent_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key
+                node_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key
+                node=BlenderPoseModeAnimationFrameModelNode(
+                         bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
+                         position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
+                         rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
+                         scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
+                     )
+
+                # result.add_node(
+                #     parent_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key,
+                #     node_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key,
+                #     node=BlenderPoseModeAnimationFrameModelNode(
+                #         bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
+                #         position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
+                #         rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
+                #         scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
+                #     )
+                # )
             else:
-                result.add_node(
-                    parent_key=bind_pose_model_node_iter.parent_key,
-                    node_key=bind_pose_model_node_iter.key,
-                    node=BlenderPoseModeAnimationFrameModelNode(
-                        bone_name=bind_pose_model_node_iter.node.name,
-                        position=Vector3d(0.0, 0.0, 0.0),
-                        rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
-                        scale=Vector3d(0.0001, 0.0001, 0.0001)
-                    )
-                )
+                parent_key=bind_pose_model_node_iter.parent_key
+                node_key=bind_pose_model_node_iter.key
+                node=BlenderPoseModeAnimationFrameModelNode(
+                         bone_name=bind_pose_model_node_iter.node.name,
+                         position=Vector3d(0.0, 0.0, 0.0),
+                         rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
+                         scale=Vector3d(0.0001, 0.0001, 0.0001)
+                     )
+
+
+                # result.add_node(
+                #     parent_key=bind_pose_model_node_iter.parent_key,
+                #     node_key=bind_pose_model_node_iter.key,
+                #     node=BlenderPoseModeAnimationFrameModelNode(
+                #         bone_name=bind_pose_model_node_iter.node.name,
+                #         position=Vector3d(0.0, 0.0, 0.0),
+                #         rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
+                #         scale=Vector3d(0.0001, 0.0001, 0.0001)
+                #     )
+                # )
+            nodes_building_infos.add((parent_key, node_key, node))
+
+        result.extend_tree_hierarchy(new_nodes_infos=nodes_building_infos)
         return result

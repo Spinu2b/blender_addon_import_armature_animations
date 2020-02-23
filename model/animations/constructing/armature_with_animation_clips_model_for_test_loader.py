@@ -1,4 +1,5 @@
 import json
+import orjson
 
 from ....model.animations.constructing.armature_with_animation_clips_model_constructor import \
     ArmatureWithAnimationClipsModelConstructor
@@ -6,11 +7,11 @@ from ....model.animations.model.armature_with_animation_clips_model import Armat
 
 
 class ArmatureWithAnimationClipsModelForTestLoader:
-    ANIMATION_CLIPS_COUNT = 3
+    ANIMATION_CLIPS_COUNT = 20
 
     def load(self, path_to_json_file: str) -> 'ArmatureWithAnimationClipsModel':
         with open(path_to_json_file, 'r') as json_file:
-            json_dict = json.loads(json_file.read())
+            json_dict = orjson.loads(json_file.read())
         json_dict = self._reduce_amount_of_json_dict_data(json_dict)
         return ArmatureWithAnimationClipsModelConstructor().construct_from_json(json_dict)
 
