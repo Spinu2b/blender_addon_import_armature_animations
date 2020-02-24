@@ -34,8 +34,8 @@ class AnimationFramesHierarchiesConsolidator:
     def _add_new_armature_hierarchy_nodes(
             self, armature_hierarchy_model: ArmatureHierarchyModel, new_nodes: Set[Tuple[str, str]]):
         new_nodes = copy.deepcopy(new_nodes)
-        new_nodes_infos = [(node_info[0], node_info[1],
-                            ArmatureHierarchyModelNode(bone_name=node_info[1])) for node_info in new_nodes]
+        new_nodes_infos = {(node_info[0], node_info[1],
+                            ArmatureHierarchyModelNode(bone_name=node_info[1])) for node_info in new_nodes}
 
         armature_hierarchy_model.extend_tree_hierarchy(new_nodes_infos=new_nodes_infos)
 
