@@ -67,8 +67,8 @@ class BlenderMeshMaterialApplier:
 
         material_output_node = blender_material_data_block.\
             node_tree.nodes.new(type="ShaderNodeOutputMaterial")  # type: Node
-        material_diffuse_node = blender_material_data_block.\
-            node_tree.nodes.new(type="ShaderNodeBsdfDiffuse")  # type: Node
+        material_principled_bsdf_node = blender_material_data_block.\
+            node_tree.nodes.new(type="ShaderNodeBsdfPrincipled")  # type: Node
         texture_image_node = blender_material_data_block.\
             node_tree.nodes.new(type='ShaderNodeTexImage')  # type: Node
         texture_image_node.image = BlenderImageHelper().get_blender_image(
@@ -87,8 +87,8 @@ class BlenderMeshMaterialApplier:
         uv_map_node.uv_map = uv_loops_layer.name
 
         blender_material_data_block.node_tree.links.new(material_output_node.inputs['Surface'],
-                                                        material_diffuse_node.outputs['BSDF'])
-        blender_material_data_block.node_tree.links.new(material_diffuse_node.inputs['Color'],
+                                                        material_principled_bsdf_node.outputs['BSDF'])
+        blender_material_data_block.node_tree.links.new(material_principled_bsdf_node.inputs['Base Color'],
                                                         texture_image_node.outputs['Color'])
         blender_material_data_block.node_tree.links.new(texture_image_node.inputs['Vector'],
                                                         uv_map_node.outputs['UV'])
