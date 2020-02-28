@@ -1,5 +1,6 @@
 from typing import Tuple, List
 
+from .....utils.model.tree_hierarchy import TreeNodeInfo, TreeNodeIter
 from .....model.objects.model.export_objects_library_model_description.armature_bind_pose_model import\
     ArmatureBindPoseModel
 from .....model.animations.model.blender_pose_mode_animation_frame_model import BlenderPoseModeAnimationFrameModel, \
@@ -60,10 +61,8 @@ class HandyMemoryPool:
 
 
 class AnimationFrameNodeModel:
-    vector3d_placeholder=Vector3d()
-    quaternion_placeholder=Quaternion()
-
     def __init__(self, node_name : str,
+                 is_keyframe: bool,
                  position: Vector3d,
                  local_position: Vector3d,
                  rotation: Quaternion,
@@ -71,6 +70,7 @@ class AnimationFrameNodeModel:
                  scale: Vector3d,
                  local_scale: Vector3d):
         self.node_name = node_name  # type: str
+        self.is_keyframe = is_keyframe  # type: bool
         self.position = position  # type: Vector3d
         self.local_position = local_position  # type: Vector3d
         self.rotation = rotation  # type: Quaternion
@@ -80,16 +80,6 @@ class AnimationFrameNodeModel:
 
     @classmethod
     def from_json_dict_tree_building(cls, json_dict):
-        #return AnimationFrameNodeModel(
-        #    node_name=json_dict["boneName"],
-        #    position=cls.vector3d_placeholder,
-        #    local_position=cls.vector3d_placeholder,
-        #    rotation=cls.quaternion_placeholder,
-        #    local_rotation=cls.quaternion_placeholder,
-        #    scale=cls.vector3d_placeholder,
-        #    local_scale=cls.vector3d_placeholder
-        #)
-
         def _translate_to_blender_axes3d(axes: Tuple[float, float, float]) -> Tuple[float, float, float]:
             return -axes[0], -axes[2], axes[1]
 
@@ -99,6 +89,7 @@ class AnimationFrameNodeModel:
 
         return AnimationFrameNodeModel(
              node_name=json_dict["boneName"],
+             is_keyframe=bool(json_dict["isKeyframe"]),
              position=HandyMemoryPool.get_vector3d(
                  coords=_translate_to_blender_axes3d((
                      float(json_dict["position"]["x"]),
@@ -145,50 +136,6 @@ class AnimationFrameNodeModel:
              ),
         )
 
-
-
-        # return AnimationFrameNodeModel(
-        #     node_name=json_dict["boneName"],
-        #     position=ModelVector3d(
-        #         x=float(json_dict["position"]["x"]),
-        #         y=float(json_dict["position"]["y"]),
-        #         z=float(json_dict["position"]["z"]),
-        #         axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
-        #     translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d(),
-        #     local_position=ModelVector3d(
-        #         x=float(json_dict["localPosition"]["x"]),
-        #         y=float(json_dict["localPosition"]["y"]),
-        #         z=float(json_dict["localPosition"]["z"]),
-        #         axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
-        #     translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d(),
-        #     rotation=ModelQuaternion(
-        #         w=float(json_dict["rotation"]["w"]),
-        #         x=float(json_dict["rotation"]["x"]),
-        #         y=float(json_dict["rotation"]["y"]),
-        #         z=float(json_dict["rotation"]["z"]),
-        #         axis_info=ModelSpacesInfo.MODEL_AXIS_INFO
-        #     ).translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_quaternion(),
-        #     local_rotation=ModelQuaternion(
-        #         w=float(json_dict["localRotation"]["w"]),
-        #         x=float(json_dict["localRotation"]["x"]),
-        #         y=float(json_dict["localRotation"]["y"]),
-        #         z=float(json_dict["localRotation"]["z"]),
-        #         axis_info=ModelSpacesInfo.MODEL_AXIS_INFO
-        #     ).translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_quaternion(),
-        #     scale=ModelVector3d(
-        #         x=float(json_dict["scale"]["x"]),
-        #         y=float(json_dict["scale"]["y"]),
-        #         z=float(json_dict["scale"]["z"]),
-        #         axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
-        #     translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d(),
-        #     local_scale=ModelVector3d(
-        #         x=float(json_dict["localScale"]["x"]),
-        #         y=float(json_dict["localScale"]["y"]),
-        #         z=float(json_dict["localScale"]["z"]),
-        #         axis_info=ModelSpacesInfo.MODEL_AXIS_INFO).\
-        #     translate_to_model_axis(target_axis_info=ModelSpacesInfo.BLENDER_AXIS_INFO).to_vector3d()
-        # )
-
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
         self.position = ModelVector3d(
             x=self.position.x, y=self.position.y, z=self.position.z,
@@ -212,6 +159,71 @@ class AnimationFrameNodeModel:
             axis_info=base_space_model).translate_to_model_axis(target_axis_info=target_space_model).to_vector3d()
 
 
+class AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter:
+    def convert(
+            self, armature_bind_pose_model: ArmatureBindPoseModel,
+            animation_frame_model,
+            should_be_whole_keyframed: bool) -> BlenderPoseModeAnimationFrameModel:
+        result = BlenderPoseModeAnimationFrameModel()
+
+        nodes_building_infos = set()
+        chains_bottom_nodes_keys_for_bones_chains_keyframing = []  # type: List[str]
+
+        animation_frame_nodes_iters_dict = {node_iter.key: node_iter for node_iter in
+                                            animation_frame_model.iterate_nodes()}
+        for bind_pose_model_node_iter in armature_bind_pose_model.iterate_nodes():
+            if bind_pose_model_node_iter.key in animation_frame_nodes_iters_dict:
+                parent_key = animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key
+                node_key = animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key
+                node = BlenderPoseModeAnimationFrameModelNode(
+                    bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
+                    is_keyframe=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.is_keyframe
+                    if not should_be_whole_keyframed else True,
+                    position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
+                    rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
+                    scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
+                )
+
+                if not should_be_whole_keyframed and \
+                        animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.is_keyframe:
+                    chains_bottom_nodes_keys_for_bones_chains_keyframing.append(bind_pose_model_node_iter.key)
+            else:
+                parent_key = bind_pose_model_node_iter.parent_key
+                node_key = bind_pose_model_node_iter.key
+                node = BlenderPoseModeAnimationFrameModelNode(
+                    bone_name=bind_pose_model_node_iter.node.name,
+                    is_keyframe=False if not should_be_whole_keyframed else True,
+                    position=Vector3d(0.0, 0.0, 0.0),
+                    rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
+                    scale=Vector3d(0.0001, 0.0001, 0.0001)
+                )
+
+            nodes_building_infos.add((parent_key, node_key, node))
+
+        result.extend_tree_hierarchy(new_nodes_infos=nodes_building_infos)
+
+        for node_key in chains_bottom_nodes_keys_for_bones_chains_keyframing:
+            self._keyframe_bones_chain_to_root_from_here(
+                bottom_node_key=node_key,
+                pose_mode_animation_frame_tree=result
+            )
+
+        return result
+
+    def _keyframe_bones_chain_to_root_from_here(
+            self,
+            bottom_node_key: str,
+            pose_mode_animation_frame_tree: BlenderPoseModeAnimationFrameModel):
+
+        def _keyframe_all_bones_in_subtree(key: str, tree: BlenderPoseModeAnimationFrameModel):
+
+
+        for node_iter in pose_mode_animation_frame_tree.iterate_from_this_node_towards_root(node_key=bottom_node_key):
+            node_iter.node.is_keyframe = True
+
+        _keyframe_all_bones_in_subtree(bottom_node_key, pose_mode_animation_frame_tree)
+
+
 class AnimationFrameModel(TreeHierarchy):
     def translate_to_space_model(self, base_space_model: AxisInfo, target_space_model: AxisInfo):
         for node_iter in self.iterate_nodes():
@@ -219,55 +231,11 @@ class AnimationFrameModel(TreeHierarchy):
                 base_space_model=base_space_model, target_space_model=target_space_model)
 
     def get_blender_pose_mode_animation_frame_model(
-            self, armature_bind_pose_model: ArmatureBindPoseModel) -> BlenderPoseModeAnimationFrameModel:
-        result = BlenderPoseModeAnimationFrameModel()
-
-        nodes_building_infos = set()
-
-        animation_frame_nodes_iters_dict = {node_iter.key: node_iter for node_iter in self.iterate_nodes()}
-        for bind_pose_model_node_iter in armature_bind_pose_model.iterate_nodes():
-            if bind_pose_model_node_iter.key in animation_frame_nodes_iters_dict:
-                parent_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key
-                node_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key
-                node=BlenderPoseModeAnimationFrameModelNode(
-                         bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
-                         position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
-                         rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
-                         scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
-                     )
-
-                # result.add_node(
-                #     parent_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].parent_key,
-                #     node_key=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].key,
-                #     node=BlenderPoseModeAnimationFrameModelNode(
-                #         bone_name=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.node_name,
-                #         position=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.position,
-                #         rotation=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.rotation,
-                #         scale=animation_frame_nodes_iters_dict[bind_pose_model_node_iter.key].node.scale
-                #     )
-                # )
-            else:
-                parent_key=bind_pose_model_node_iter.parent_key
-                node_key=bind_pose_model_node_iter.key
-                node=BlenderPoseModeAnimationFrameModelNode(
-                         bone_name=bind_pose_model_node_iter.node.name,
-                         position=Vector3d(0.0, 0.0, 0.0),
-                         rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
-                         scale=Vector3d(0.0001, 0.0001, 0.0001)
-                     )
-
-
-                # result.add_node(
-                #     parent_key=bind_pose_model_node_iter.parent_key,
-                #     node_key=bind_pose_model_node_iter.key,
-                #     node=BlenderPoseModeAnimationFrameModelNode(
-                #         bone_name=bind_pose_model_node_iter.node.name,
-                #         position=Vector3d(0.0, 0.0, 0.0),
-                #         rotation=Quaternion(1.0, 0.0, 0.0, 0.0),
-                #         scale=Vector3d(0.0001, 0.0001, 0.0001)
-                #     )
-                # )
-            nodes_building_infos.add((parent_key, node_key, node))
-
-        result.extend_tree_hierarchy(new_nodes_infos=nodes_building_infos)
-        return result
+            self, armature_bind_pose_model: ArmatureBindPoseModel,
+            should_be_whole_keyframed: bool) -> BlenderPoseModeAnimationFrameModel:
+        converter = AnimationFrameModelToBlenderPoseModeAnimationFrameModelConverter()
+        return converter.convert(
+            armature_bind_pose_model=armature_bind_pose_model,
+            animation_frame_model=self,
+            should_be_whole_keyframed=should_be_whole_keyframed
+        )

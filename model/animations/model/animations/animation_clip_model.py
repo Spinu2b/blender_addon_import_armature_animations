@@ -13,6 +13,9 @@ class AnimationClipModel:
         minimal_key = min(self.frames)  # type: int
         return self.frames[minimal_key]
 
+    def get_first_animation_frame_number(self) -> int:
+        return min(self.frames)
+
     def get_animation_frames(self) -> Dict[int, 'AnimationFrameModel']:
         return self.frames
 

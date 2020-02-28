@@ -1,7 +1,7 @@
 from typing import List
 
 import bpy
-from bpy.types import Object, BlendData
+from bpy.types import Object, BlendData, PoseBone
 
 
 class BlenderObjectsManipulation:
@@ -28,3 +28,8 @@ class BlenderObjectsManipulation:
 
     def parent_object_to(self, child: Object, parent: Object):
         child.parent = parent
+
+    def select_pose_bone(self, pose_bone: PoseBone):
+        pose_bone.bone.select = True
+        pose_bone.bone.select_tail = True
+        pose_bone.bone.select_head = True

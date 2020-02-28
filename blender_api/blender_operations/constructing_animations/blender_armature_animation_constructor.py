@@ -15,10 +15,12 @@ class BlenderArmatureAnimationConstructor:
         blender_armature_bone_pose_facade = BlenderArmatureBonePoseSetterFacade()
         blender_objects_manipulation = BlenderObjectsManipulation()
         for animation_frame_armature_bone_model_iter in animation_frame_model.iterate_nodes():
-            blender_armature_bone_pose_facade.position_bone_in_animation_frame(
-                armature_obj,
-                animation_frame_armature_bone_model_iter.node
-            )
-        blender_objects_manipulation.deselect_all_pose_objects()
-        blender_armature_bone_pose_facade.select_all_pose_bones()
-        blender_armature_bone_pose_facade.lock_rotation_scale_position()
+            if animation_frame_armature_bone_model_iter.node.bone_name != "ROOT_CHANNEL" and \
+                    animation_frame_armature_bone_model_iter.node.is_keyframe:
+                pose_bone = blender_armature_bone_pose_facade.position_bone_in_animation_frame(
+                    armature_obj,
+                    animation_frame_armature_bone_model_iter.node
+                )
+                blender_objects_manipulation.select_pose_bone(pose_bone)
+                blender_armature_bone_pose_facade.lock_rotation_scale_position()
+                blender_objects_manipulation.deselect_all_pose_objects()

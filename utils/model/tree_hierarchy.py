@@ -1,6 +1,6 @@
 import copy
 from abc import ABC
-from typing import Optional, List, Iterator
+from typing import Optional, List, Iterator, Union
 
 
 class TreeNodeContainer:
@@ -69,6 +69,21 @@ class TreeHierarchy(ABC):
                                key=self.root.key,
                                children=self.root.children)
             yield from self._traverse_nodes_hierarchy(parent=None, current_node=self.root)
+
+    def iterate_from_this_node_towards_root(self, node_key) -> Iterator[TreeNodeIter]:
+        def _has_that_in_descendants(node_iter: Union[TreeNodeIter, TreeNodeContainer], node_key) -> bool:
+            for child in node_iter.children:
+                if child.key == node_key or _has_that_in_descendants(child, node_key):
+                    return True
+            return False
+
+        nodes_chain = []  # type: List[TreeNodeIter]
+
+        for node_iter in self.iterate_nodes():
+            if _has_that_in_descendants(node_iter, node_key):
+                nodes_chain.append(node_iter)
+
+        yield from reversed(nodes_chain)
 
     def iterate_parent_child_key_pairs(self):
         for node_iter in self.iterate_nodes():

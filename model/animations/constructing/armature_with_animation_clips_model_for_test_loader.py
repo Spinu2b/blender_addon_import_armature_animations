@@ -7,7 +7,7 @@ from ....model.animations.model.armature_with_animation_clips_model import Armat
 
 
 class ArmatureWithAnimationClipsModelForTestLoader:
-    ANIMATION_CLIPS_COUNT = 20
+    ANIMATION_CLIPS_COUNT = 2
 
     def load(self, path_to_json_file: str) -> 'ArmatureWithAnimationClipsModel':
         with open(path_to_json_file, 'r') as json_file:
