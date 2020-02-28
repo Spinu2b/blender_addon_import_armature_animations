@@ -80,22 +80,21 @@ class BlenderAnimatedRiggedModelCreator:
             blender_editor_manipulation.set_armature_active_action(blender_armature_obj, action)
             animation_frames = animation_clips[animation_clip_name].get_animation_frames()
 
-            animation_frame_index_counter = 1
             keyframe_period = 3
 
             print("Animation clip: {}".format(animation_clip_name))
 
             for animation_frame_number in animation_frames:
-                if (animation_frame_index_counter - 1) % keyframe_period == 0 or \
-                        animation_frame_index_counter == self._get_last_frame_number(animation_frames):
-                    print("Frame: {}".format(animation_frame_index_counter))
+                if animation_frame_number % keyframe_period == 0 or \
+                        animation_frame_number == min(animation_frames.keys()) or \
+                        animation_frame_number == self._get_last_frame_number(animation_frames):
+                    print("Frame: {}".format(animation_frame_number))
                     animation_frame = animation_frames[animation_frame_number]
                     blender_editor_manipulation.enter_frame_number(frame_number=animation_frame_number)
                     self._add_animation_frame_to_animation_clip_of_armature(
                         armature_bind_pose_model,
                         animation_frame,
                         blender_armature_obj)
-                animation_frame_index_counter += 1
 
     def _add_animation_frame_to_animation_clip_of_armature(
             self,
