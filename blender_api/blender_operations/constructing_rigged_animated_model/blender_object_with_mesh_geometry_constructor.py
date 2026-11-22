@@ -38,22 +38,18 @@ class BlenderMeshMaterialApplier:
                       animated_export_object: AnimatedExportObjectModel) -> MeshUVLoopLayer:
         uv_loops_layer = mesh_obj.data.uv_layers.new(name=animated_export_object.name + "_UV")  # type: MeshUVLoopLayer
 
-        uv_loop_index = 0
-        while uv_loop_index < len(uv_map):
-            first_vertex_uv = uv_map[uv_loop_index]
-            second_vertex_uv = uv_map[uv_loop_index + 2]
-            third_vertex_uv = uv_map[uv_loop_index + 1]
-
-            uv_loops_layer.data[uv_loop_index].uv[0] = first_vertex_uv.x
-            uv_loops_layer.data[uv_loop_index].uv[1] = first_vertex_uv.y
-
-            uv_loops_layer.data[uv_loop_index + 1].uv[0] = second_vertex_uv.x
-            uv_loops_layer.data[uv_loop_index + 1].uv[1] = second_vertex_uv.y
-
-            uv_loops_layer.data[uv_loop_index + 2].uv[0] = third_vertex_uv.x
-            uv_loops_layer.data[uv_loop_index + 2].uv[1] = third_vertex_uv.y
-
-            uv_loop_index += 3
+        # the UVs are per vertex: every loop takes its own vertex's UV. (Assuming loop i = vertex i broke meshes whose
+        # triangles share vertices, e.g. R3's double-sided ones where each triangle comes twice, once per winding:
+        # every face after the first got another face's UVs)
+        loops = mesh_obj.data.loops
+        loop_vertex_indices = [0] * len(loops)
+        loops.foreach_get("vertex_index", loop_vertex_indices)
+        loop_uvs = []
+        for vertex_index in loop_vertex_indices:
+            vertex_uv = uv_map[vertex_index]
+            loop_uvs.append(vertex_uv.x)
+            loop_uvs.append(vertex_uv.y)
+        uv_loops_layer.data.foreach_set("uv", loop_uvs)
 
         return uv_loops_layer
 
