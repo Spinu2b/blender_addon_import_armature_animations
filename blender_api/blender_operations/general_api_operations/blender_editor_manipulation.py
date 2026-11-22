@@ -24,4 +24,8 @@ class BlenderEditorManipulation:
         bpy.context.area.ui_type = 'DOPESHEET'
 
     def set_armature_active_action(self, armature_obj: Object, action: Action):
-        bpy.context.space_data.action = action
+        # SpaceDopeSheetEditor.action no longer exists in newer Blender (layered/slotted actions);
+        # assigning through animation_data works in 2.8x and 4.x/5.x alike.
+        if armature_obj.animation_data is None:
+            armature_obj.animation_data_create()
+        armature_obj.animation_data.action = action
