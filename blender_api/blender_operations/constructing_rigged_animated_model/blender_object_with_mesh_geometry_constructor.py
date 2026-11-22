@@ -122,16 +122,29 @@ class BlenderObjectWithMeshGeometryConstructor:
     def _apply_mesh_materials(self, animated_export_object: AnimatedExportObjectModel, mesh_obj: Object):
         if len(animated_export_object.materials) > 1:
             raise ValueError("More than one material per submesh is not supported!")
-        if len([x for x in animated_export_object.mesh_geometry.uv_maps if len(x) > 0]) > 1:
-            raise ValueError("More than one uv map per submesh is not supported!")
-        if len(animated_export_object.materials) == 1 and \
-                len([x for x in animated_export_object.mesh_geometry.uv_maps if len(x) > 0]) == 1:
+        non_empty_uv_maps = [x for x in animated_export_object.mesh_geometry.uv_maps if len(x) > 0]
+        if len(non_empty_uv_maps) > 1:
+            # R3 materials can have several texture layers, each with its UV channel; the export carries only the
+            # first layer's texture (_Tex0), whose UVs are the first map: the others are not used here
+            # (get_valid_uv_map takes the first one). Seen: a second map identical to the first (swamp_82 Caggarde)
+            differing = [i for i, uv_map in enumerate(non_empty_uv_maps[1:], start=1)
+                         if self._uv_maps_differ(non_empty_uv_maps[0], uv_map)]
+            print("{}: {} UV maps, using the first one{}".format(
+                animated_export_object.name, len(non_empty_uv_maps),
+                "; maps {} differ from it (their texture layers are not exported)".format(differing)
+                if differing else " (the others are identical)"))
+        if len(animated_export_object.materials) == 1 and len(non_empty_uv_maps) >= 1:
             blender_mesh_material_applier = BlenderMeshMaterialApplier()
             blender_mesh_material_applier.apply(
                 material=animated_export_object.materials[0],
                 uv_map=animated_export_object.get_valid_uv_map(),
                 mesh_obj=mesh_obj,
                 animated_export_object=animated_export_object)
+
+    def _uv_maps_differ(self, first, second) -> bool:
+        if len(first) != len(second):
+            return True
+        return any(abs(a.x - b.x) > 1e-6 or abs(a.y - b.y) > 1e-6 for a, b in zip(first, second))
 
     def _apply_normals(self, animated_export_object: AnimatedExportObjectModel, mesh_obj: Object):
         normals_definitions = animated_export_object.mesh_geometry.normals  # type: List[Vector3d]
