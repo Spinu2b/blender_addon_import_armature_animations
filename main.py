@@ -38,8 +38,15 @@ class MainAddonLogic:
             export_objects_library_model.animated_export_objects)
         with open(path_to_animations_file, 'r') as animations_file:
             animation_clips_json = json.load(animations_file)['animationClips']
+        from .blender_api.blender_operations.constructing_animations.hierarchical.vertex_morph_shape_keys \
+            import VertexMorphShapeKeysBuilder
+        with open(path_to_objects_library_file, 'r') as library_file:
+            library_json = json.load(library_file)
+        morphs_builder = VertexMorphShapeKeysBuilder()
+        morph_properties = morphs_builder.build(armature_obj, library_json)
         animator = HierarchicalArmatureAnimator()
-        animator.restructure_and_animate(armature_obj, animation_clips_json)
-        for line in animator.report_lines:
+        animator.restructure_and_animate(armature_obj, animation_clips_json, morph_properties)
+        report = animator.report_lines + morphs_builder.report_lines
+        for line in report:
             print(line)
-        return animator.report_lines
+        return report

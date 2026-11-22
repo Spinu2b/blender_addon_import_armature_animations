@@ -120,7 +120,11 @@ class HierarchicalArmatureAnimator:
     def __init__(self):
         self.report_lines = []
 
-    def restructure_and_animate(self, armature_obj, animation_clips_json: dict):
+    def restructure_and_animate(self, armature_obj, animation_clips_json: dict, morph_properties=()):
+        """morph_properties: [(armature custom property, source PO key, target PO key)] driving shape keys; keyed
+        per frame from the frames' morphWeights (0 where a clip does not morph), see vertex_morph_shape_keys."""
+        self._animation_clips_json = animation_clips_json
+        self._morph_properties = list(morph_properties)
         # armature.bones is only up to date outside edit mode (the rig construction leaves it in edit mode)
         bpy.context.view_layer.objects.active = armature_obj
         if armature_obj.mode != 'OBJECT':
@@ -237,6 +241,25 @@ class HierarchicalArmatureAnimator:
                 tracks[bone_name].append(tracks[bone_name][0])
         for bone_name, keys in tracks.items():
             self._write_track(action, armature_obj, bone_name, blender_frames, keys)
+        self._write_morph_weights(action, armature_obj, clip_name, frame_numbers, blender_frames)
+
+    def _write_morph_weights(self, action, armature_obj, clip_name, frame_numbers, blender_frames):
+        frames_json = self._animation_clips_json[clip_name]
+        for prop, source_key, target_key in self._morph_properties:
+            values = []
+            for frame_number in frame_numbers:
+                weights = frames_json[str(frame_number)].get("morphWeights") or {}
+                values.append(float((weights.get(source_key) or {}).get(target_key, 0.0)))
+            if len(blender_frames) > len(values):  # one-frame clip held for two frames
+                values.append(values[-1])
+            fcurve = self._ensure_fcurve(action, armature_obj, '["{}"]'.format(prop), 0, "Morphs")
+            fcurve.keyframe_points.add(len(blender_frames))
+            coordinates = []
+            for frame, value in zip(blender_frames, values):
+                coordinates += [frame, value]
+            fcurve.keyframe_points.foreach_set("co", coordinates)
+            fcurve.keyframe_points.foreach_set("interpolation", [1] * len(blender_frames))  # LINEAR
+            fcurve.update()
 
     @staticmethod
     def _trs_key(basis):
