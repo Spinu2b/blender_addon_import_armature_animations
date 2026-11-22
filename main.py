@@ -7,8 +7,10 @@ from .model.objects.constructing.export_objects_library_model_loader import Expo
 
 
 class MainAddonLogic:
-    def run(self, path_to_animations_file, path_to_objects_library_file):
+    def run(self, path_to_animations_file, path_to_objects_library_file, hierarchical=True):
         print("Running addon!")
+        if hierarchical:
+            return self.run_hierarchical(path_to_animations_file, path_to_objects_library_file)
         export_objects_library_model = ExportObjectsLibraryModelLoader().load(path_to_objects_library_file)
         # armature_animation_clips_model = ArmatureWithAnimationClipsModelForTestLoader().load(path_to_animations_file)
 
@@ -21,3 +23,23 @@ class MainAddonLogic:
         animated_rigged_model_constructor = BlenderAnimatedRiggedModelConstructor()
         animated_rigged_model_constructor.build_animated_rigged_model(
             export_objects_library_model, armature_animation_clips_model)
+
+    def run_hierarchical(self, path_to_animations_file, path_to_objects_library_file):
+        # Exact mode: a hierarchical armature keyed with local transforms (keeps R3's squash & stretch shear)
+        import json
+        from .blender_api.blender_operations.constructing_rigged_animated_model.blender_animated_rigged_model_creator \
+            import BlenderAnimatedRiggedModelCreator
+        from .blender_api.blender_operations.constructing_animations.hierarchical.hierarchical_armature_animator \
+            import HierarchicalArmatureAnimator
+        export_objects_library_model = ExportObjectsLibraryModelLoader().load(path_to_objects_library_file)
+        export_objects_library_model.reform_for_blender_building_process()
+        armature_obj = BlenderAnimatedRiggedModelCreator().construct_rig(
+            export_objects_library_model.get_armature_bind_pose_model(),
+            export_objects_library_model.animated_export_objects)
+        with open(path_to_animations_file, 'r') as animations_file:
+            animation_clips_json = json.load(animations_file)['animationClips']
+        animator = HierarchicalArmatureAnimator()
+        animator.restructure_and_animate(armature_obj, animation_clips_json)
+        for line in animator.report_lines:
+            print(line)
+        return animator.report_lines

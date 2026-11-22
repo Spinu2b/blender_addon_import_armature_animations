@@ -8,11 +8,18 @@ def register_properties():
         description="Chemin vers le fichier JSON des objets",
         subtype='FILE_PATH'
     )
+    bpy.types.Scene.import_hierarchical_armature = bpy.props.BoolProperty(
+        name="Exact hierarchical armature",
+        description="Hierarchical armature keyed with local transforms: reproduces Raymap exactly, including the "
+                    "shear of squash & stretch animations. Off: the old flat armature posed in world space",
+        default=True
+    )
 
 def unregister_properties():
     import bpy
     del bpy.types.Scene.animations_json_path
     del bpy.types.Scene.objects_library_json_path
+    del bpy.types.Scene.import_hierarchical_armature
 import bpy
 
 
@@ -29,5 +36,6 @@ class AddonPanel(bpy.types.Panel):
         layout.prop(context.scene, "animations_json_path", text="")
         layout.label(text="Objects Library JSON Path:")
         layout.prop(context.scene, "objects_library_json_path", text="")
+        layout.prop(context.scene, "import_hierarchical_armature")
         row = layout.row()
         row.operator("view3d.import_animated_armature", text="Import animated armature from Raymap")
