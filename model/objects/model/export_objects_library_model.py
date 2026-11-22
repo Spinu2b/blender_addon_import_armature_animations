@@ -55,19 +55,42 @@ class ExportObjectsLibraryModel:
     def reform_for_blender_building_process(self):
         self._check_one_channel_to_one_mesh_assumption()
 
+    # how far two meshes' bind poses of one channel may differ and still count as the same bind pose
+    BIND_POSE_AGREEMENT_EPSILON = 1e-4
+
     def _check_one_channel_to_one_mesh_assumption(self):
-        channel_meshes_count_dict = dict()  # type: Dict[str, int]
+        """Several meshes may be skinned to one channel (e.g. the submeshes of one R3 object, one per material: an
+        opaque and an alpha one) as long as they agree on its bind pose: the armature has one bind pose per bone (the
+        first mesh's, ArmatureBindPoseModelConstructor). Meshes that disagree cannot share the armature."""
+        channel_bind_pose_owner_dict = dict()  # type: Dict[str, str]
         for channel_node_iter in self.armature_hierarchy.iterate_nodes():
             channel_name = channel_node_iter.node.bone_name
-            channel_meshes_count_dict[channel_name] = 0
             for anim_export_object_name in self.animated_export_objects:
                 anim_export_object = self.animated_export_objects[anim_export_object_name]
-                if channel_name in anim_export_object.bind_bone_poses or \
-                        channel_name in anim_export_object.mesh_geometry.bones_weights:
-                    channel_meshes_count_dict[channel_name] += 1
-        for channel_name in channel_meshes_count_dict:
-            if channel_meshes_count_dict[channel_name] > 1:
-                raise ValueError("One channel to one mesh assumption is not satisfied!")
+                if channel_name not in anim_export_object.bind_bone_poses:
+                    continue
+                if channel_name not in channel_bind_pose_owner_dict:
+                    channel_bind_pose_owner_dict[channel_name] = anim_export_object_name
+                    continue
+                owner_name = channel_bind_pose_owner_dict[channel_name]
+                if not self._bind_poses_agree(
+                        self.animated_export_objects[owner_name].bind_bone_poses[channel_name],
+                        anim_export_object.bind_bone_poses[channel_name]):
+                    raise ValueError(
+                        "Meshes {} and {} disagree on the bind pose of {}: they cannot share one armature".format(
+                            owner_name, anim_export_object_name, channel_name))
+
+    def _bind_poses_agree(self, first, second) -> bool:
+        first_values = (first.position.x, first.position.y, first.position.z,
+                        first.scale.x, first.scale.y, first.scale.z)
+        second_values = (second.position.x, second.position.y, second.position.z,
+                         second.scale.x, second.scale.y, second.scale.z)
+        if any(abs(a - b) > self.BIND_POSE_AGREEMENT_EPSILON for a, b in zip(first_values, second_values)):
+            return False
+        # q and -q are the same rotation
+        quaternions_dot = first.rotation.w * second.rotation.w + first.rotation.x * second.rotation.x + \
+            first.rotation.y * second.rotation.y + first.rotation.z * second.rotation.z
+        return abs(abs(quaternions_dot) - 1.0) <= self.BIND_POSE_AGREEMENT_EPSILON
 
     def get_armature_bind_pose_model(self) -> ArmatureBindPoseModel:
         armature_bind_pose_model_constructor = ArmatureBindPoseModelConstructor()
