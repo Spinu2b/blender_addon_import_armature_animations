@@ -12,5 +12,6 @@ class CreateAnimatedArmatureOperator(bpy.types.Operator):
     def execute(self, context):
         animations_path = context.scene.animations_json_path
         objects_library_path = context.scene.objects_library_json_path
-        MainAddonLogic().run(animations_path, objects_library_path)
+        MainAddonLogic().run(animations_path, objects_library_path,
+                             hierarchical=context.scene.import_hierarchical_armature)
         return {'FINISHED'}

@@ -29,6 +29,15 @@ class BlenderAnimatedRiggedModelCreator:
     def construct_using(self, armature_bind_pose_model: ArmatureBindPoseModel,
                         animated_export_objects: Dict[str, AnimatedExportObjectModel],
                         armature_animation_clips_model: ArmatureWithAnimationClipsModel):
+        blender_armature_obj = self.construct_rig(armature_bind_pose_model, animated_export_objects)
+        self._animate_armature_with_animation_clips(
+            armature_bind_pose_model=armature_bind_pose_model,
+            armature_animation_clips_model=armature_animation_clips_model,
+            blender_armature_obj=blender_armature_obj
+        )
+
+    def construct_rig(self, armature_bind_pose_model: ArmatureBindPoseModel,
+                      animated_export_objects: Dict[str, AnimatedExportObjectModel]) -> Object:
         blender_mesh_objects = dict()  # type: Dict[str, Object]
 
         for animated_export_object_name in animated_export_objects:
@@ -56,11 +65,7 @@ class BlenderAnimatedRiggedModelCreator:
         #BlenderObjectsManipulation().join_all_objects([blender_mesh_objects[obj_name] for obj_name
         #                                               in blender_mesh_objects])
 
-        self._animate_armature_with_animation_clips(
-            armature_bind_pose_model=armature_bind_pose_model,
-            armature_animation_clips_model=armature_animation_clips_model,
-            blender_armature_obj=blender_armature_obj
-        )
+        return blender_armature_obj
 
     def _animate_armature_with_animation_clips(
             self,
